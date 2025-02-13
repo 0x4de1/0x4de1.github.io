@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Windows Internals</title>
     <link rel="icon" href="./Pics/WinInt.jpg" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
@@ -284,15 +285,15 @@
     <section>
         <nav>
             <div class="nav-container" style="direction: ltr;">
-                <div class="logo" data-aos="zoom-in" data-aos-duration="1500">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
                     <span>0x4de1</span>
                 </div>
                 <div class="links">
-                    <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100"><a
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
                             href="https://0x4de1.github.io">Home</a></div>
-                    <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300"><a
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
                             href="../MalDev/MalDev.html">Mal Dev</a></div>
-                    <div class="link" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="400"><a
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
                             href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
                 </div>
             </div>
@@ -310,10 +311,10 @@
             <h1 id="article-title" style="direction: ltr;">Windows Internals</h1>
         </header>
         <div class="container">
-            <div class="article" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100">
-                <img src="./Pics/WinInt.jpg" alt="HomeLab" class="article-image">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="./Pics/WinInt.jpg" alt="HomeLab" class="article-image" loading="lazy">
             </div>
-            <div class="article" data-aos="zoom-in" data-aos-duration="1500">
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
                 <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
                 </p>
                 <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
@@ -322,7 +323,7 @@
                     بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
                 </p>
             </div>
-            <div class="article" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="100">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                 <h2>Introduction</h2>
                 <p>[+] بما إن دي أول مقالة أكتبها ع البلوج الجديدة بتاعتي ، واللـ فكرت أعملها لـ مشاركة شروحات بالعربي
                     عن الـ Malware Development ، فـ حبيت أبدأ بحاجه خفيفة (أو يمكن مش خفيفة أوي) عن أساسيات الـ Windows
@@ -341,7 +342,7 @@
 
                 <h2>1. Windows Architecture</h2>
                 <div class="article">
-                    <img src="./Pics/WinArch.jpg" alt="WinArch" class="article-image">
+                    <img src="./Pics/WinArch.jpg" alt="WinArch" class="article-image" loading="lazy">
                 </div>
                 <p>[+] أول حاجة محتاجين نفهمها عن نظام الويندوز هي طريقة عمله من الداخل ، وازاي بيقدر يشغل البرامج ويدير
                     العمليات. ببساطة ، الويندوز بيشتغل بنمطين مختلفين:</p>
@@ -360,11 +361,11 @@
                         اللـ بتتعامل مع الهاردوير مباشرة. </p>
                 </ul>
                 <div class="article">
-                    <img src="./Pics/WinArch1.png" alt="WinArch1" class="article-image">
+                    <img src="./Pics/WinArch1.png" alt="WinArch1" class="article-image" loading="lazy">
                 </div>
                 <p>[+] وعشان نفهم الموضوع بكل سلاسة ، تعالي نبسط الصورة أكتر من كده ونخليها بالشكل:</p>
                 <div class="article">
-                    <img src="./Pics/WinArch2.jpg" alt="WinArch2" class="article-image">
+                    <img src="./Pics/WinArch2.jpg" alt="WinArch2" class="article-image" loading="lazy">
                 </div>
                 <p>[+] لما أي برنامج يحب ينفذ عملية معينة ، زي إنه يفتح ملف أو يتصل بالإنترنت ، مش بيقدر يعمل ده لوحده
                     .. فيه كذا مرحلة بيمر بيها عشان يوصل لـ Kernel Mode ، وهي:</p>
@@ -432,14 +433,14 @@
 
                 <h2>2. Memory Management</h2>
                 <div class="article">
-                    <img src="./Pics/MemMan.jpg" alt="MemoryManagement" class="article-image">
+                    <img src="./Pics/MemMan.jpg" alt="MemoryManagement" class="article-image" loading="lazy">
                 </div>
                 <p>[+] بعد مـ فهمنا ازاي الويندوز بيشتغل من حيث الـ Windows Architecture ، تعالوا نتكلم عن جزء مهم جدًا
                     وهو إدارة الذاكرة (Memory Management).</p>
                 <p>[+] فـ الأول كدا ، لو كنت فاكر إن البرامج بتتعامل مع الرامات (Physical Memory) بشكل مباشر، فـ حابب
                     أقولك إن ده مش اللـ بيحصل .. اللـ بيحصل إن البرامج بتتعامل مع حاجة اسمها Virtual Memory ، وهي اللـ
                     بتقوم بإدارة وتنظيم الوصول للميموري الفعلية.</p>
-                <img src="./Pics/PAGE_1.png" alt="HomeLab" class="article-image">
+                <img src="./Pics/PAGE_1.png" alt="HomeLab" class="article-image" loading="lazy">
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-weight: bold;">[+] طب ليه الأبلكيشنز مش بتتعامل مع الميموري ع طول؟</p>
                 <p>كان زمان ، لما البرامج كانت بتشتغل مباشرة ع الميموري الفعلية ، كان فـ مشاكل كتير ، منها:</p>
@@ -509,7 +510,7 @@
                     <li>لو الـ Firefox محتاج يشارك بيانات مع Onenote ، لازم يتم ده من خلال آلية اسمها Inter-Process
                         Communication (IPC) ، مش بشكل مباشر فـ الميموري.</li>
                 </ol>
-                <img src="./Pics/PAGE_2.jpg" alt="HomeLab" class="article-image">
+                <img src="./Pics/PAGE_2.jpg" alt="HomeLab" class="article-image" loading="lazy">
                 <p style="font-weight: bold;">[+] طب إيه اللـ ممكن يحصل لو حصل تجاوز؟</p>
                 <p>لو برنامج حاول يدخل ع ذاكرة برنامج تاني ، النظام هيمنعه ويرجع Access Violation Error .. ولو برنامج
                     حاول ينفذ كود فـ منطقة مش واخدة صلاحية التنفيذ ، الـ DEP هيتدخل ويمنعه .. ولو هكر جامد جمودة حاول
@@ -571,17 +572,17 @@
                     <li>
                         من الـ Visual Studio 2022 هنـ رن الـ Local Windows Debugger
                     </li>
-                    <img src="./Pics/code1.png" alt="code1" class="article-image">
+                    <img src="./Pics/code1.png" alt="code1" class="article-image" loading="lazy">
                     <li>هيظهر العنوان اللـ اتحجز فيه المنطقة بتاعتنا ، واللـ موجود فيه الـ string حاليا ، هناخده كوبي.
-                    </li> <img src="./Pics/code2.png" alt="code2" class="article-image">
+                    </li> <img src="./Pics/code2.png" alt="code2" class="article-image" loading="lazy">
                     <li>هنروح ع الـ <code
                             style="background: #16ff00; font-size: 14px;">Debug > Windows > Memory > Memory 1</code>.
                     </li>
-                    <img src="./Pics/code3.png" alt="code3" class="article-image">
+                    <img src="./Pics/code3.png" alt="code3" class="article-image" loading="lazy">
                     <li>هنوقف العملية لما نضغط ع علامة الـ Break All</li>
                     <li>هنضيف العنوان اللـ ظهرلنا واللـ خدناه كوبي ونبحث عنه</li>
                     <li>هنلاقي المكان اللـ حجزناه ونقلنا فيه الـ string بتاعنا بنجاح.</li>
-                    <img src="./Pics/code4.png" alt="code4" class="article-image">
+                    <img src="./Pics/code4.png" alt="code4" class="article-image" loading="lazy">
                 </ol>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-size: large; font-weight: bold;">2. ()HeapAlloc – الحجز باستخدام Windows API</p>
@@ -735,12 +736,12 @@
                     </code>
                 </div>
                 <p>ودا مثال لترفيغ منطقة كانت محجوزة .. </p>
-                <img src="./Pics/code5.png" alt="code5" class="article-image">
+                <img src="./Pics/code5.png" alt="code5" class="article-image" loading="lazy">
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
                     متترددش وكلمني.</p>
             </div>
-            <div class="article" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
                 <h2>References</h2>
                 <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
                 <ul>
@@ -763,16 +764,18 @@
             </div>
         </div>
     </section>
-    <footer class="footer" data-aos="zoom-in" data-aos-duration="1500" style="direction: ltr;">
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
         <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
     </footer>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="../script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
     <script>
-        AOS.init({ offset: 0, });
-        document.getElementById("year").textContent = new Date().getFullYear();
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
     </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 
 </html>
