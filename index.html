@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="image" data-aos="zoom-in" data-aos-duration="3000">
-                <img src="ProfPic.jpg" alt="">
+                <img src="ProfPic.jpg" alt="ProfPic" loading="lazy">
             </div>
         </div>
         <br>
@@ -73,12 +73,15 @@
     <footer class="footer" data-aos="zoom-in" data-aos-duration="1500">
         <p>&copy; <span id="year"></span> <a href="#">0x4de1</a>. All rights reserved.</p>
     </footer>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init({ offset: 0, });
-        document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
     <script src="script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+
 
 </body>
 
