@@ -73,14 +73,15 @@
     <footer class="footer" data-aos="zoom-in" data-aos-duration="1500">
         <p>&copy; <span id="year"></span> <a href="#">0x4de1</a>. All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
     <script>
-        window.onload = function () {
+        document.addEventListener("DOMContentLoaded", function () {
             AOS.init({ offset: 0 });
-        };
+        });
     </script>
     <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+
 
 
 </body>
