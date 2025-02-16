@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="./src/CSS/style.min.css">
+    <title>Malware Development Blog</title>
+    <link rel="icon" href="./src/Pics/Malware.png" type="image/png">
+
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                <span>0x4de1</span>
+            </div>
+            <div class="links">
+                <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                        href="https://0x4de1.github.io">Home</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                        href="./MalDev.html">Mal Dev</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                        href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+            </div>
+        </div>
+        <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+        <div class="dropdown">
+            <div class="links">
+                <a href="https://0x4de1.github.io">Home</a>
+                <a href="./MalDev.html">Mal Dev</a>
+                <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+            </div>
+        </div>
+    </nav>
+    <div class="header-box" data-aos="zoom-in" data-aos-duration="800">
+        <div class="header-box-text">
+            <h1>Malware Development Blog</h1>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="./MalDev/Win-Internals.html" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/WinInt.jpg" alt="Image 1" loading="lazy">
+                    <h3>Windows Internals</h3>
+                    <p>هنتكلم عن شوية مفاهيم وأساسيات مهم تكون عارفهم</p>
+                    <p class="date">9 February 2025</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/PE.jpg" alt="Image 2" loading="lazy">
+                    <h3>Portable Executable PE</h3>
+                    <p style="direction: rtl;">هتفهم بنية ملفات الـ PE وليه هي مهمة وإزاي بتشتغل</p>
+                    <p class="date">16 February 2025</p>
+
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/PayPlc.jpg" alt="Image 3" loading="lazy">
+                    <h3>Payload Placement</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/PayEnc.jpg" alt="Image 4" loading="lazy">
+                    <h3>Payload Encryption</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/DLLi.jpg" alt="Image 5" loading="lazy">
+                    <h3>DLL Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/ShCdi.jpg" alt="Image 6" loading="lazy">
+                    <h3>ShellCode Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/ThrdHij.jpg" alt="Image 7" loading="lazy">
+                    <h3>Thread Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/APCi.jpg" alt="Image 8" loading="lazy">
+                    <h3>APC Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/SysAPCinj.jpg" alt="Image 9" loading="lazy">
+                    <h3>Syscall APC Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/SysCall.jpg" alt="Image 10" loading="lazy">
+                    <h3>Syscall Process Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/MapMemi.jpg" alt="Image 11" loading="lazy">
+                    <h3>Mapping Memory Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/SysMapInj.jpg" alt="Image 12" loading="lazy">
+                    <h3>Syscall Mapping Injection</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/PPID.jpg" alt="Image 13" loading="lazy">
+                    <h3>PPID Spoofing</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/APIst.jpg" alt="Image 14" loading="lazy">
+                    <h3>API Stomping</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <img src="./src/Pics/APIhk.jpg" alt="Image 15" loading="lazy">
+                    <h3>API Hooking</h3>
+                    <p
+                        style="font-size: 30px; background: -webkit-linear-gradient(#16ff00, #000); background-clip: text; -webkit-text-fill-color: transparent;">
+                        SOON ....</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+    <script src="./src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

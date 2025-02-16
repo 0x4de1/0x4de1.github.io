@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portable Executable PE</title>
+    <link rel="icon" href="../src/Pics/PE.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #16ff00;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: #16ff00;
+            border-bottom: 2px solid #16ff00;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: #16ff00;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid #16ff00;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid #16ff00;
+            border-bottom: 2px solid #16ff00;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: #16ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #16ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #35a849;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: #16ff00;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #35a849;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: #14aa2d;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #16ff00;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: #16ff00;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">Portable Executable PE</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/PE.jpg" alt="PE-Files" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] هنتكلم فـ المقالة دي عن الـ PE Format ، وهنعرف شوية حاجات زي:</p>
+                <ol style="font-weight: bold;">
+                    <li>إي هو الـ PE Format.</li>
+                    <li>ليه هو مهم.</li>
+                    <li>هنشرح الـ PE File Structure.</li>
+                    <li>هنكتب كود بسيط بالـ C يقرأ الـ DOS Header لملف PE.</li>
+                </ol>
+                <h2>1. إي هو الـ PE Format.</h2>
+                <p>[+] الـ Portable Executable (PE) Format هو الهيكل الأساسي لأي ملف تنفيذي ع Windows ، زي:</p>
+                <ul>
+                    <li>ملفات .exe (البرامج العادية).</li>
+                    <li>ملفات .dll (مكتبات الربط الديناميكية).</li>
+                    <li>حتى بعض ملفات .sys (الدرايفرز).</li>
+                </ul>
+                <p>[+] أي برنامج بتشغله ع ويندوز معمول بصيغة PE ، لأنه الشكل القياسي اللـ الويندوز بيستخدمه لتحميل
+                    وتشغيل
+                    الملفات التنفيذية.</p>
+                <h2>2. ليه هو مهم؟</h2>
+                <p>[+] معرفة الـ PE Format طبعا مهمة ومفيدة لكذا حد ، بمعني إن:</p>
+                <ul>
+                    <li>لو مهتم بـ Reverse Engineering ، فـ فهم الـ PE هيساعدك في تحليل البرامج ، سواء لفحصها أو حتى
+                        لفهم الـ Malwares.</li>
+                    <li>ولو بتطور برامج ، فهمك للـ PE هيخليك تعرف إزاي الويندوز بيتعامل مع الأكواد ، وإزاي الـ DLLs
+                        بيتعملها Sharing بين البرامج.</li>
+                    <li>ولو حاجه تانية غيرهم ، فـ يسيدي اعرفه لمجرد المعرفة أكيد هيفيدك يوم من الأيام يعني.</li>
+                </ul>
+                <h2>3. الـ PE File Structure :</h2>
+                <p>[+] عرفنا فوق إنه الهيكل الأساسي لأي برنامج تنفيذي ع الويندوز ، والهيكل دا بيتكون من 3 أجزاء رئيسية:
+                </p>
+                <ol>
+                    <li style="font-weight: bold;"> جزء الـ Headers </li>
+                    <p>↑ ودا فية معلومات تخص الملف نفسه .. زي نوعه (EXE / DLL / SYS) .. وكمان نقدر نعرف معلومات تانية زي
+                        هل الملف ده -bit أو 64-bit ، وحجم الملف ، وهكذا .. وهنتكلم عنهم بالتفصيل كمان شوية.</p>
+                    <li style="font-weight: bold;">جزء الـ Data Directories </li>
+                    <p>↑ وهنا بنعرف منه نقط الوصول اللـ بيقدر يوصل للـ Libraries ، سواء يعمل Import أو Export.</p>
+                    <li style="font-weight: bold;">جزء الـ Sections </li>
+                    <p>↑ ودا فيه الأكواد بتاعة البرنامج نفسة.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/PE-Headers.png" alt="PE-Headers" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] نبدأ بـ أول جزء وهو:</p>
+                <h3>1. الـ Headers:</h3>
+                <p>ودا بيتكون من كذا جزء زي:</p>
+                <ol style="font-weight: bold;">
+                    <li>Dos Header</li>
+                    <li>Dos Sub</li>
+                    <li>NT Headers:</li>
+                    <ul>
+                        <li>NT Signature</li>
+                        <li>File Header</li>
+                        <li>Optional Header</li>
+                    </ul>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] تعالي نبدأ بيهم واحد واحد ، وبالتفصيل:</p>
+                <h3>1.1.1 الـ Dos Header:</h3>
+                <p>[+] كل ملف PE بيبدأ بالـ Dos Header ، ودا بيهدف إن بيخلي الملف من صيغة MS-DOS Executable ، يعني ملف
+                    تشغيلي ع أنظمة MS-DOS.</p>
+                <p style="font-weight: bold;">[+] زمان في أنظمة MS-DOS:</p>
+                <ul>
+                    <li>كان الويندوز بيشغل البرامج من خلال Command Line (بدون واجهة رسومية GUI).</li>
+                    <li>كان لما بيحصل عليه Load من الـ MS-DOS ، بيتأكد من الهيدرز ويشوف هل هو فعلا من صيغة MS-DOS
+                        Executable ولا لا.</li>
+                    <li>لو اه ع الصيغة ، فـ يبدأ بعدها الـ DOS Stub يشتغل ، ولو لا .. يقولك فشل التعرف ع البرنامج
+                        وميشتغلش.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] حاليا فـ أنظمة الويندوز الحديثة:</p>
+                <ul>
+                    <li>الـ DOS Header بقى موجود بس عشان التوافق مع الأنظمة القديمة، لكنه مش بيتم استخدامه فعليًا.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.1.2 بنية الـ DOS Header:</h3>
+                <p>[+] الـ DOS Header حجمه <code style="background: #16ff00; font-size: 14px;">64 بايت</code> ، بيحتوي ع
+                    معلومات ، ودا كان مهم للـ PE Loader ع الـ MS-DOS ، وهنتكلم
+                    عن أهم عنصرين فيه وهما الـ <code style="background: #16ff00; font-size: 14px;">e_magic</code> ، والـ
+                    <code style="background: #16ff00; font-size: 14px;">e_lfanew</code>.
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DOS-Header.png" alt="DOS-Header" class="article-image" loading="lazy">
+                </div>
+                <ul>
+                    <li style="font-weight: bold;"> الـ e_magic (Signature) :</li>
+                    <ol>
+                        <li>دا أول عنصر فـ عناصر الـ DOS Header ، وبيتكون من <code
+                                style="background: #16ff00; font-size: 14px;">2 بايت</code> اسمهم الـ (Magic Numbers).
+                        </li>
+                        <li>قيمتة ثابته دايما <code style="background: #16ff00; font-size: 14px;">0x5A4D</code> بالـ Hex
+                            ، أو <code style="background: #16ff00; font-size: 14px;">MZ</code> كـ Ascii (الحروف دي نسبة
+                            إلى Mark Zbikowski اللي
+                            صمم الصيغة دي). </li>
+                    </ol>
+                    <li style="font-weight: bold;">الـ e_lfanew (Offset to NT Headers) :</li>
+                    <ol>
+                        <li>دا آخر عنصر فـ الـ DOS Header ، واللوكيشن بتاعه بيكون فـ الـ Offset الـ <code
+                                style="background: #16ff00; font-size: 14px;">0x3C</code>.</li>
+                        <li>بيحدد نقطة البداية للـ NT Headers داخل الملف.</li>
+                    </ol>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.1.3 تحليل DOS Header عمليًا باستخدام PE-BEAR:</h3>
+                <p style="font-weight: bold;">[+] هوضحلك الفكرة بـ مثال عملي:</p>
+                <p>[+] إفتح برنامج الـ <a href="https://github.com/hasherezade/pe-bear/releases" target="_blank"
+                        class="download-link">PE-Bear</a> .. إختار أي ملف .exe ، فـ حالتي دي أنا فتحت الـ Mspaint.exe ..
+                    روح ع الـ
+                    DOS Header .. هتلاقي ايه بقي ؟</p>
+                <ol>
+                    <li>أول حاجه هتلاقي 2 bytes بتوع الـ Magic Number ودول الـ <code
+                            style="background: #16ff00; font-size: 14px;">0x4D5A</code> بالـ hex أو <code
+                            style="background: #16ff00; font-size: 14px;">MZ</code> بالـ Ascii ..
+                        وبيكون موجود ع الـ Offset رقم 0.</li>
+                    <li>لو روحت ع اخر عنصر اللـ هو الـ e_lfanew اللـ موجود عند الـ Offset رقم <code
+                            style="background: #16ff00; font-size: 14px;">0x3C</code> ، هتلاقي مكتوب إن الـ
+                        Value بتاعته <code style="background: #16ff00; font-size: 14px;">0xE8</code> .. ودا قولنا إنه
+                        بيشير للـ offset بتاع بداية الـ NT Header.</li>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DOS-Header2.png" alt="DOS-Header2" class="article-image" loading="lazy">
+                </div>
+                <p>[+] طب تعالي نتأكد ونشوف هل الكلام دا فعلا صح ولا لا .. هنقف ع الـ <code
+                        style="background: #16ff00; font-size: 14px;">NT Header</code> .. ونشوف أول Value واللـ
+                    هي فـ الحالة بتاعتي دي <code style="background: #16ff00; font-size: 14px;">0x50</code> ودي اللـ هي
+                    تقاطع بداية أول صف مع بداية أول عمود .. طب موجودة عن الـ
+                    Offset كام؟ .. لو بصيت هتلاقي ان دا الـ Offset رقم <code
+                        style="background: #16ff00; font-size: 14px;">0xE8</code> يعني فعليا الكلام اللـ قولناه فوق طلع
+                    صح.
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DOS-Header3.png" alt="DOS-Header3" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.2 الـ DOS Stub:</h3>
+                <p>[+] ودا اتكلمنا عنه فوق وقولنا ان كان زمان موجود تبع أنظمة الـ MS-DOS ، ولسه موجود فـ الأنظمة الحديثة
+                    عشان يتوافق مع الإصدارات القديمة .. وكل مهمة الجزء هنا عشان يطبع الجملة دي بس ، وملوش لازمه غير كده
+                    ، وحجمة 64 bytes زي الـ Dos Header.</p>
+                <div class="code-block">
+                    <code>
+                            This program cannot be run in DOS mode
+                            </code>
+                </div>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DOS-Stub.png" alt="DOS-Stub" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>الـ Rich Header</h3>
+                <p>[+] بعد الـ DOS Stub ، هتلاقي داتا غريبة بينه وبين NT Headers ، والجزء ده اسمه Rich Header.</p>
+                <ul>
+                    <li>ده مش جزء أساسي من الـ PE Format ، بس موجود لو الملف اتعمله Build باستخدام أدوات Microsoft زي
+                        Visual Studio.</li>
+                    <li>بيحتوي ع معلومات عن المترجم (Compiler) ، إصدار Visual Studio ، والـ Build Number .. وكدا.</li>
+                    <li>مش بيكون موجود فـ كل ملفات الـ PE ، بس بيساعد أحيانًا فـ معرفة أداة الـ Build المستخدمة.</li>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/Rich-Header.png" alt="Rich-Header" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>الـ :RVA – Relative Virtual Address</h3>
+                <p>[+] قبل مـ ندخل فـ الـ NT Headers ، لازم نفهم يعني إيه RVA الأول ، عشان هنحتاجه كتير بعد كده.</p>
+                <p>[+] الـ RVA (Relative Virtual Address) هو عنوان نسبي جوه الميموري ، بيشاور ع أماكن محددة جوا الـ PE
+                    File.</p>
+                <ul>
+                    <li>الفرق بينه وبين العنوان العادي إنه مش مُطلق ، يعني مش بيتحدد بناءً ع الذاكرة الفعلية اللـ
+                        الويندوز بيحجزها للبرنامج ، بس نسبي لبداية التحميل بتاع البرنامج فـ الميموري.</li>
+                    <li>الويندوز لما بيحمل ملف PE فـ الميموري ، بيحجزله عنوان معين (Base Address) ، وكل حاجة جواه بتتحسب
+                        نسبةً للعنوان ده.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] هقولك مثال عملي عشان تفهم الفكرة:</p>
+                <ul>
+                    <li>تخيل إن عندك برنامج exe الويندوز قرر يحمله فـ الميموري عند العنوان <code
+                            style="background: #16ff00; font-size: 14px;">0x400000</code></li>
+                    <li>وبعدين لقيت إن Entry Point بتاع البرنامج موجود عند RVA = 0x1000 ، فده معناه إيه؟
+                    <li>معناه إن العنوان الفعلي اللـ الويندوز هيبدأ منه التنفيذ هو:
+                    </li>
+                </ul>
+                <div class="code-block">
+                    <code>
+                            Base Address (0x400000) + RVA (0x1000) = 0x401000
+
+                                </code>
+                </div>
+                <p style="font-weight: bold;">[+] طب إيه فايدة الـ RVA؟</p>
+                <ul>
+                    <li>الويندوز لما بيحمّل أي ملف PE ، مش شرط يحطه فـ نفس العنوان كل مرة ، بس الـ RVA بيسمحله يعرف
+                        أماكن كل
+                        حاجة نسبةً لمكان التحميل.</li>
+                    <li>الـ PE Loader بيستخدم الـ RVA عشان يعرف فين نقطة البداية (Entry Point) ، وفين الأكواد ، وفين الـ
+                        Imports / Exports.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.3 الـ NT Headers:</h3>
+                <p>[+] الـ NT Headers هو تاني جزء رئيسي فـ الـ PE File بعد الـ DOS Header ، وبيحتوي ع 3 أجزاء رئيسية:
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/NT-Headers.png" alt="NT-Headers" class="article-image" loading="lazy">
+                </div>
+                <ol style="font-weight: bold;">
+                    <li>PE Signature</li>
+                    <li>File Header</li>
+                    <li>Optional Header</li>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <h3>1.3.1 PE Signature:</h3>
+                <ul>
+                    <li>أول 4 بايت فـ الـ NT Headers ، بتمثل التوقيع بتاع ملفات PE.</li>
+                    <li>دايمًا بيكون <code style="background: #16ff00; font-size: 14px;">0x50450000</code> بالـ Hex، أو
+                        <code style="background: #16ff00; font-size: 14px;">"PE\0\0"</code> بالـ ASCII.
+                    </li>
+                    <li>ده ببساطة بيأكد للويندوز إن الملف ده فعلًا PE File ، ولو التوقيع مش موجود أو مش متوافق ، الملف
+                        مش هيشتغل.</li>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/PE-Signature.png" alt="PE-Signature" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.3.2 File Header (COFF Header):</h3>
+                <p>[+] الـ File Header (أو COFF Header) فيه شوية معلومات أساسية عن الملف ، وبيتكون من 7 عناصر
+                    رئيسية:</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/NT-Headers2.png" alt="NT-Headers2" class="article-image" loading="lazy">
+                </div>
+                <ol>
+                    <li style="font-weight: bold;">Machine:</li>
+                    <p>ده رقم بيعبر عن نوع المعالج (CPU Architecture) اللي البرنامج ده معمول له زي:</p>
+                    <ul>
+                        <li>0x014C → Intel 386 (x86 - 32-bit).</li>
+                        <li>0x8664 → AMD64 (x64 - 64-bit).</li>
+                    </ul>
+                    <p>وتقدر تقرأ من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#machine-types"
+                            target="_blank" class="download-link">[هنا]</a> وتشوف كل الأنواع.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers3.png" alt="NT-Headers3" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">NumberOfSections:</li>
+                    <ul>
+                        <li>بيوضح عدد الـ Sections الموجودة فـ الملف.</li>
+                        <li>كل برنامج لازم يكون فيه Sections زي <code
+                                style="background: #16ff00; font-size: 14px;">.text</code> (للكود) ، <code
+                                style="background: #16ff00; font-size: 14px;">.data</code> (للمتغيرات) ،
+                            وهكذا.</li>
+                    </ul>
+                    <li style="font-weight: bold;">TimeDateStamp:</li>
+                    <ul>
+                        <li>ده وقت وتاريخ إنشاء الملف ، بس مش بيكون دايمًا دقيق ، خصوصًا مع الملفات اللـ بيتم تعديلها أو
+                            معالجتها ببرامج Packers / Protectors.</li>
+                    </ul>
+                    <li style="font-weight: bold;">PointerToSymbolTable & NumberOfSymbols</li>
+                    <ul>
+                        <li>دول كانوا بيتم استخدامهم فـ COFF Debugging Symbols، بس حاليًا مش بيتم استخدامهم فـ معظم
+                            الملفات التنفيذية الحديثة.</li>
+                    </ul>
+                    <li style="font-weight: bold;">SizeOfOptionalHeader</li>
+                    <ul>
+                        <li>بيحدد حجم الـ Optional Header (الموجود بعد الـ File Header).</li>
+                    </ul>
+                    <li style="font-weight: bold;">Characteristics</li>
+                    <p>مجموعة Flags بتحدد بعض الخصائص بتاعة الملف ، زي:</p>
+                    <ul>
+                        <li>0x0002 → ملف Executable (EXE).</li>
+                        <li>0x2000 → ملف DLL.</li>
+                        <li>0x8000 → ملف System (Driver).</li>
+                    </ul>
+                    <p>وتقدر تقرأ من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#characteristics"
+                            target="_blank" class="download-link">[هنا]</a> وتشوف كل الخصائص التانية.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers4.png" alt="NT-Headers4" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3>1.3.3 Optional Header:</h3>
+                <p>
+                    [+] الـ Optional Header جزء مهم جدًا ، لأن الـ PE Loader بيعتمد عليه بشكل أساسي فـ تشغيل البرامج ،
+                    ودا شكل الهيكل بالعناصر بتاعته فـ نسخة الـ 32-bit والـ 64-bit:
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/NT-Headers5.png" alt="NT-Headers5" class="article-image" loading="lazy">
+                </div>
+                <p style="font-weight: bold;">[+] طب إيه الفرق بين 32-bit و 64-bit؟</p>
+                <ul>
+                    <li>نسخة الـ 32-bit فيها عنصر زيادة اسمه BaseOfData ، مش موجود فـ نسخة الـ 64-bit.</li>
+                    <li>بعض الـ Data Types بتختلف بين النسختين.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] أهم العناصر فـ الـ Optional Header:</p>
+                <ol>
+                    <li style="font-weight: bold;">Magic</li>
+                    <p>↑ بيوضح إذا كان الملف 32-bit أو 64-bit:</p>
+                    <ul>
+                        <li>0x10B → 32-bit PE File.</li>
+                        <li>0x20B → 64-bit PE File.</li>
+                        <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                            <img src="../src/Pics/NT-Headers6.png" alt="NT-Headers6" class="article-image"
+                                loading="lazy">
+                        </div>
+                    </ul>
+                    <li style="font-weight: bold;">MajorLinkerVersion & MinorLinkerVersion</li>
+                    <p>↑ بيوضح نسخة الـ Linker اللـ تم استخدامه لإنشاء الملف.</p>
+                    <p> فـ المثال ده ، الـ Linker version بيكون E14 ، ودي حاجة تهم الـ PE Loader:</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers7.png" alt="NT-Headers7" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">SizeOfCode</li>
+                    <p>↑ بيوضح حجم الأكواد التنفـذية ، وغالبًا بتكون موجودة فـ الـ .text Section.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers8.png" alt="NT-Headers8" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">SizeOfInitializedData</li>
+                    <p>↑ حجم البيانات اللـ تم تهيئتها ، وعادةً بتكون فـ الـ .data Section.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers9.png" alt="NT-Headers9" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">SizeOfUninitializedData</li>
+                    <p>↑ حجم البيانات الغير مهيأة ، وعادةً بتكون فـ الـ .bss Section.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers10.png" alt="NT-Headers10" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">AddressOfEntryPoint</li>
+                    <p>↑ ده RVA بيحدد أول Instruction هيتم تنفـذها لما الملف يتحمل فـ الميموري.</p>
+                    <p> مهم جدًا فـ عمليات Reverse Engineering & Malware Analysis ، لأنه بيحدد أول سطر كود هيشتغل.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers11.png" alt="NT-Headers11" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">BaseOfCode</li>
+                    <p>↑ ده RVA بيشاور على أول Byte فـ الكود التنفـذي.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers12.png" alt="NT-Headers12" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">BaseOfData (موجود فـ 32-bit بس)</li>
+                    <p>↑ ده RVA بيشاور على أول Byte فـ الـ Data Section.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers13.png" alt="NT-Headers13" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">NumberOfRvaAndSizes</li>
+                    <p>↑ عدد العناصر الموجودة فـ DataDirectory Array.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers14.png" alt="NT-Headers14" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">Data Directory</li>
+                    <p>↑ ده Array فيه بيانات بتحدد حاجات زي Imports / Exports / Resources ، وهنتكلم عنها كمان
+                        شوية.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers15.png" alt="NT-Headers15" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;"> [+] تاني جزء وهو:</p>
+                <h3>الـ Data Directory:</h3>
+                <p> [+] فـ الجزء اللـ فات ، كنا بنتكلم عن Optional Header ، وشفنا إنه بيحتوي ع DataDirectory ، واللـ هو
+                    عبارة عن Array فيها بيانات بتساعد الـ PE Loader أثناء تحميل وتشغيل الملف.</p>
+                <p style="font-weight: bold;"> [+] طيب يعني إيه Data Directory أصلاً؟</p>
+                <p> ببساطة الـ Data Directory دي عبارة عن بيانات بتكون موجودة جوا أحد الـ Sections بتاعة ملف الـ PE ،
+                    والهدف منها إنها بتوفر معلومات حيوية للـ Loader عشان يعرف يستخدم الـ Imports, Exports, Resources,
+                    Debug Info... etc.</p>
+                <p style="font-weight: bold;">[+] طيب شكلها عامل إزاي؟</p>
+                <p> الـ Data Directory عبارة عن Array مُكوّن من 16 عنصر:
+                </p>
+                <div class="code-block">
+                    <code>
+                        #define IMAGE_NUMBEROF_DIRECTORY_ENTRIES    16
+
+                            </code>
+                </div>
+                <p> وكل عنصر فيهم هو هيكل بيانات من نوع
+                    <code style="background: #16ff00; font-size: 14px;">IMAGE_DATA_DIRECTORY</code>
+                </p>
+                <div class="code-block">
+                    <code>
+                        IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
+                            </code>
+                </div>
+                <p>
+                    ، والهيكل ده بيتكوّن
+
+                    من حاجتين بس:
+                </p>
+
+                <ol>
+                    <li style="font-weight: bold;">VirtualAddress</li>
+                    <p>↑ وده عبارة عن RVA (Relative Virtual Address) بيشاور ع بداية الـ Data Directory فـ الميموري.</p>
+                    <li style="font-weight: bold;">Size</li>
+                    <p>↑ وده حجم الـ Data Directory نفسه.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DataDirec.png" alt="DataDirectory" class="article-image" loading="lazy">
+                </div>
+                <p>بمعنى أبسط ، أي Data Directory هي مجرد مكان جوا الميموري فيه بيانات معينة ، والـ VirtualAddress
+                    بيشاور عليه ، والـ Size بيحدد مساحته.</p>
+                <p style="font-weight: bold;">[+] طب إيه هي أنواع الـ Data Directories؟</p>
+                <p>كل نوع من الـ Data Directories ليه وظيفة مختلفة ، ودول الـ 16 Directory الأساسيين اللـ بيكونوا
+                    موجودين فـ الملفات التنفيذية ع الويندوز:</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/DataDirec2.png" alt="DataDirectory2" class="article-image" loading="lazy">
+                </div>
+                <ol>
+                    <li style="font-weight: bold;">Export Directory (IMAGE_DIRECTORY_ENTRY_EXPORT) </li>
+                    <p>↑ خاص بالدوال اللـ البرنامج بيصدرها عشان برامج تانية تقدر تستخدمها.</p>
+
+                    <li style="font-weight: bold;">Import Directory (IMAGE_DIRECTORY_ENTRY_IMPORT) </li>
+                    <p>↑ خاص بالدوال اللـ البرنامج بيستوردها من مكتبات تانية (DLLs).</p>
+                    <li style="font-weight: bold;">Resource Directory (IMAGE_DIRECTORY_ENTRY_RESOURCE) </li>
+                    <p>↑ خاص بالـ Resources زي الأيقونات ، الصور ، النصوص ، والـ dialogs اللـ جوه الملف.</p>
+                    <li style="font-weight: bold;">Exception Directory (IMAGE_DIRECTORY_ENTRY_EXCEPTION) </li>
+                    <p>↑ بيحتوي ع معلومات الـ Exception Handling الخاصة بالبرنامج.</p>
+                    <li style="font-weight: bold;">Security Directory (IMAGE_DIRECTORY_ENTRY_SECURITY)</li>
+                    <p>↑ بيحفظ البيانات الخاصة بالتوقيعات الرقمية (Digital Signatures) لو البرنامج موقع رقمياً.</p>
+                    <li style="font-weight: bold;">Base Relocation Table (IMAGE_DIRECTORY_ENTRY_BASERELOC)</li>
+                    <p>↑ فيه البيانات الخاصة بتعديل عناوين الميموري أثناء تحميل الملف (لو مكانه فـ الميموري اختلف).
+                    </p>
+                    <li style="font-weight: bold;">Debug Directory (IMAGE_DIRECTORY_ENTRY_DEBUG) </li>
+                    <p>↑ بيحفظ معلومات خاصة بالـ Debugging Symbols لو البرنامج متكامل مع أدوات Debugging.</p>
+                    <li style="font-weight: bold;">Architecture Specific Data (IMAGE_DIRECTORY_ENTRY_ARCHITECTURE)
+                    </li>
+                    <p>↑ مش بيستخدم عادةً ، بس معمول لأنظمة معينة لو محتاجة بيانات خاصة.</p>
+                    <li style="font-weight: bold;">Global Pointer (IMAGE_DIRECTORY_ENTRY_GLOBALPTR)</li>
+                    <p>↑ خاص بأنظمة الـ IA-64 وكان بيستخدم للـ Global Pointer Register.</p>
+                    <li style="font-weight: bold;">TLS Directory (IMAGE_DIRECTORY_ENTRY_TLS)</li>
+                    <p>↑ مسؤول عن بيانات الـ Thread Local Storage (TLS) ، وده بيكون مهم للـ Multithreading.</p>
+                    <li style="font-weight: bold;">Load Configuration Directory (IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG)
+                    </li>
+                    <p>↑ بيحتوي ع معلومات خاصة بإعدادات تحميل الملف.</p>
+                    <li style="font-weight: bold;">Bound Import Directory (IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT) </li>
+                    <p>↑ بيحتوي ع معلومات عن الـ DLLs اللـ البرنامج مربوط بيها وقت الـ Linking.</p>
+                    <li style="font-weight: bold;">Import Address Table (IMAGE_DIRECTORY_ENTRY_IAT) </li>
+                    <p>↑ خاص بجدول العناوين اللـ بيتم استدعاء الدوال الخارجية منه.</p>
+                    <li style="font-weight: bold;">Delay Load Import Descriptors
+                        (IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT)
+                    </li>
+                    <p>↑ مشابه للـ Import Directory لكنه بيأخر تحميل الـ DLLs لحد ما يتم استدعاؤها فعلياً.</p>
+                    <li style="font-weight: bold;">COM Runtime Descriptor (IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR)
+                    </li>
+                    <p>↑ خاص بالملفات اللـ بتستخدم .NET CLR والـ COM Interop.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/NT-Headers15.png" alt="DataDirectory" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طب هل كل ملفات الـ PE فيها الـ 16 Directory دول؟</p>
+                <p>لأ ، مش شرط .. أوقات لما تفتح ملف PE ممكن تلاقي بعض الـ Data Directories القيم بتاعتها <code
+                        style="background: #16ff00; font-size: 14px;">0x00000000</code>
+                    سواء فـ الـ VirtualAddress أو الـ Size ، وده معناه إن النوع ده من الـ Data Directories مش
+                    مُستخدم فـ
+                    الملف.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;"> [+] آخر جزء وهو:</p>
+                <h3>3. الـ Sections:</h3>
+                <p>[+] الـ Sections هي الأجزاء اللـ بتحتوي ع الأكواد والبيانات الفعلية للبرنامج ، وهي بتبدأ بعد الـ
+                    Headers ع طول .. كل Section بيكون ليه اسم بيدل ع وظيفته ، ودي أشهر الـ Sections الموجودة جوه أي ملف
+                    PE:</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/PE-Sections.png" alt="PE-Sections" class="article-image" loading="lazy">
+                </div>
+                <ul>
+                    <li style="font-weight: bold;">[text.]</li>
+                    <p>↑ وده أهم جزء ، لأنه بيحتوي ع الكود التنفيذي (Executable Code) بتاع البرنامج. يعني هنا بتلاقي
+                        التعليمات البرمجية اللـ الـ CPU بينفذها.</p>
+                    <li style="font-weight: bold;">[data.]</li>
+                    <p>↑ بيحتوي ع البيانات اللـ اتعملها تهيئة مسبقة (Initialized Data) ، يعني المتغيرات اللـ ليها قيم
+                        محددة قبل مـ البرنامج يشتغل.</p>
+                    <li style="font-weight: bold;">[bss.]</li>
+                    <p>↑ بيحتوي ع البيانات اللـ ملهاش تهيئة مسبقة (Uninitialized Data) ، يعني أي متغيرات اتعرفت بس مفيش
+                        قيم اتحطت فيها قبل تشغيل البرنامج.</p>
+                    <li style="font-weight: bold;">[rdata.]</li>
+                    <p>↑ وده بيحتوي ع بيانات ثابتة للقراءة فقط (Read-Only Data) ، زي الـ Strings اللـ مش هتتغير أثناء
+                        تشغيل البرنامج.</p>
+                    <li style="font-weight: bold;">[edata.]</li>
+                    <p>↑ الجزء ده فيه جدول التصدير (Export Table) ، اللـ بيحدد أي دوال (Functions) بيتم تصديرها من الملف
+                        عشان تستخدمها برامج تانية.</p>
+                    <li style="font-weight: bold;">[idata.]</li>
+                    <p>↑ وده العكس ، بيحتوي ع جدول الاستيراد (Import Table) ، اللـ فيه كل الدوال والـ APIs اللـ البرنامج
+                        بيحتاج يستدعيها من مكتبات تانية (زي دوال Windows API من kernel32.dll مثلًا).</p>
+                    <li style="font-weight: bold;">[reloc.]</li>
+                    <p>↑ ده فيه معلومات إعادة التمركز (Relocation Information) ، ودي مهمة لو البرنامج هيتحمل في الميموري
+                        عند عنوان مختلف عن اللـ كان متوقع وقت الكومبايل.</p>
+                    <li style="font-weight: bold;">[rsrc.]</li>
+                    <p>↑ ده خاص بالـ Resources ، يعني أي موارد بيستخدمها البرنامج زي الأيكونات ، الصور ، الفورمات ، أو
+                        حتى ملفات مدمجة جواه.</p>
+                    <li style="font-weight: bold;">[tls.]</li>
+                    <p>↑ وده بيخص الـ Thread Local Storage (TLS) ، ودي آلية بتوفر لكل Thread مجموعة من البيانات الخاصة
+                        بيه منفصلة عن باقي الـ Threads.</p>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/PE-Sections2.png" alt="PE-Sections2" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طب هل كل ملفات الـ PE فيها نفس الـ Sections دي؟</p>
+                <p>لأ ، مش كل الملفات بتحتوي ع كل الـ Sections دي ، بعض الملفات ممكن يكون فيها Sections بأسماء مختلفة
+                    حسب نوع البرنامج والمترجم (Compiler) اللـ اتعمل بيه.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h2>4. DOS Header Reader:</h2>
+                <p>[+] فـ الجزء ده ، هنكتب كود C بسيط نتعلم بيه إزاي نقرأ الـ Magic Numbers لأي ملف PE:</p>
+                <p style="font-weight: bold;">[+] دا الكود النهائي وهنشرحه دلوقتي:</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;windows.h&gt;<br>
+                        #include &lt;stdio.h&gt;<br>
+                        <br>
+                        int main(int argc, char* argv[]) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (argc &lt; 2) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Usage: %s &lt;PE File&gt;\n", argv[0]);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;HANDLE hFile = CreateFileA(argv[1], GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (hFile == INVALID_HANDLE_VALUE) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Failed to open file.\n");<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;IMAGE_DOS_HEADER dosHeader;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;DWORD bytesRead;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;ReadFile(hFile, &dosHeader, sizeof(IMAGE_DOS_HEADER), &bytesRead, NULL);<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (dosHeader.e_magic != IMAGE_DOS_SIGNATURE) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Not a valid PE file.\n");<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hFile);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("Valid PE file detected!\n");<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("DOS e_magic: 0x%X\n", dosHeader.e_magic);<br>
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hFile);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+                        }
+                            </code>
+                </div>
+
+                <p>[+] الكود ده ببساطة برنامج مكتوب بلغة C بيقرأ الـ DOS Headers بتاعة أي ملف PE (Portable Executable) ،
+                    وبيتحقق إذا كان فعلاً ملف PE صالح ولا لأ.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <p>[+] تعالي نشرح الكود جزء بجزء:</p>
+                <ul>
+                    <li>أول جزء هنا بيتأكد من عدد الـ arguments اللـ انت بتدخلهم للبرنامج ، لو العدد أقل من 2 <code
+                            style="background: #16ff00; font-size: 14px;">(argc < 2)</code>، يبقى اليوزر كدا مكتبش اسم
+                        ملف PE بعد تشغيل البرنامج .. فـ الحالة دي ، بيطبع رسالة
+                        توضح
+                        طريقة الاستخدام.</li>
+                    <div class="code-block">
+                        <code>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (argc &lt; 2) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Usage: %s &lt;PE File&gt;\n", argv[0]);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    </code>
+                    </div>
+                    <li>تاني جزء هنا بيحاول يفتح الملف اللـ انت عطتهوله ، بيستخدم <code
+                            style="background: #16ff00; font-size: 14px;">CreateFileA</code> ودي Windows API بتفتح
+                        الملف اللي اسمه <code style="background: #16ff00; font-size: 14px;">argv[1]</code> .. وبصلاحيات
+                        <code
+                            style="background: #16ff00; font-size: 14px;"><code style="background: #16ff00; font-size: 14px;">MZ</code></code>
+                        عشان يقدر يقرأه .. ولو فشل فـ فتح الملف بيقولك انه فشل
+                        عادي جدا.
+                    </li>
+                    <div class="code-block">
+                        <code>
+                            &nbsp;&nbsp;&nbsp;&nbsp;HANDLE hFile = CreateFileA(argv[1], GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (hFile == INVALID_HANDLE_VALUE) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Failed to open file.\n");<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    </code>
+                    </div>
+                    <li>تالت جزء هنا البرنامج بيبدأ يقرأ أول 64 byte من الملف .. ولو لقاهم مختلفين عن الهيدر اللـ هو
+                        عارفهم اللـ هما <code style="background: #16ff00; font-size: 14px;">0x5A4D</code> بالـ Hex
+                        ، أو <code style="background: #16ff00; font-size: 14px;">MZ</code> كـ Ascii .. يبقي كدا البرنامج
+                        مش PE ويخرج برسالة خطأ بتقول إن دا مش برنامج
+                        PE.</li>
+                    <div class="code-block">
+                        <code>
+                            &nbsp;&nbsp;&nbsp;&nbsp;IMAGE_DOS_HEADER dosHeader;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;DWORD bytesRead;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ReadFile(hFile, &dosHeader, sizeof(IMAGE_DOS_HEADER), &bytesRead, NULL);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (dosHeader.e_magic != IMAGE_DOS_SIGNATURE) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("Not a valid PE file.\n");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hFile);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    </code>
+                    </div>
+                    <li>آخر جزء ودا عادي جدا .. لو كان فعلا البرنامج PE من تالت جزء .. فـ هنا هيطلع اه فعلا PE .. ويطبع
+                        الـ Magic Numbers ، ويقفل الـ Handle.</li>
+                    <div class="code-block">
+                        <code>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("Valid PE file detected!\n");<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("DOS e_magic: 0x%X\n", dosHeader.e_magic);<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hFile);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+                            }
+                    </code>
+                    </div>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <p style="font-weight: bold;">[+] هنبدأ نجرب نـ رن الكود ونشوف إي الكلام:</p>
+                <ol style="font-weight: bold;">
+                    <li>هنفتح الـ Visual Studio ونضيف الكود فـ main.c بعدين نعمل Build:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/DOS-Reader.png" alt="DOS-Reader" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنفتح الـ exe بالـ CMD ، ونجرب نـ رن البرنامج لوحده .. هيطلع الإستخدام بتاعه وإن مطلوب تديله ملف
+                        الـ PE:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/DOS-Reader2.png" alt="DOS-Reader2" class="article-image" loading="lazy">
+                    </div>
+                    <li>فـ الحالة دي جربت برنامج exe ، وطلع إن فعلا هو ملف PE:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/DOS-Reader3.png" alt="DOS-Reader3" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعدين جربت كذا ملف تاني وزي مـ انت شايف الـ Output:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/DOS-Reader4.png" alt="DOS-Reader4" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+                <ul>
+                    <li><a href="https://learn.microsoft.com/en-us/windows/win32/debug/pe-format" target="_blank"
+                            class="download-link">PE Format</a></li>
+                    <li><a href="https://blog.filovirid.com/page/Windows-Portable-Executable-Files-Structure"
+                            target="_blank" class="download-link" s>Windows Portable Executable (PE) Files
+                            Structure</a>
+                    </li>
+                    <li><a href="https://0xrick.github.io/win-internals/pe1/" target="_blank" class="download-link" s>
+                            0xRick - A dive into the PE file format</a></li>
+                    <li><a href="https://medium.com/@aliraza.abro.prog/pe-file-format-a-primer-1fc6b51f1dfa"
+                            target="_blank" class="download-link" s>
+                            PE File Format — A Primer</a></li>
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./Win-Internals.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

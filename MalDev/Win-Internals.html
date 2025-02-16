@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Internals</title>
+    <link rel="icon" href="../src/Pics/WinInt.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #16ff00;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: #16ff00;
+            border-bottom: 2px solid #16ff00;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: #16ff00;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid #16ff00;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid #16ff00;
+            border-bottom: 2px solid #16ff00;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: #16ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #16ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #35a849;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: #16ff00;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #35a849;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: #14aa2d;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #16ff00;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: #16ff00;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">Windows Internals</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/WinInt.jpg" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] بما إن دي أول مقالة أكتبها ع البلوج الجديدة بتاعتي ، واللـ فكرت أعملها لـ مشاركة شروحات بالعربي
+                    عن الـ Malware Development ، فـ حبيت أبدأ بحاجه خفيفة (أو يمكن مش خفيفة أوي) عن أساسيات الـ Windows
+                    Internals، واللـ هتفيدك كدا كدا قدام وهتعرف ليه.</p>
+                <p>[+] هنتكلم النهارده فـ :</p>
+                <ol>
+                    <li style="font-weight: bold;">Windows Architecture </li>
+                    <p>
+                        – هنا هنشرح البنية الأساسية للويندوز ، إزاي بيتقسم وإيه الأجزاء اللـ لازم
+                        تكون عارفها.
+                    </p>
+                    <li style="font-weight: bold;">Memory Management</li>
+                    <p>– هنغوص شوية فـ إزاي النظام بيتعامل مع الذاكرة وإزاي ده ممكن يبقى نقطة ضعف
+                        ممكن الـ malware يستغلها.</p>
+                </ol>
+
+                <h2>1. Windows Architecture</h2>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/WinArch.jpg" alt="WinArch" class="article-image" loading="lazy">
+                </div>
+                <p>[+] أول حاجة محتاجين نفهمها عن نظام الويندوز هي طريقة عمله من الداخل ، وازاي بيقدر يشغل البرامج ويدير
+                    العمليات. ببساطة ، الويندوز بيشتغل بنمطين مختلفين:</p>
+
+                <ul>
+                    <li style="font-weight: bold;">
+                        User Mode (Ring 3) :
+                    </li>
+                    <p>وده النمط اللـ البرامج العادية بتشتغل فيه ، زي Notepad.exe ، Chrome.exe، وأي برنامج بيستخدمه
+                        اليوزر .. البرامج هنا معزولة عن النظام ومتقدرش تتعامل مباشرة مع الهاردوير أو الميموري بتاعة
+                        النظام الأساسي.</p>
+                    <li style="font-weight: bold;">
+                        Kernel Mode (Ring 0) :
+                    </li>
+                    <p>وده المستوى اللـ بيشتغل فيه نظام التشغيل نفسه ، زي الـ Windows Kernel ، والـ Drivers ، والحاجات
+                        اللـ بتتعامل مع الهاردوير مباشرة. </p>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/WinArch1.png" alt="WinArch1" class="article-image" loading="lazy">
+                </div>
+                <p>[+] وعشان نفهم الموضوع بكل سلاسة ، تعالي نبسط الصورة أكتر من كده ونخليها بالشكل:</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/WinArch2.jpg" alt="WinArch2" class="article-image" loading="lazy">
+                </div>
+                <p>[+] لما أي برنامج يحب ينفذ عملية معينة ، زي إنه يفتح ملف أو يتصل بالإنترنت ، مش بيقدر يعمل ده لوحده
+                    .. فيه كذا مرحلة بيمر بيها عشان يوصل لـ Kernel Mode ، وهي:</p>
+                <ol>
+                    <li style="font-weight: bold;">User Processes – البرامج اللـ بيشغلها اليوزر</li>
+                    <p>أي برنامج بتفتحه (زي Notepad.exe) بيشتغل في الـ User Mode ، ومش بيقدر يتعامل مع الهاردوير ع طول
+                        .. عشان كده ، لما البرنامج يحتاج يعمل عملية معينة (زي فتح ملف) ، بيطلب المساعدة من مكتبات
+                        الويندوز.</p>
+                    <li style="font-weight: bold;">Subsystem DLLs – مكتبات نظام الويندوز</li>
+                    <p>فيه ملفات مهمة جدًا في الويندوز ، زي:</p>
+                    <ul>
+                        <li>
+                            Kernel32.dll: وده فيه مجموعة ضخمة من الـ Windows APIs اللي البرامج بتستخدمها.
+                        </li>
+                        <li>User32.dll : مسؤول عن التعامل مع الـ GUI ، زي النوافذ والأزرار والـ Input من الكيبورد
+                            والماوس.</li>
+                    </ul>
+                    <p>ولسه غيرهم كتير .. المكتبات دي بتساعد البرامج على تنفيذ العمليات بسهولة من غير ما يتعاملوا مع
+                        الكيرنل
+                        بشكل مباشر. وبتكون موجودة في المسار:
+                        <code style="background: #16ff00; font-size: 14px;">C:\Windows\System32</code>
+                    </p>
+
+                    <li style="font-weight: bold;">
+                        NTDLL.dll – الوسيط بين الـ User Mode والـ Kernel Mode
+                    </li>
+                    <p>لما أي برنامج يستدعي Windows API ، زي CreateFileW من Kernel32.dll ، بيتم تمرير الطلب لـ
+                        Ntdll.dll.</p>
+                    <p>الملف ده هو اللـ بيتعامل مع الـ Native APIs الخاصة بالويندوز ، وبيجهز الطلب بحيث يتم إرساله للـ
+                        Kernel Mode باستخدام حاجة اسمها System Call (Syscall).</p>
+                    <li style="font-weight: bold;">
+                        System Call – الانتقال من User Mode إلى Kernel Mode
+                    </li>
+                    <p>عشان أي عملية تتنفذ في الـ Kernel ، لازم يتم استدعاء Syscall ، وده عبارة عن أمر بيخلي النظام
+                        يبدّل من User Mode لـ Kernel Mode .. المعالج بينفذ ده باستخدام sysenter (32bit) أو syscall
+                        (64bit).</p>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] هقولك مثال إزاي Notepad.exe بيعمل Create لملف جديد؟</p>
+                <p>تعالى نمشي خطوة بخطوة ونشوف اللي بيحصل لما الـ Notepad.exe يحب ينشئ ملف جديد:</p>
+                <ol>
+                    <li style="font-weight: bold;">الـ Notepad.exe بيطلب العملية</li>
+                    <p>أول حاجة ، البرنامج بيستدعي الـ Windows API اللي مسؤولة عن إنشاء ملف ، وهي <code
+                            style="background: #16ff00; font-size: 14px;">CreateFileW</code> من
+                        <code style="background: #16ff00; font-size: 14px;">Kernel32.dll</code>.
+                    </p>
+                    <li style="font-weight: bold;">الطلب بيعدي على الـ Ntdll.dll</li>
+                    <p>الـ Kernel32.dll بيمرر الطلب لـ <code
+                            style="background: #16ff00; font-size: 14px;">Ntdll.dll</code> ، اللي بدوره بيترجمه لـ
+                        Native API اسمها <code style="background: #16ff00; font-size: 14px;">NtCreateFile</code>.
+                    </p>
+                    <li style="font-weight: bold;">تنفيذ الـ Syscall للانتقال لـ Kernel Mode</li>
+                    <p>دلوقتي عشان العملية تتم فعلًا ، لازم ننقل التنفيذ لـ <code
+                            style="background: #16ff00; font-size: 14px;">Kernel Mode</code> .. هنا بيتم تنفيذ <code
+                            style="background: #16ff00; font-size: 14px;">Syscall</code> ،
+                        واللي بيحوّل التحكم للـ Kernel.</p>
+                    <li style="font-weight: bold;">الـ Kernel بينفذ العملية وبيعمل Create للملف</li>
+                    <p>بمجرد ما التنفيذ يوصل لـ Kernel Mode ، الـ Windows Kernel بيستدعي الـ File System Driver اللـ
+                        مسؤول عن إدارة الملفات ، واللـ بدوره بيتعامل مع الهارد ديسك وبينشئ الملف الجديد في المكان
+                        المطلوب.</p>
+                </ol>
+                <p>وبكدا يكون بقي عندك فكرة عن الـ Windows Architecture</p>
+
+
+
+                <h2>2. Memory Management</h2>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/MemMan.jpg" alt="MemoryManagement" class="article-image" loading="lazy">
+                </div>
+                <p>[+] بعد مـ فهمنا ازاي الويندوز بيشتغل من حيث الـ Windows Architecture ، تعالوا نتكلم عن جزء مهم جدًا
+                    وهو إدارة الذاكرة (Memory Management).</p>
+                <p>[+] فـ الأول كدا ، لو كنت فاكر إن البرامج بتتعامل مع الرامات (Physical Memory) بشكل مباشر، فـ حابب
+                    أقولك إن ده مش اللـ بيحصل .. اللـ بيحصل إن البرامج بتتعامل مع حاجة اسمها Virtual Memory ، وهي اللـ
+                    بتقوم بإدارة وتنظيم الوصول للميموري الفعلية.</p>
+                <img src="../src/Pics/PAGE_1.png" alt="HomeLab" class="article-image" loading="lazy">
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طب ليه الأبلكيشنز مش بتتعامل مع الميموري ع طول؟</p>
+                <p>كان زمان ، لما البرامج كانت بتشتغل مباشرة ع الميموري الفعلية ، كان فـ مشاكل كتير ، منها:</p>
+
+                <ol>
+                    <li style="font-weight: bold;">مشكلة تعدد البرامج: </li>
+                    <p>لو عندك برنامج بيستخدم الميموري كلها ، يبقى أي برنامج تاني مش هيلاقي مكان يشتغل فيه.</p>
+                    <li style="font-weight: bold;">مشكلة الـ Memory Sharing: </li>
+                    <p>لو أكتر من برنامج محتاج نفس البيانات ، كان فـ شوية تعقيد للوصول ليها.</p>
+                    <li style="font-weight: bold;">مشكلة الأمان: </li>
+                    <p> أي برنامج كان يقدر يعدّل على بيانات أي برنامج تاني ، وده طبعا غلط.</p>
+                </ol>
+                <p>عشان كدا ، تم تطوير فكرة الـ Virtual Memory ، واللـ بقت زي طبقة إدارية بتخلي كل برنامج يفتكر إنه عنده
+                    ميموري خاصة بيه ، في حين إن النظام هو اللـ بينظم العملية دي ويمنع أي تداخل غير مرغوب فيه.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طب إزاي الويندوز بيقسم الميموري؟</p>
+                <p>عشان الويندوز يقدر يدير الذاكرة بكفاءة ، بيقسمها إلى وحدات اسمها Pages (صفحات) ، وحجم كل صفحة في
+                    العادة بيكون 4KB.</p>
+                <p style="font-weight: bold;">[+] كل صفحة (Page) ممكن يكون ليها 3 حالات رئيسية:</p>
+                <ol>
+                    <li style="font-weight: bold;">
+                        Free:
+                    </li>
+                    <p>الصفحة دي فاضية ومش محجوزة لأي عملية.</p>
+                    <li style="font-weight: bold;">
+                        Reserved:
+                    </li>
+                    <p>الصفحة دي بتكون محجوزة ، بس لسه متستخدمتش ، وده معناه إن النظام ممكن يخصصها لعملية معينة بعدين.
+                    </p>
+                    <li style="font-weight: bold;">Committed: </li>
+                    <p>ودي فعلًا بتكون مخصصة ومستخدمة من قبل أحد البرامج.</p>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] كمان كل Page فـ الميموري بيكون ليها صلاحيات معينة بتحدد إيه اللـ ممكن
+                    يحصل عليها:</p>
+                <ul>
+                    <li style="font-weight: bold;">PAGE_NOACCESS:</li>
+                    <p>→ معناها إن المنطقة دي مفيش أي صلاحيات عليها ، لا قراءة ، ولا كتابة ، ولا تنفيذ.</p>
+                    <li style="font-weight: bold;">PAGE_READONLY:</li>
+                    <p>→ المنطقة دي قابلة للقراءة بس ، لكن لا كتابة ولا تنفيذ.</p>
+                    <li style="font-weight: bold;">PAGE_EXECUTE_READWRITE:</li>
+                    <p>→ هنا الصفحة واخدة كل الصلاحيات ، تقدر تقرأ ، وتكتب ، وتشغل كود برمجي فيها.</p>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طيب إيه اللـ بيحصل لو حاولت تعدي حدودك وتتجاوز الصلاحيات؟</p>
+                <ol>
+                    <li style="font-weight: bold;">DEP – حماية من تنفيذ الأكواد غير المسموح بيها</li>
+                    <p>فـ نظام الويندوز ، فيه ميكانيزم أمان اسمها DEP (Data Execution Prevention) ، واللـ بتشتغل ع منع
+                        تشغيل أي كود فـ ذاكرة مش مصرح بيها للتنفيذ.</p>
+                    <p>بمعنى إن لو عندك منطقة فـ الميموري واخدة صلاحية READONLY ، وجيت تحاول تشغل كود منها ، الـ DEP
+                        هيتدخل ويقولك: "بس يبابا ، روح إلعب بعيد .. مش هسمحلك!" ، وده مهم جدًا عشان يمنع الـ Buffer
+                        Overflow Exploits.</p>
+                    <li style="font-weight: bold;">ASLR – حماية من التلاعب بعناوين الذاكرة</li>
+                    <p>فيه كمان تقنية أمان تانية اسمها ASLR (Address Space Layout Randomization) ، واللـ فكرتها ببساطة
+                        إنها بتخلي أماكن تخزين البيانات فـ الذاكرة عشوائية كل مرة البرنامج يشتغل فيها .. وده بيمنع
+                        الهاكرز من معرفة أماكن البيانات أو الأكواد في الميموري ، وده بيصعّب عليهم تنفيذ أي Memory
+                        Exploits ، زي هجمات Return-Oriented Programming (ROP).</p>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] تعالي أقولك مثال عملي: إزاي النظام بيدير الميموري بين برنامجين؟</p>
+                <p>خلينا نفترض إنك فاتح Firefox.exe و Onenote.exe فـ نفس الوقت .. كل واحد منهم بيكون ليه Virtual Memory
+                    Space خاصة بيه ، وبالتالي مفيش برنامج يقدر يدخل ع بيانات البرنامج التاني مباشرة.</p>
+                <p>السيناريو الطبيعي كالأتي:</p>
+                <ol>
+                    <li>لما تفتح Firefox.exe ، النظام بيخصص ليه مجموعة من الـ Pages في الميموري.</li>
+                    <li>نفس الكلام بيحصل مع Onenote.exe ، وليه مساحة منفصلة خاصة بيه.</li>
+                    <li>لو الـ Firefox محتاج يشارك بيانات مع Onenote ، لازم يتم ده من خلال آلية اسمها Inter-Process
+                        Communication (IPC) ، مش بشكل مباشر فـ الميموري.</li>
+                </ol>
+                <img src="../src/Pics/PAGE_2.jpg" alt="HomeLab" class="article-image" loading="lazy">
+                <p style="font-weight: bold;">[+] طب إيه اللـ ممكن يحصل لو حصل تجاوز؟</p>
+                <p>لو برنامج حاول يدخل ع ذاكرة برنامج تاني ، النظام هيمنعه ويرجع Access Violation Error .. ولو برنامج
+                    حاول ينفذ كود فـ منطقة مش واخدة صلاحية التنفيذ ، الـ DEP هيتدخل ويمنعه .. ولو هكر جامد جمودة حاول
+                    يحدد أماكن البيانات فـ الميموري عشان يستغلها ، الـ ASLR هيخليه تايه ومش عارف يوصل لحاجة.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] Memory Allocation in Windows – إدارة الذاكرة عمليًا</p>
+                <p> بعد ما فهمنا إزاي الويندوز بيتعامل مع الذاكرة وإزاي بيقسمها ، تعالوا بقى ندخل فـ الجزء العملي
+                    ونجرب
+                    نحجز أماكن في الميموري باستخدام كود C.</p>
+                <P style="font-weight: bold;">[ملحوظه مهمه: محتاج يكون عندك خلفية عن لغة برمجة الـ C أو الـ (++C) ،
+                    وتقدر تشوف كورس م. أسامة الزيرو
+                    ع اليوتيوب من <a
+                        href="https://youtube.com/playlist?list=PLDoPjvoNmBAwy-rS6WKudwVeb_x63EzgS&si=TT4CvvmrJFvbzMUz"
+                        target="_blank" class="download-link">[هنا]</a> ، أو أي كورس تاني عموما .. المهم يكون عندك
+                    الأساسيات.]</P>
+
+                <p>فيه ٣ طرق أساسية لحجز مكان فـ الميموري:</p>
+                <ol style="font-weight: bold;">
+                    <Li>()Malloc – تابعة للـ C Runtime Library
+                    </Li>
+                    <li>()HeapAlloc – تابعة لـ Windows API
+                    </li>
+                    <li>()LocalAlloc – تابعة لـ Windows API برضه
+                    </li>
+                </ol>
+                <p style="font-size: large; font-weight: bold;">1. ()Malloc – الحجز باستخدام C Runtime Library</p>
+                <p>أول طريقة معانا هي ()malloc , واللـ بتستخدم لحجز مساحة معينة فـ الميموري، وبتُرجع Pointer للمنطقة دي.
+                </p>
+                <p>الكود:</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;stdio.h&gt;<br>
+                        #include &lt;stdlib.h&gt;<br>
+                        #include &lt;string.h&gt;<br>
+                        #include &lt;Windows.h&gt;<br><br>
+                        int main() {<br>
+                        &nbsp;&nbsp;PVOID pAddress = malloc(200);<br>
+                        &nbsp;&nbsp;CHAR* cString = "I'm Still N00P in Malware Development";<br>
+                        &nbsp;&nbsp;memcpy(pAddress, cString, strlen(cString));<br>
+                        &nbsp;&nbsp;printf("Address: 0x%p\n", pAddress);<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;return 0;<br>
+                        }
+                        </code>
+                </div>
+                <p>شرح الكود سطر بسطر:</p>
+                <ul>
+                    <li>Stdio.h → استدعاء مكتبة Standard I/O لاستخدام دالة ()printf.</li>
+                    <li>stdlib.h → مكتبة فيها ()malloc</li>
+                    <li>string.h → مكتبة التعامل مع الـ strings</li>
+                    <li>Windows.h → استدعاء مكتبة Windows API.</li>
+                    <li>بدأت أعمل variable من نوع PVOID وسميته pAddress ، ودا اللـ هيكون فيه المنطقة اللـ حجزتها فـ
+                        الميموري</li>
+                    <li>malloc(200) → بتحجز 200 بايت فـ الميموري وبتُرجع Pointer لأول مكان محجوز.</li>
+                    <li>بعدها عملت variable تاني من نوع *CHAR وكتبت فيه string.</li>
+                    <li>memcpy(pAddress, cString, strlen(cString)) → بتنقل الـ String للمنطقة المحجوزة ، ودي بتاخد 3
+                        arguments وهما ، عنوان المنطقة اللـ حجزت فيها ، الـ string ، وحجم الـ string اللـ حابب أنقله.
+                    </li>
+                    <li>printf("Address: 0x%p\n", pAddress) → بتطبع العنوان اللي تم حجزه.</li>
+                    <li>()getchar → عشان أخلي البرنامج ميقفلش.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>دلوقتي هنبدأ نـ رن الكود ونشوف ايه اللـ هيحصل:</p>
+                <ol>
+                    <li>
+                        من الـ Visual Studio 2022 هنـ رن الـ Local Windows Debugger
+                    </li>
+                    <img src="../src/Pics/code1.png" alt="code1" class="article-image" loading="lazy">
+                    <li>هيظهر العنوان اللـ اتحجز فيه المنطقة بتاعتنا ، واللـ موجود فيه الـ string حاليا ، هناخده كوبي.
+                    </li> <img src="../src/Pics/code2.png" alt="code2" class="article-image" loading="lazy">
+                    <li>هنروح ع الـ <code
+                            style="background: #16ff00; font-size: 14px;">Debug > Windows > Memory > Memory 1</code>.
+                    </li>
+                    <img src="../src/Pics/code3.png" alt="code3" class="article-image" loading="lazy">
+                    <li>هنوقف العملية لما نضغط ع علامة الـ Break All</li>
+                    <li>هنضيف العنوان اللـ ظهرلنا واللـ خدناه كوبي ونبحث عنه</li>
+                    <li>هنلاقي المكان اللـ حجزناه ونقلنا فيه الـ string بتاعنا بنجاح.</li>
+                    <img src="../src/Pics/code4.png" alt="code4" class="article-image" loading="lazy">
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-size: large; font-weight: bold;">2. ()HeapAlloc – الحجز باستخدام Windows API</p>
+                <p>دي بتتعامل مع Windows Heap Manager ، واللـ هو طريقة الويندوز فـ تنظيم الميموري بدل مـ يعتمد على
+                    ()malloc.</p>
+                <p>الشكل العام:</p>
+                <div class="code-block"><code>LPVOID HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes);</code>
+                </div>
+                <ul>
+                    <li>hHeap → الـ Handle للـ Heap ، وده بنجيبه باستخدام ()GetProcessHeap.</li>
+                    <li>dwFlags → ممكن يكون 0 أو HEAP_ZERO_MEMORY لو عاوز تصفر الميموري قبل الاستخدام.</li>
+                    <li>dwBytes → عدد البايتات اللي عاوز تحجزها.</li>
+                </ul>
+                <p>الكود: (نفس الكود اللـ فات بس هتعدل سطر واحد بتاع الحالة الجديدة ، واسم المتغير)</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;stdio.h&gt;<br>
+                        #include &lt;stdlib.h&gt;<br>
+                        #include &lt;string.h&gt;<br>
+                        #include &lt;Windows.h&gt;<br><br>
+                        int main() {<br>
+                        &nbsp;&nbsp;LPVOID pHeapAddress = HeapAlloc(GetProcessHeap(), 0, 200);<br>
+                        &nbsp;&nbsp;CHAR* cString = "I'm Still N00P in Malware Development";<br>
+                        &nbsp;&nbsp;memcpy(pHeapAddress, cString, strlen(cString));<br>
+                        &nbsp;&nbsp;printf("Address: 0x%p\n", pHeapAddress);<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;return 0;<br>
+                        }
+                        </code>
+                </div>
+                <p>ودا أكيد مش محتاج شرح .. إنت كدا فاهم كويس.</p>
+                <p style="font-weight: bold;">طب اي الفرق بين HeapAlloc و malloc؟</p>
+                <ul>
+                    <li>
+                        ()HeapAlloc بتشتغل على Process Heap ، وده بيدي تحكم أكتر في الميموري.
+                    </li>
+                    <li>()Malloc بتستخدم C Runtime Library وبتتعامل مع الميموري بطريقة عامة.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">3. ()LocalAlloc – الحجز باستخدام Windows API (قديم شوية)</p>
+                <p>دي بتُستخدم لحجز ميموري ، بس أغلب المطورين بيفضلوا ()HeapAlloc بدلها لأنها بتدي تحكم أكتر.</p>
+                <p>الشكل العام:</p>
+                <div class="code-block"><code>HLOCAL LocalAlloc(UINT uFlags, SIZE_T uBytes);</code></div>
+                <ul>
+                    <li>uFlags → الفلاج اللـ بيحدد طريقة الحجز (مثلاً LPTR عشان يصفر الميموري).</li>
+                    <li>uBytes → عدد البايتات اللـ عاوز تحجزها.</li>
+                </ul>
+                <p>الكود: (زي اللـ فاتوا ، هتعدل سطر واحد بتاع الحالة الجديدة ، واسم المتغير)</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;stdio.h&gt;<br>
+                        #include &lt;stdlib.h&gt;<br>
+                        #include &lt;string.h&gt;<br>
+                        #include &lt;Windows.h&gt;<br><br>
+                        int main() {<br>
+                        &nbsp;&nbsp;HLOCAL pLocalAddress = LocalAlloc(LPTR, 200);<br>
+                        &nbsp;&nbsp;CHAR* cString = "I'm Still N00P in Malware Development";<br>
+                        &nbsp;&nbsp;memcpy(pLocalAddress, cString, strlen(cString));<br>
+                        &nbsp;&nbsp;printf("Address: 0x%p\n", pLocalAddress);<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;return 0;<br>
+                        }
+                        </code>
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">طب إيه الفرق بين التلات طرق؟</p>
+
+
+                <table>
+                    <tr>
+                        <th>العيوب</th>
+                        <th>المميزات</th>
+                        <th>تابعة لـ</th>
+                        <th>الطريقة</th>
+                    </tr>
+                    <tr>
+                        <td>أقل تحكم فـ الميموري</td>
+                        <td>سهلة وبسيطة ، ومناسبة للتطبيقات العامة</td>
+                        <td>C Runtime</td>
+                        <td>()malloc</td>
+
+                    </tr>
+                    <tr>
+                        <td>لازم تعمل ()HeapFree يدويا</td>
+                        <td>بتستخدم الـ Process Heap وأكتر تحكما</td>
+                        <td>Windows API</td>
+                        <td>()HeapAlloc</td>
+                    </tr>
+                    <tr>
+                        <td>قديمة ونادرا ما تُستخدم حاليا</td>
+                        <td>كانوا بيستخدموها قبل الـ ()HeapAlloc</td>
+                        <td>Windows API (قديم)</td>
+                        <td>()LocalAlloc</td>
+                    </tr>
+                </table>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold; font-size: large;">إدارة الذاكرة وتفادي الـ Memory Leaks</p>
+                <p>لما تحجز ميموري ، لازم تفضيها لما تخلص ، وإلا هتقع فـ مشكلة Memory Leak ، واللـ معناها إن فيه أماكن
+                    في الميموري فضيت بس لسه محجوزة ومحدش بيستخدمها ، وده ممكن يخلي الرام تتملي بعد وقت.</p>
+                <p>طب إزاي تفضي الميموري بطريقة صحيحة؟</p>
+                <table>
+                    <tr>
+                        <th>فانكشن التفريغ</th>
+                        <th>طريقة الحجز</th>
+
+                    </tr>
+                    <tr>
+                        <td>()Free</td>
+                        <td>()malloc</td>
+
+
+                    </tr>
+                    <tr>
+                        <td>()HeapFree</td>
+                        <td>()HeapAlloc</td>
+
+                    </tr>
+                    <tr>
+                        <td>()LocalFree</td>
+                        <td>()LocalAlloc</td>
+
+                    </tr>
+                </table>
+                <p style="font-weight: bold;">وبكدا يكون دا الكود النهائي فـ حالة الـ ()malloc:</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;stdio.h&gt;<br>
+                        #include &lt;stdlib.h&gt;<br>
+                        #include &lt;string.h&gt;<br>
+                        #include &lt;Windows.h&gt;<br><br>
+                        int main() {<br>
+                        &nbsp;&nbsp;PVOID pAddress = malloc(200);<br>
+                        &nbsp;&nbsp;CHAR* cString = "I'm Still N00P in Malware Development";<br>
+                        &nbsp;&nbsp;memcpy(pAddress, cString, strlen(cString));<br>
+                        &nbsp;&nbsp;printf("Address: 0x%p\n", pAddress);<br><br>
+                        &nbsp;&nbsp;free(pAddress);<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;return 0;<br>
+                        }
+                        </code>
+                </div>
+                <p style="font-weight: bold;">وفـ حالة الـ ()HeapAlloc:</p>
+                <div class="code-block">
+                    <code>HeapFree(GetProcessHeap(), 0, pHeapAddress);
+                    </code>
+                </div>
+                <p style="font-weight: bold;">وفـ حالة الـ ()LocalAlloc:</p>
+                <div class="code-block">
+                    <code>
+                        LocalFree(pLocalAddress);
+                    </code>
+                </div>
+                <p>ودا مثال لتفريغ منطقة كانت محجوزة .. </p>
+                <img src="../src/Pics/code5.png" alt="code5" class="article-image" loading="lazy">
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+                <ul>
+                    <li><a href="https://arorarachit.com/blog/windows-internals-theory" target="_blank"
+                            class="download-link">Windows Internals: Theory</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/windows/win32/memory/memory-management"
+                            target="_blank" class="download-link" s>Windows
+                            Memory Management Overview</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapalloc"
+                            target="_blank" class="download-link" s>HeapAlloc Function</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/windows/win32/memory/data-execution-prevention"
+                            target="_blank" class="download-link" s>Data Execution Prevention (DEP)</a></li>
+                </ul>
+                <p>لو حابب تـ dive deep فـ ممكن تشوف الكتب دي:</p>
+                <ul>
+                    <li><a href="https://drive.google.com/file/d/1SxjUpzJ7Fa46PcE8VHekwJCkSQTJ3-6S/view?usp=drive_link"
+                            target="_blank" class="download-link">Windows Internals, 7th Edition, Part 1 - 2017</a></li>
+                    <li><a href="https://drive.google.com/file/d/1T4JjMGBOa9EEbA3_2kjyRzQ2i37vEWSM/view?usp=drive_link"
+                            target="_blank" class="download-link">Windows Internals, 7th Edition, Part 2 - 2021</a></li>
+                </ul>
+            </div>
+            <div class="nav-buttons">
+                <a href="./PE-Files.html" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="../MalDev.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+        </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
