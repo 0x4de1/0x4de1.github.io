@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        html,
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
@@ -726,36 +725,46 @@
 
                     <li style="font-weight: bold;">Import Directory (IMAGE_DIRECTORY_ENTRY_IMPORT) </li>
                     <p>↑ خاص بالدوال اللـ البرنامج بيستوردها من مكتبات تانية (DLLs).</p>
-                    <li style="font-weight: bold;">Resource Directory (IMAGE_DIRECTORY_ENTRY_RESOURCE) </li>
+                    <li style="font-weight: bold; overflow-x: auto;">Resource Directory (IMAGE_DIRECTORY_ENTRY_RESOURCE)
+                    </li>
                     <p>↑ خاص بالـ Resources زي الأيقونات ، الصور ، النصوص ، والـ dialogs اللـ جوه الملف.</p>
-                    <li style="font-weight: bold;">Exception Directory (IMAGE_DIRECTORY_ENTRY_EXCEPTION) </li>
+                    <li style="font-weight: bold; overflow-x: auto;">Exception Directory
+                        (IMAGE_DIRECTORY_ENTRY_EXCEPTION) </li>
                     <p>↑ بيحتوي ع معلومات الـ Exception Handling الخاصة بالبرنامج.</p>
-                    <li style="font-weight: bold;">Security Directory (IMAGE_DIRECTORY_ENTRY_SECURITY)</li>
+                    <li style="font-weight: bold; overflow-x: auto;">Security Directory (IMAGE_DIRECTORY_ENTRY_SECURITY)
+                    </li>
                     <p>↑ بيحفظ البيانات الخاصة بالتوقيعات الرقمية (Digital Signatures) لو البرنامج موقع رقمياً.</p>
-                    <li style="font-weight: bold;">Base Relocation Table (IMAGE_DIRECTORY_ENTRY_BASERELOC)</li>
+                    <li style="font-weight: bold; overflow-x: auto;">Base Relocation Table
+                        (IMAGE_DIRECTORY_ENTRY_BASERELOC)</li>
                     <p>↑ فيه البيانات الخاصة بتعديل عناوين الميموري أثناء تحميل الملف (لو مكانه فـ الميموري اختلف).
                     </p>
                     <li style="font-weight: bold;">Debug Directory (IMAGE_DIRECTORY_ENTRY_DEBUG) </li>
                     <p>↑ بيحفظ معلومات خاصة بالـ Debugging Symbols لو البرنامج متكامل مع أدوات Debugging.</p>
-                    <li style="font-weight: bold;">Architecture Specific Data (IMAGE_DIRECTORY_ENTRY_ARCHITECTURE)
+                    <li style="font-weight: bold; overflow-x: auto;">Architecture Specific Data
+                        (IMAGE_DIRECTORY_ENTRY_ARCHITECTURE)
                     </li>
                     <p>↑ مش بيستخدم عادةً ، بس معمول لأنظمة معينة لو محتاجة بيانات خاصة.</p>
-                    <li style="font-weight: bold;">Global Pointer (IMAGE_DIRECTORY_ENTRY_GLOBALPTR)</li>
+                    <li style="font-weight: bold; overflow-x: auto;">Global Pointer (IMAGE_DIRECTORY_ENTRY_GLOBALPTR)
+                    </li>
                     <p>↑ خاص بأنظمة الـ IA-64 وكان بيستخدم للـ Global Pointer Register.</p>
-                    <li style="font-weight: bold;">TLS Directory (IMAGE_DIRECTORY_ENTRY_TLS)</li>
+                    <li style="font-weight: bold; overflow-x: auto;">TLS Directory (IMAGE_DIRECTORY_ENTRY_TLS)</li>
                     <p>↑ مسؤول عن بيانات الـ Thread Local Storage (TLS) ، وده بيكون مهم للـ Multithreading.</p>
-                    <li style="font-weight: bold;">Load Configuration Directory (IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG)
+                    <li style="font-weight: bold; overflow-x: auto;">Load Configuration Directory
+                        (IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG)
                     </li>
                     <p>↑ بيحتوي ع معلومات خاصة بإعدادات تحميل الملف.</p>
-                    <li style="font-weight: bold;">Bound Import Directory (IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT) </li>
+                    <li style="font-weight: bold; overflow-x: auto;">Bound Import Directory
+                        (IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT) </li>
                     <p>↑ بيحتوي ع معلومات عن الـ DLLs اللـ البرنامج مربوط بيها وقت الـ Linking.</p>
-                    <li style="font-weight: bold;">Import Address Table (IMAGE_DIRECTORY_ENTRY_IAT) </li>
+                    <li style="font-weight: bold; overflow-x: auto;">Import Address Table (IMAGE_DIRECTORY_ENTRY_IAT)
+                    </li>
                     <p>↑ خاص بجدول العناوين اللـ بيتم استدعاء الدوال الخارجية منه.</p>
-                    <li style="font-weight: bold;">Delay Load Import Descriptors
+                    <li style="font-weight: bold; overflow-x: auto;">Delay Load Import Descriptors
                         (IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT)
                     </li>
                     <p>↑ مشابه للـ Import Directory لكنه بيأخر تحميل الـ DLLs لحد ما يتم استدعاؤها فعلياً.</p>
-                    <li style="font-weight: bold;">COM Runtime Descriptor (IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR)
+                    <li style="font-weight: bold; overflow-x: auto;">COM Runtime Descriptor
+                        (IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR)
                     </li>
                     <p>↑ خاص بالملفات اللـ بتستخدم .NET CLR والـ COM Interop.</p>
                 </ol>
