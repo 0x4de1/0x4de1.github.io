@@ -616,11 +616,11 @@
                     <ul>
                         <li>0x10B → 32-bit PE File.</li>
                         <li>0x20B → 64-bit PE File.</li>
-                        <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                            <img src="../src/Pics/NT-Headers6.png" alt="NT-Headers6" class="article-image"
-                                loading="lazy">
-                        </div>
                     </ul>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/NT-Headers6.png" alt="NT-Headers6" class="article-image" loading="lazy">
+                    </div>
+
                     <li style="font-weight: bold;">MajorLinkerVersion & MinorLinkerVersion</li>
                     <p>↑ بيوضح نسخة الـ Linker اللـ تم استخدامه لإنشاء الملف.</p>
                     <p> فـ المثال ده ، الـ Linker version بيكون E14 ، ودي حاجة تهم الـ PE Loader:</p>
@@ -675,11 +675,11 @@
                 <h3>الـ Data Directory:</h3>
                 <p> [+] فـ الجزء اللـ فات ، كنا بنتكلم عن Optional Header ، وشفنا إنه بيحتوي ع DataDirectory ، واللـ هو
                     عبارة عن Array فيها بيانات بتساعد الـ PE Loader أثناء تحميل وتشغيل الملف.</p>
-                <p style="font-weight: bold;"> [+] طيب يعني إيه Data Directory أصلاً؟</p>
+                <p style="font-weight: bold;"> [+] طب يعني إيه Data Directory أصلاً؟</p>
                 <p> ببساطة الـ Data Directory دي عبارة عن بيانات بتكون موجودة جوا أحد الـ Sections بتاعة ملف الـ PE ،
                     والهدف منها إنها بتوفر معلومات حيوية للـ Loader عشان يعرف يستخدم الـ Imports, Exports, Resources,
                     Debug Info... etc.</p>
-                <p style="font-weight: bold;">[+] طيب شكلها عامل إزاي؟</p>
+                <p style="font-weight: bold;">[+] ودي شكلها عامل إزاي؟</p>
                 <p> الـ Data Directory عبارة عن Array مُكوّن من 16 عنصر:
                 </p>
                 <div class="code-block">
@@ -823,6 +823,13 @@
                 <p style="font-weight: bold;">[+] طب هل كل ملفات الـ PE فيها نفس الـ Sections دي؟</p>
                 <p>لأ ، مش كل الملفات بتحتوي ع كل الـ Sections دي ، بعض الملفات ممكن يكون فيها Sections بأسماء مختلفة
                     حسب نوع البرنامج والمترجم (Compiler) اللـ اتعمل بيه.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] دا بوستر لطيف شامل ولامم كل حاجه عن الـ PE ، وتقدر تشوفه من <a
+                        href="https://github.com/corkami/pics/blob/master/binary/PE102.png" target="_blank"
+                        class="download-link">[هنا]</a>.</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/PE-Poster.png" alt="PE-Poster" class="article-image" loading="lazy">
+                </div>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <h2>4. DOS Header Reader:</h2>
                 <p>[+] فـ الجزء ده ، هنكتب كود C بسيط نتعلم بيه إزاي نقرأ الـ Magic Numbers لأي ملف PE:</p>
@@ -970,6 +977,9 @@
                     <li><a href="https://medium.com/@aliraza.abro.prog/pe-file-format-a-primer-1fc6b51f1dfa"
                             target="_blank" class="download-link" s>
                             PE File Format — A Primer</a></li>
+                    <li><a href="https://library.mosse-institute.com/articles/2022/05/reverse-engineering-portable-executables-pe-part-2/reverse-engineering-portable-executables-pe-part-2.html"
+                            target="_blank" class="download-link" s>
+                            Mossé Cyber Security Institute</a></li>
             </div>
             <div class="nav-buttons">
                 <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
