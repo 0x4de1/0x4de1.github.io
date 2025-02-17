@@ -394,7 +394,7 @@
                 </ul>
                 <p style="font-weight: bold;">[+] حاليا فـ أنظمة الويندوز الحديثة:</p>
                 <ul>
-                    <li>الـ DOS Header بقى موجود بس عشان التوافق مع الأنظمة القديمة، لكنه مش بيتم استخدامه فعليًا.</li>
+                    <li>الـ DOS Header بقى موجود بس عشان التوافق مع الأنظمة القديمة، بس مش بيتم استخدامه فعليًا.</li>
                 </ul>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <h3>1.1.2 بنية الـ DOS Header:</h3>
@@ -495,7 +495,8 @@
                 <ul>
                     <li>تخيل إن عندك برنامج exe الويندوز قرر يحمله فـ الميموري عند العنوان <code
                             style="background: #16ff00; font-size: 14px;">0x400000</code></li>
-                    <li>وبعدين لقيت إن Entry Point بتاع البرنامج موجود عند RVA = 0x1000 ، فده معناه إيه؟
+                    <li>وبعدين لقيت إن Entry Point بتاع البرنامج موجود عند <code
+                            style="background: #16ff00; font-size: 14px;">RVA = 0x1000</code> ، فده معناه إيه؟
                     <li>معناه إن العنوان الفعلي اللـ الويندوز هيبدأ منه التنفيذ هو:
                     </li>
                 </ul>
@@ -548,7 +549,7 @@
                 </div>
                 <ol>
                     <li style="font-weight: bold;">Machine:</li>
-                    <p>ده رقم بيعبر عن نوع المعالج (CPU Architecture) اللي البرنامج ده معمول له زي:</p>
+                    <p>ده رقم بيعبر عن نوع المعالج (CPU Architecture) اللـ البرنامج ده معمول له زي:</p>
                     <ul>
                         <li>0x014C → Intel 386 (x86 - 32-bit).</li>
                         <li>0x8664 → AMD64 (x64 - 64-bit).</li>
@@ -825,7 +826,7 @@
                     حسب نوع البرنامج والمترجم (Compiler) اللـ اتعمل بيه.</p>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p>[+] دا بوستر لطيف شامل ولامم كل حاجه عن الـ PE ، وتقدر تشوفه من <a
-                        href="https://github.com/corkami/pics/blob/master/binary/PE102.png" target="_blank"
+                        href="https://github.com/corkami/pics/blob/master/binary/PE101.png" target="_blank"
                         class="download-link">[هنا]</a>.</p>
                 <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                     <img src="../src/Pics/PE-Poster.png" alt="PE-Poster" class="article-image" loading="lazy">
@@ -891,7 +892,7 @@
                     </div>
                     <li>تاني جزء هنا بيحاول يفتح الملف اللـ انت عطتهوله ، بيستخدم <code
                             style="background: #16ff00; font-size: 14px;">CreateFileA</code> ودي Windows API بتفتح
-                        الملف اللي اسمه <code style="background: #16ff00; font-size: 14px;">argv[1]</code> .. وبصلاحيات
+                        الملف اللـ اسمه <code style="background: #16ff00; font-size: 14px;">argv[1]</code> .. وبصلاحيات
                         <code
                             style="background: #16ff00; font-size: 14px;"><code style="background: #16ff00; font-size: 14px;">MZ</code></code>
                         عشان يقدر يقرأه .. ولو فشل فـ فتح الملف بيقولك انه فشل

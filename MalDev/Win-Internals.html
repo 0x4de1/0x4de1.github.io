@@ -370,21 +370,21 @@
                     .. فيه كذا مرحلة بيمر بيها عشان يوصل لـ Kernel Mode ، وهي:</p>
                 <ol>
                     <li style="font-weight: bold;">User Processes – البرامج اللـ بيشغلها اليوزر</li>
-                    <p>أي برنامج بتفتحه (زي Notepad.exe) بيشتغل في الـ User Mode ، ومش بيقدر يتعامل مع الهاردوير ع طول
+                    <p>أي برنامج بتفتحه (زي Notepad.exe) بيشتغل فـ الـ User Mode ، ومش بيقدر يتعامل مع الهاردوير ع طول
                         .. عشان كده ، لما البرنامج يحتاج يعمل عملية معينة (زي فتح ملف) ، بيطلب المساعدة من مكتبات
                         الويندوز.</p>
                     <li style="font-weight: bold;">Subsystem DLLs – مكتبات نظام الويندوز</li>
-                    <p>فيه ملفات مهمة جدًا في الويندوز ، زي:</p>
+                    <p>فيه ملفات مهمة جدًا فـ الويندوز ، زي:</p>
                     <ul>
                         <li>
-                            Kernel32.dll: وده فيه مجموعة ضخمة من الـ Windows APIs اللي البرامج بتستخدمها.
+                            Kernel32.dll: وده فيه مجموعة ضخمة من الـ Windows APIs اللـ البرامج بتستخدمها.
                         </li>
                         <li>User32.dll : مسؤول عن التعامل مع الـ GUI ، زي النوافذ والأزرار والـ Input من الكيبورد
                             والماوس.</li>
                     </ul>
                     <p>ولسه غيرهم كتير .. المكتبات دي بتساعد البرامج على تنفيذ العمليات بسهولة من غير ما يتعاملوا مع
                         الكيرنل
-                        بشكل مباشر. وبتكون موجودة في المسار:
+                        بشكل مباشر. وبتكون موجودة فـ المسار:
                         <code style="background: #16ff00; font-size: 14px;">C:\Windows\System32</code>
                     </p>
 
@@ -398,32 +398,32 @@
                     <li style="font-weight: bold;">
                         System Call – الانتقال من User Mode إلى Kernel Mode
                     </li>
-                    <p>عشان أي عملية تتنفذ في الـ Kernel ، لازم يتم استدعاء Syscall ، وده عبارة عن أمر بيخلي النظام
+                    <p>عشان أي عملية تتنفذ فـ الـ Kernel ، لازم يتم استدعاء Syscall ، وده عبارة عن أمر بيخلي النظام
                         يبدّل من User Mode لـ Kernel Mode .. المعالج بينفذ ده باستخدام sysenter (32bit) أو syscall
                         (64bit).</p>
                 </ol>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-weight: bold;">[+] هقولك مثال إزاي Notepad.exe بيعمل Create لملف جديد؟</p>
-                <p>تعالى نمشي خطوة بخطوة ونشوف اللي بيحصل لما الـ Notepad.exe يحب ينشئ ملف جديد:</p>
+                <p>تعالى نمشي خطوة بخطوة ونشوف اللـ بيحصل لما الـ Notepad.exe يحب ينشئ ملف جديد:</p>
                 <ol>
                     <li style="font-weight: bold;">الـ Notepad.exe بيطلب العملية</li>
-                    <p>أول حاجة ، البرنامج بيستدعي الـ Windows API اللي مسؤولة عن إنشاء ملف ، وهي <code
+                    <p>أول حاجة ، البرنامج بيستدعي الـ Windows API اللـ مسؤولة عن إنشاء ملف ، وهي <code
                             style="background: #16ff00; font-size: 14px;">CreateFileW</code> من
                         <code style="background: #16ff00; font-size: 14px;">Kernel32.dll</code>.
                     </p>
                     <li style="font-weight: bold;">الطلب بيعدي على الـ Ntdll.dll</li>
                     <p>الـ Kernel32.dll بيمرر الطلب لـ <code
-                            style="background: #16ff00; font-size: 14px;">Ntdll.dll</code> ، اللي بدوره بيترجمه لـ
+                            style="background: #16ff00; font-size: 14px;">Ntdll.dll</code> ، اللـ بدوره بيترجمه لـ
                         Native API اسمها <code style="background: #16ff00; font-size: 14px;">NtCreateFile</code>.
                     </p>
                     <li style="font-weight: bold;">تنفيذ الـ Syscall للانتقال لـ Kernel Mode</li>
                     <p>دلوقتي عشان العملية تتم فعلًا ، لازم ننقل التنفيذ لـ <code
                             style="background: #16ff00; font-size: 14px;">Kernel Mode</code> .. هنا بيتم تنفيذ <code
                             style="background: #16ff00; font-size: 14px;">Syscall</code> ،
-                        واللي بيحوّل التحكم للـ Kernel.</p>
+                        واللـ بيحوّل التحكم للـ Kernel.</p>
                     <li style="font-weight: bold;">الـ Kernel بينفذ العملية وبيعمل Create للملف</li>
                     <p>بمجرد ما التنفيذ يوصل لـ Kernel Mode ، الـ Windows Kernel بيستدعي الـ File System Driver اللـ
-                        مسؤول عن إدارة الملفات ، واللـ بدوره بيتعامل مع الهارد ديسك وبينشئ الملف الجديد في المكان
+                        مسؤول عن إدارة الملفات ، واللـ بدوره بيتعامل مع الهارد ديسك وبينشئ الملف الجديد فـ المكان
                         المطلوب.</p>
                 </ol>
                 <p>وبكدا يكون بقي عندك فكرة عن الـ Windows Architecture</p>
@@ -453,7 +453,7 @@
                     <p> أي برنامج كان يقدر يعدّل على بيانات أي برنامج تاني ، وده طبعا غلط.</p>
                 </ol>
                 <p>عشان كدا ، تم تطوير فكرة الـ Virtual Memory ، واللـ بقت زي طبقة إدارية بتخلي كل برنامج يفتكر إنه عنده
-                    ميموري خاصة بيه ، في حين إن النظام هو اللـ بينظم العملية دي ويمنع أي تداخل غير مرغوب فيه.</p>
+                    ميموري خاصة بيه ، فـ حين إن النظام هو اللـ بينظم العملية دي ويمنع أي تداخل غير مرغوب فيه.</p>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-weight: bold;">[+] طب إزاي الويندوز بيقسم الميموري؟</p>
                 <p>عشان الويندوز يقدر يدير الذاكرة بكفاءة ، بيقسمها إلى وحدات اسمها Pages (صفحات) ، وحجم كل صفحة في
@@ -495,7 +495,7 @@
                     <li style="font-weight: bold;">ASLR – حماية من التلاعب بعناوين الذاكرة</li>
                     <p>فيه كمان تقنية أمان تانية اسمها ASLR (Address Space Layout Randomization) ، واللـ فكرتها ببساطة
                         إنها بتخلي أماكن تخزين البيانات فـ الذاكرة عشوائية كل مرة البرنامج يشتغل فيها .. وده بيمنع
-                        الهاكرز من معرفة أماكن البيانات أو الأكواد في الميموري ، وده بيصعّب عليهم تنفيذ أي Memory
+                        الهاكرز من معرفة أماكن البيانات أو الأكواد فـ الميموري ، وده بيصعّب عليهم تنفيذ أي Memory
                         Exploits ، زي هجمات Return-Oriented Programming (ROP).</p>
                 </ol>
                 <p style="border-top: 2px solid #16ff00;"></p>
@@ -504,7 +504,7 @@
                     Space خاصة بيه ، وبالتالي مفيش برنامج يقدر يدخل ع بيانات البرنامج التاني مباشرة.</p>
                 <p>السيناريو الطبيعي كالأتي:</p>
                 <ol>
-                    <li>لما تفتح Firefox.exe ، النظام بيخصص ليه مجموعة من الـ Pages في الميموري.</li>
+                    <li>لما تفتح Firefox.exe ، النظام بيخصص ليه مجموعة من الـ Pages فـ الميموري.</li>
                     <li>نفس الكلام بيحصل مع Onenote.exe ، وليه مساحة منفصلة خاصة بيه.</li>
                     <li>لو الـ Firefox محتاج يشارك بيانات مع Onenote ، لازم يتم ده من خلال آلية اسمها Inter-Process
                         Communication (IPC) ، مش بشكل مباشر فـ الميموري.</li>
@@ -518,7 +518,7 @@
                 <p style="font-weight: bold;">[+] Memory Allocation in Windows – إدارة الذاكرة عمليًا</p>
                 <p> بعد ما فهمنا إزاي الويندوز بيتعامل مع الذاكرة وإزاي بيقسمها ، تعالوا بقى ندخل فـ الجزء العملي
                     ونجرب
-                    نحجز أماكن في الميموري باستخدام كود C.</p>
+                    نحجز أماكن فـ الميموري باستخدام كود C.</p>
                 <P style="font-weight: bold;">[ملحوظه مهمه: محتاج يكون عندك خلفية عن لغة برمجة الـ C أو الـ (++C) ،
                     وتقدر تشوف كورس م. أسامة الزيرو
                     ع اليوتيوب من <a
@@ -568,7 +568,7 @@
                     <li>memcpy(pAddress, cString, strlen(cString)) → بتنقل الـ String للمنطقة المحجوزة ، ودي بتاخد 3
                         arguments وهما ، عنوان المنطقة اللـ حجزت فيها ، الـ string ، وحجم الـ string اللـ حابب أنقله.
                     </li>
-                    <li>printf("Address: 0x%p\n", pAddress) → بتطبع العنوان اللي تم حجزه.</li>
+                    <li>printf("Address: 0x%p\n", pAddress) → بتطبع العنوان اللـ تم حجزه.</li>
                     <li>()getchar → عشان أخلي البرنامج ميقفلش.</li>
                 </ul>
                 <p style="border-top: 2px solid #16ff00;"></p>
@@ -599,7 +599,7 @@
                 <ul>
                     <li>hHeap → الـ Handle للـ Heap ، وده بنجيبه باستخدام ()GetProcessHeap.</li>
                     <li>dwFlags → ممكن يكون 0 أو HEAP_ZERO_MEMORY لو عاوز تصفر الميموري قبل الاستخدام.</li>
-                    <li>dwBytes → عدد البايتات اللي عاوز تحجزها.</li>
+                    <li>dwBytes → عدد البايتات اللـ عاوز تحجزها.</li>
                 </ul>
                 <p>الكود: (نفس الكود اللـ فات بس هتعدل سطر واحد بتاع الحالة الجديدة ، واسم المتغير)</p>
                 <div class="code-block">
@@ -622,7 +622,7 @@
                 <p style="font-weight: bold;">طب اي الفرق بين HeapAlloc و malloc؟</p>
                 <ul>
                     <li>
-                        ()HeapAlloc بتشتغل على Process Heap ، وده بيدي تحكم أكتر في الميموري.
+                        ()HeapAlloc بتشتغل على Process Heap ، وده بيدي تحكم أكتر فـ الميموري.
                     </li>
                     <li>()Malloc بتستخدم C Runtime Library وبتتعامل مع الميموري بطريقة عامة.</li>
                 </ul>
@@ -686,7 +686,7 @@
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-weight: bold; font-size: large;">إدارة الذاكرة وتفادي الـ Memory Leaks</p>
                 <p>لما تحجز ميموري ، لازم تفضيها لما تخلص ، وإلا هتقع فـ مشكلة Memory Leak ، واللـ معناها إن فيه أماكن
-                    في الميموري فضيت بس لسه محجوزة ومحدش بيستخدمها ، وده ممكن يخلي الرام تتملي بعد وقت.</p>
+                    فـ الميموري فضيت بس لسه محجوزة ومحدش بيستخدمها ، وده ممكن يخلي الرام تتملي بعد وقت.</p>
                 <p>طب إزاي تفضي الميموري بطريقة صحيحة؟</p>
                 <table>
                     <tr>
