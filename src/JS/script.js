@@ -16,7 +16,7 @@ function cancel() {
 const texts = [
     "SOC Analyst",
     "Incident Responder",
-    "Digital Forensics",
+    "Digital Forensics Investigator",
     "Threat Hunter",
     "Malware Developer"
 ];
