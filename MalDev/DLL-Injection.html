@@ -626,7 +626,10 @@
                         style="background: #16ff00; font-size: 14px;">(szProcessName)</code> باستخدام
                     <code style="background: #16ff00; font-size: 14px;">()wcscmp</code>.<br>
                     لو طلعوا متطابقين يبقى لقينا البروسيس المطلوبه ، فنحفظ الـ Process ID ونحاول نفتح البروسيس بصلاحيات
-                    <code style="background: #16ff00; font-size: 14px;">PROCESS_ALL_ACCESS</code>.
+                    <code style="background: #16ff00; font-size: 14px;">PROCESS_ALL_ACCESS</code>. وتقدر تشوف الـ
+                    Documentation بتاعها من <a
+                        href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/strcmp-wcscmp-mbscmp?view=msvc-170"
+                        target="_blank" class="download-link">[هنا]</a>.
                     <div class="code-block"><code>if (wcscmp(LowerName, szProcessName) == 0) {<br>
                         &nbsp;&nbsp;*dwProcessId = Proc.th32ProcessID;<br>
                         &nbsp;&nbsp;*hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, Proc.th32ProcessID);<br>
@@ -718,7 +721,8 @@
                     تكفي اسم الـ DLL جوه ميموري البروسيس المستهدفه.
                     ولو فشلت ، بتطلع Error وتخرج.
                     <li style="font-weight: bold;"> نكتب اسم الـ DLL فـ الميموري :</li>
-                    بعد مـ حجزنا مكان فـ الميموري ، دلوقتي نكتب مسار الـ DLL فـ المكان ده باستخدام WriteProcessMemory.
+                    بعد مـ حجزنا مكان فـ الميموري ، دلوقتي نكتب مسار الـ DLL فـ المكان ده باستخدام <code
+                        style="background: #16ff00; font-size: 14px;">WriteProcessMemory</code>.
                     <div class="code-block"><code>&nbsp;&nbsp;if (!WriteProcessMemory(hProcess, pAddress, DllName, dwSizeToWrite, &lpNumberOfBytrsWritten) || dwSizeToWrite != lpNumberOfBytrsWritten) {<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] WriteProcessMemory Failed with Error : %d \n", GetLastError());<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;bSTATE = FALSE; goto _EndOfFunction;<br>
@@ -754,7 +758,7 @@
                         &nbsp;&nbsp;}
                     </code></div>
                     أي Thread أو Handle استخدمناه ، لازم نقفله بعد مـ نخلص شغلنا عشان منسيبش <code
-                        style="background: #16ff00; font-size: 14px;">Memory Leaks</code>.
+                        style="background: #16ff00; font-size: 14px;">Handle Leaks</code>.
                 </ol>
                 <p style="border-top: 2px solid #16ff00;"></p>
                 <p style="font-weight: bold; font-size: larger; direction: ltr;">Step 4 : Execution and Cleanup</p>
