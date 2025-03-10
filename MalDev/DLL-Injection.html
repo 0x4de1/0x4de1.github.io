@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DLL Injection</title>
-    <link rel="icon" href="../src/Pics/DLLi.jpg" type="image/png">
+    <link rel="icon" href="../src/Pics/DLLi.webp" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -38,14 +38,14 @@
             font-size: 2rem;
             font-weight: bold;
             cursor: pointer;
-            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background: -webkit-linear-gradient(#FFD700, #ffed00);
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .logo span {
             cursor: pointer;
-            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background: -webkit-linear-gradient(#FFD700, #ffed00);
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -56,7 +56,7 @@
             position: absolute;
             right: 15px;
             top: 10px;
-            color: #16ff00;
+            color: #FFD700;
             display: none;
             font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
         }
@@ -75,8 +75,8 @@
         }
 
         .nav-container .links a:hover {
-            color: #16ff00;
-            border-bottom: 2px solid #16ff00;
+            color: #FFD700;
+            border-bottom: 2px solid #FFD700;
         }
 
         .dropdown {
@@ -104,7 +104,7 @@
         }
 
         .dropdown .links a:hover {
-            background-color: #16ff00;
+            background-color: #FFD700;
             color: black;
         }
 
@@ -114,11 +114,11 @@
         }
 
         header {
-            background: -webkit-linear-gradient(#16ff00, #ffed00);
+            background: -webkit-linear-gradient(#FFD700, #ffed00);
             background-clip: text;
             -webkit-text-fill-color: transparent;
             text-align: center;
-            border-bottom: 1px solid #16ff00;
+            border-bottom: 1px solid #FFD700;
         }
 
 
@@ -145,13 +145,13 @@
 
         .article h2 {
             margin-top: 0;
-            border-top: 2px solid #16ff00;
-            border-bottom: 2px solid #16ff00;
+            border-top: 2px solid #FFD700;
+            border-bottom: 2px solid #FFD700;
             padding-bottom: 5px;
         }
 
         .code-block {
-            background: #16ff00;
+            background: #FFD700;
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
@@ -204,7 +204,7 @@
         }
 
         .footer a {
-            color: #16ff00;
+            color: #FFD700;
             text-decoration: none;
             font-weight: bold;
         }
@@ -225,7 +225,7 @@
         }
 
         .nav-buttons a {
-            background: #16ff00;
+            background: #FFD700;
             color: black;
             padding: 10px 0;
             border-radius: 5px;
@@ -245,18 +245,19 @@
         }
 
         .nav-buttons a:hover {
-            background: #35a849;
+            background: #51460c;
+            color: #fff;
         }
 
         .download-link {
             text-decoration: none;
-            color: #14aa2d;
+            color: #FFD700;
             font-weight: bold;
             transition: color 0.3s ease;
         }
 
         .download-link:hover {
-            color: #16ff00;
+            color: #51460c;
             text-decoration: underline;
         }
 
@@ -276,7 +277,7 @@
         }
 
         th {
-            background-color: #16ff00;
+            background-color: #FFD700;
         }
     </style>
 </head>
@@ -312,7 +313,7 @@
         </header>
         <div class="container">
             <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                <img src="../src/Pics/DLLi.jpg" alt="HomeLab" class="article-image" loading="lazy">
+                <img src="../src/Pics/DLLi.webp" alt="HomeLab" class="article-image" loading="lazy">
             </div>
             <div class="article" data-aos="zoom-in" data-aos-duration="800">
                 <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
@@ -333,8 +334,8 @@
                 <h2>Introduction</h2>
                 <p>[+] فـ عالم الـ Malware Development ، كل مـ بتكون قادر ع تنفيذ الكود بتاعك داخل عمليات تانية
                     (Processes) ، كل مـ بتزيد فرصتك فـ التهرب من الحماية والتحكم فـ السيستم .. وده اللـ بنسميه <code
-                        style="background: #16ff00; font-size: 14px;">Process Injection</code> ، واللـ من أشهر أساليبه
-                    هو <code style="background: #16ff00; font-size: 14px;">DLL Injection</code>.</p>
+                        style="background: #FFD700; font-size: 14px;">Process Injection</code> ، واللـ من أشهر أساليبه
+                    هو <code style="background: #FFD700; font-size: 14px;">DLL Injection</code>.</p>
                 <p style="font-weight: bold;">[+] بس إيه هو DLL Injection بالظبط؟</p>
                 <p>الفكرة باختصار إنك بتاخد ملف DLL خاص بيك وبتـ Inject الملف ده داخل Process تانية ، بحيث الكود اللـ
                     جوه يتنفذ كأنه
@@ -369,8 +370,8 @@
                     </div>
                     <li>محتاج تعرف البرنامج إنه ميدورش ع الملفات اللـ مسحناهم ، هتقف ع إسم البروجيكت من الـ Solution
                         Exeplorer و <code
-                            style="background: #16ff00; font-size: 14px;">Right-Click > Properties > C/C++ > Precompiled Headers</code>
-                        وتختار <code style="background: #16ff00; font-size: 14px;">Not Using Precompiled Headers</code>.
+                            style="background: #FFD700; font-size: 14px;">Right-Click > Properties > C/C++ > Precompiled Headers</code>
+                        وتختار <code style="background: #FFD700; font-size: 14px;">Not Using Precompiled Headers</code>.
                     </li>
                     <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                         <img src="../src/Pics/LocalDLLi-3.png" alt="LocalDLLInjection-3" class="article-image"
@@ -378,7 +379,7 @@
                     </div>
                     <li>هتعدل إمتداد الفايل بدل cpp هتخليه c .. وهتضيف المكاتب العادية كالعادة .. وهنضيف السطرين دول فـ
                         حتة
-                        الـ <code style="background: #16ff00; font-size: 14px;">DLL_PROCESS_ATTACH</code> :</li>
+                        الـ <code style="background: #FFD700; font-size: 14px;">DLL_PROCESS_ATTACH</code> :</li>
                     <div class="code-block"><code>MessageBoxW(NULL, L"You Have Been Hacked HAHAHAHAHAHAHA", L"Hacked", MB_OK | MB_ICONWARNING);<br>
                             break;</code></div>
                     ودا معناه إن لما ملف الـ DLL يرتبط مع Process .. يظهرله رسالة فيها إنه اتهكر .. (ودا مجرد تيست بس
@@ -392,13 +393,13 @@
                     </div>
                     <li>هتعمل Build للبرجيكت ع الـ Debug .. وبكدا الحمدلله عملنا ملف DLL فكرتة بسيطة.</li>
                 </ol>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold;">[+] تعالي بقي نعمل البرنامج اللـ هيشغل ملف الـ DLL :</p>
                 <ol>
                     <li>هتفتح برجيكت جديد .. هتضيف الـ <code
-                            style="background: #16ff00; font-size: 14px;">main func</code> .. وهنستخدم عملية من <code
-                            style="background: #16ff00; font-size: 14px;">Windows APIs</code> بـ اسم <code
-                            style="background: #16ff00; font-size: 14px;">LoadLibraryW</code> ،
+                            style="background: #FFD700; font-size: 14px;">main func</code> .. وهنستخدم عملية من <code
+                            style="background: #FFD700; font-size: 14px;">Windows APIs</code> بـ اسم <code
+                            style="background: #FFD700; font-size: 14px;">LoadLibraryW</code> ،
                         وهنضيف جواها إسم ملف الـ DLL اللـ عملناه :</li>
                     <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                         <img src="../src/Pics/LocalDLLi-5.png" alt="LocalDLLInjection-5" class="article-image"
@@ -449,7 +450,7 @@
                     </div>
                     <li>ولو فتحت <a href="https://sourceforge.net/projects/processhacker/" target="_blank"
                             class="download-link">Process Hacker</a> .. وبحثت بـ الـ PID .. وفتحت الـ <code
-                            style="background: #16ff00; font-size: 14px;">Modules</code> .. هتلاقي
+                            style="background: #FFD700; font-size: 14px;">Modules</code> .. هتلاقي
                         ملف الـ DLL اللـ
                         عملناه موجود بالفعل.</li>
                     <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
@@ -457,9 +458,9 @@
                             loading="lazy">
                     </div>
                 </ul>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <P>[+] ودا كدا الكود النهائي للـ <code
-                        style="background: #16ff00; font-size: 14px;">Local DLL Execution</code> :</P>
+                        style="background: #FFD700; font-size: 14px;">Local DLL Execution</code> :</P>
                 <div class="code-block">
                     <code>
                         #include &lt;Windows.h><br>
@@ -496,49 +497,49 @@
                 </div>
                 <br>
                 <p style="font-weight: bold;">[+] دلوقتي بقى خلصنا <code
-                        style="background: #16ff00; font-size: 14px;">Local DLL Execution</code> ، وعرفنا إزاي نشغل ملف
+                        style="background: #FFD700; font-size: 14px;">Local DLL Execution</code> ، وعرفنا إزاي نشغل ملف
                     DLL جوه
                     برنامج إحنا اللـ مشغلينه ..
                     بس السؤال هنا .. إزاي نحط الـ DLL بتاعنا جوه برنامج شغال أصلا؟</p>
                 <h2 style="direction: ltr;">2. Remote DLL Injection</h2>
-                <p>[+] هنا بقى بييجي دور <code style="background: #16ff00; font-size: 14px;">Remote DLL Injection</code>
+                <p>[+] هنا بقى بييجي دور <code style="background: #FFD700; font-size: 14px;">Remote DLL Injection</code>
                     ، اللـ هي من أقوى طرق الـ <code
-                        style="background: #16ff00; font-size: 14px;">Process Injection</code> ، و الفكره
+                        style="background: #FFD700; font-size: 14px;">Process Injection</code> ، و الفكره
                     ببساطة إنك بتاخد ملف DLL ، وبتـ Inject جوه Process شغالة بالفعل ، بحيث الكود بتاعك يشتغل كأنه جزء من
                     البرنامج ده.</p>
                 <p>[+] قبل مـ نخش ع الأكواد ، خليني أوضح الفكرة ببساطة .. إحنا عايزين نحقن DLL جوه بروسيس معينه ، بس
                     علشان نعمل كده ، لازم الأول نجيب معلومات عن كل البروسيسيز اللـ شغالة ، وندور ع البروسيس اللـ إحنا
                     مستهدفينها .. طيب إزاي بقي؟</p>
                 <ol>
-                    <li>بناخد <code style="background: #16ff00; font-size: 14px;">Snapshot</code> لكل العمليات اللـ
+                    <li>بناخد <code style="background: #FFD700; font-size: 14px;">Snapshot</code> لكل العمليات اللـ
                         شغالة باستخدام <code
-                            style="background: #16ff00; font-size: 14px;">CreateToolhelp32Snapshot</code>.</li>
+                            style="background: #FFD700; font-size: 14px;">CreateToolhelp32Snapshot</code>.</li>
                     <li>بعدين نبدأ ندور ع اسم البروسيس اللـ إحنا مستهدفينها ، ولما نلاقيها بناخد <code
-                            style="background: #16ff00; font-size: 14px;">Handle</code> عليها باستخدام
-                        <code style="background: #16ff00; font-size: 14px;">OpenProcess</code>.
+                            style="background: #FFD700; font-size: 14px;">Handle</code> عليها باستخدام
+                        <code style="background: #FFD700; font-size: 14px;">OpenProcess</code>.
                     </li>
                     <li>بنحجز مساحة في الميموري جوه البروسيس باستخدام <code
-                            style="background: #16ff00; font-size: 14px;">VirtualAllocEx</code> ، وبعدها بنكتب مسار الـ
+                            style="background: #FFD700; font-size: 14px;">VirtualAllocEx</code> ، وبعدها بنكتب مسار الـ
                         DLL فيها
-                        باستخدام <code style="background: #16ff00; font-size: 14px;">WriteProcessMemory</code>.</li>
+                        باستخدام <code style="background: #FFD700; font-size: 14px;">WriteProcessMemory</code>.</li>
                     <li>بعد كده ، بنشغل الـ DLL جوه البروسيس باستخدام <code
-                            style="background: #16ff00; font-size: 14px;">CreateRemoteThread</code> ، واللـ بيخلينا
+                            style="background: #FFD700; font-size: 14px;">CreateRemoteThread</code> ، واللـ بيخلينا
                         نستدعي
-                        <code style="background: #16ff00; font-size: 14px;">LoadLibraryW</code> عشان نحمل الـ DLL جوه
+                        <code style="background: #FFD700; font-size: 14px;">LoadLibraryW</code> عشان نحمل الـ DLL جوه
                         البروسيس.
                     </li>
                 </ol>
                 <p style="font-weight: bold;">[+] يلا نبدأ نشوف الأكواد:</p>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold; font-size: larger; direction: ltr;">Step 1 : Get process information</p>
 
-                <p>أول حاجة ، هنضيف مكتبة <code style="background: #16ff00; font-size: 14px;">Tlhelp32.h</code> لإن
+                <p>أول حاجة ، هنضيف مكتبة <code style="background: #FFD700; font-size: 14px;">Tlhelp32.h</code> لإن
                     هنستخدم دوال منها:</p>
                 <div class="code-block"><code>#include &lt;Tlhelp32.h>
                     </code></div>
                 <p>بعد كده ، هنكريت دالة وظيفتها إنها تلاقي البروسيس المستهدفه وتمسك <code
-                        style="background: #16ff00; font-size: 14px;">Handle</code> عليها ، ودي أنا سميتها
-                    <code style="background: #16ff00; font-size: 14px;">GetRemoteProcessHandle</code> ، والدالة دي
+                        style="background: #FFD700; font-size: 14px;">Handle</code> عليها ، ودي أنا سميتها
+                    <code style="background: #FFD700; font-size: 14px;">GetRemoteProcessHandle</code> ، والدالة دي
                     بتاخد:
                 </p>
                 <ul>
@@ -548,10 +549,10 @@
                 </ul>
                 <div class="code-block"><code>BOOL GetRemoteProcessHandle(LPWSTR szProcessName, DWORD* dwProcessId, HANDLE* hProcess) {
                 </code></div>
-                <p>هنستخدم <code style="background: #16ff00; font-size: 14px;">CreateToolhelp32Snapshot</code> ، واللـ
+                <p>هنستخدم <code style="background: #FFD700; font-size: 14px;">CreateToolhelp32Snapshot</code> ، واللـ
                     وظيفتها إنها تاخد لقطة من العمليات اللـ شغالة دلوقتي ع
-                    الجهاز ، وترجع <code style="background: #16ff00; font-size: 14px;">Handle</code> نقدر نستخدمه بعدين
-                    ، ولو الدالة فشلت في إنها تاخد <code style="background: #16ff00; font-size: 14px;">Snapshot</code> ،
+                    الجهاز ، وترجع <code style="background: #FFD700; font-size: 14px;">Handle</code> نقدر نستخدمه بعدين
+                    ، ولو الدالة فشلت في إنها تاخد <code style="background: #FFD700; font-size: 14px;">Snapshot</code> ،
                     هتطلع Error وتخرج
                     من الفانكشن .. وتقدر تشوف الـ Documentation بتاعها من
                     <a href="https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot"
@@ -564,12 +565,12 @@
                             &nbsp;&nbsp;goto _EndOfFunction;<br>
                         }<br>
                         </code></div>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold; font-size: larger; direction: ltr;">Step 2 : Search for target process</p>
                 <p>دلوقتي هنبدأ نعدي ع كل البروسيسيز الموجودة فـ الـ <code
-                        style="background: #16ff00; font-size: 14px;">Snapshot</code> ، وندور ع اسم البروسيس اللـ إحنا
+                        style="background: #FFD700; font-size: 14px;">Snapshot</code> ، وندور ع اسم البروسيس اللـ إحنا
                     مستهدفينها .. وأول بروسيس هنجيبها باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">Process32First</code> : وتقدر تشوف الـ
+                        style="background: #FFD700; font-size: 14px;">Process32First</code> : وتقدر تشوف الـ
                     Documentation بتاعها من
                     <a href="https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-process32first"
                         target="_blank" class="download-link">[هنا]</a>.
@@ -581,18 +582,18 @@
                         }<br>
                         </code></div>
                 <p>[+] بعد كده احنا عاوزين نعمل لوب تعدي ع كل البروسيسيز ، وناخد معلوماتهم ونحفظها فـ Struct اسمها <code
-                        style="background: #16ff00; font-size: 14px;">Proc.</code>
+                        style="background: #FFD700; font-size: 14px;">Proc.</code>
                     وبعدين ندور ع بروسيس معينه بالاسم بتاعها ، ولو لقيناها ، نجيب الـ <code
-                        style="background: #16ff00; font-size: 14px;">Process ID</code> بتاعه ونفتحه بصلاحيات
+                        style="background: #FFD700; font-size: 14px;">Process ID</code> بتاعه ونفتحه بصلاحيات
                     معينة ، والخطوات للجزء ده كالتالي :</p>
                 <ol>
                     <li style="font-weight: bold;">تجهيز مكان نحفظ فيه اسم البروسيس :</li>
                     أول حاجة بنتأكد إن البروسيس ليه اسم فعلا <code
-                        style="background: #16ff00; font-size: 14px;">(Proc.szExeFile)</code> وبعد كده بنشوف حجمه <code
-                        style="background: #16ff00; font-size: 14px;">(dwSize)</code>.
-                    كمان بنجهز <code style="background: #16ff00; font-size: 14px;">Array (LowerName)</code> عشان نحط
+                        style="background: #FFD700; font-size: 14px;">(Proc.szExeFile)</code> وبعد كده بنشوف حجمه <code
+                        style="background: #FFD700; font-size: 14px;">(dwSize)</code>.
+                    كمان بنجهز <code style="background: #FFD700; font-size: 14px;">Array (LowerName)</code> عشان نحط
                     فيها الاسم بعد تحويله لحروف صغيرة ، ونمسح أي بيانات قديمة منها
-                    باستخدام <code style="background: #16ff00; font-size: 14px;">()RtlSecureZeroMemory</code>.
+                    باستخدام <code style="background: #FFD700; font-size: 14px;">()RtlSecureZeroMemory</code>.
                     <div class="code-block"><code>WCHAR LowerName[MAX_PATH * 2]; <br><br>
 
                         if (Proc.szExeFile) { <br>
@@ -603,14 +604,14 @@
                         </code></div>
                     <li style="font-weight: bold;">تحويل الاسم لـ Lowercase :</li>
                     دلوقتي هنحول كل الحروف فـ الاسم لـ <code
-                        style="background: #16ff00; font-size: 14px;">Lowercase</code> عشان لما نقارن متبقاش عندنا مشاكل
+                        style="background: #FFD700; font-size: 14px;">Lowercase</code> عشان لما نقارن متبقاش عندنا مشاكل
                     بسبب الفرق بين الحروف
                     الكبيرة والصغيرة. <br>
                     بنتأكد الأول إن حجم الاسم أقل من حجم المصفوفة <code
-                        style="background: #16ff00; font-size: 14px;">(MAX_PATH * 2)</code> عشان منواجهش مشاكل.
+                        style="background: #FFD700; font-size: 14px;">(MAX_PATH * 2)</code> عشان منواجهش مشاكل.
                     وبعدين بنمشي حرف حرف ونحوله باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">()tolower</code> ، وفيـالآخر بنضيف <code
-                        style="background: #16ff00; font-size: 14px;">'\0'</code> عشان الاسم
+                        style="background: #FFD700; font-size: 14px;">()tolower</code> ، وفيـالآخر بنضيف <code
+                        style="background: #FFD700; font-size: 14px;">'\0'</code> عشان الاسم
                     يكون بشكل نصي سليم.
 
                     <div class="code-block"><code>if (dwSize < MAX_PATH * 2) {<br>
@@ -621,12 +622,12 @@
                             }<br>
                 </code></div>
                     <li style="font-weight: bold;">المقارنة بين الاسم اللـ اتحول واسم البروسيس اللـ بندور عليها :</li>
-                    دلوقتي بعد مـ حولنا الاسم لـ <code style="background: #16ff00; font-size: 14px;">Lowercase</code> ،
+                    دلوقتي بعد مـ حولنا الاسم لـ <code style="background: #FFD700; font-size: 14px;">Lowercase</code> ،
                     هنقارنه بالاسم اللـ بندور عليه <code
-                        style="background: #16ff00; font-size: 14px;">(szProcessName)</code> باستخدام
-                    <code style="background: #16ff00; font-size: 14px;">()wcscmp</code>.<br>
+                        style="background: #FFD700; font-size: 14px;">(szProcessName)</code> باستخدام
+                    <code style="background: #FFD700; font-size: 14px;">()wcscmp</code>.<br>
                     لو طلعوا متطابقين يبقى لقينا البروسيس المطلوبه ، فنحفظ الـ Process ID ونحاول نفتح البروسيس بصلاحيات
-                    <code style="background: #16ff00; font-size: 14px;">PROCESS_ALL_ACCESS</code>. وتقدر تشوف الـ
+                    <code style="background: #FFD700; font-size: 14px;">PROCESS_ALL_ACCESS</code>. وتقدر تشوف الـ
                     Documentation بتاعها من <a
                         href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/strcmp-wcscmp-mbscmp?view=msvc-170"
                         target="_blank" class="download-link">[هنا]</a>.
@@ -639,7 +640,7 @@
                     }</code></div>
                     <li style="font-weight: bold;">لو ملقيناش البروسيس نكمل فـ اللوب :</li>
                     لو الاسم مش مطابق بنكمل ندور ع باقي البروسيسيز باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">()Process32Next</code> لحد ما نخلص كل البروسيسات
+                        style="background: #FFD700; font-size: 14px;">()Process32Next</code> لحد ما نخلص كل البروسيسات
                     أو
                     نلاقي اللـ بندور عليها ، وتقدر تشوف الـ Documentation بتاعها من <a
                         href="https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-process32next"
@@ -647,9 +648,9 @@
                     <div class="code-block"><code>} while (Process32Next(hSnapshot, &Proc));</code></div>
                 </ol>
                 <p>[+] آخر جزء فـ الدالة دي هو إننا نقفل الـ <code
-                        style="background: #16ff00; font-size: 14px;">Handle</code> اللـ فتحناه باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">CloseHandle</code> ، عشان نمنع الـ
-                    <code style="background: #16ff00; font-size: 14px;">Handle Leak</code> :
+                        style="background: #FFD700; font-size: 14px;">Handle</code> اللـ فتحناه باستخدام <code
+                        style="background: #FFD700; font-size: 14px;">CloseHandle</code> ، عشان نمنع الـ
+                    <code style="background: #FFD700; font-size: 14px;">Handle Leak</code> :
                 </p>
                 <div class="code-block"><code>_EndOfFunction:<br>
                     &nbsp;&nbsp;if (hSnapshot != NULL)<br>
@@ -659,7 +660,7 @@
                     &nbsp;&nbsp;return TRUE;<br>
                     
                     }</code></div>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold; font-size: larger; direction: ltr;">Step 3 : Injecting DLL into the
                     targeted process</p>
                 <p>[+] بعد مـ جبنا الهاندل بتاع البروسيس فـ الدالة اللـ فاتت ، دلوقتي جه وقت إننا نحقن الـ DLL فيها
@@ -676,10 +677,10 @@
                     إيه اللي بيحصل هنا؟
                     قبل مـ نبدأ الحقن ، بنجهز شوية متغيرات هنحتاجها وقت العملية:
                     <ul>
-                        <li>bSTATE : ده متغير <code style="background: #16ff00; font-size: 14px;">Bool</code> بنستخدمه
+                        <li>bSTATE : ده متغير <code style="background: #FFD700; font-size: 14px;">Bool</code> بنستخدمه
                             عشان نعرف إذا كانت العملية نجحت ولا لا.</li>
                         <li>pLoadLibraryW : هنا هنخزن عنوان <code
-                                style="background: #16ff00; font-size: 14px;">LoadLibraryW</code> لما نجيبه بعدين.</li>
+                                style="background: #FFD700; font-size: 14px;">LoadLibraryW</code> لما نجيبه بعدين.</li>
                         <li>pAddress : ده هيكون عنوان الميموري اللـ هنحجزها جوه البروسيس المستهدفه.</li>
                         <li>dwSizeToWrite : ده حجم البيانات اللـ هنكتبها فـ ميموري البروسيس ، وبيساوي عدد الحروف فـ اسم
                             الـ</li>
@@ -688,52 +689,52 @@
                             ولا</li>
                         لا.
                         <li>Thread : بعد مـ نحقن الـ DLL ، هنستخدمه لإنشاء <code
-                                style="background: #16ff00; font-size: 14px;">Thread</code> جديد فـ البروسيس المستهدف
+                                style="background: #FFD700; font-size: 14px;">Thread</code> جديد فـ البروسيس المستهدف
                             لتشغيل الـ
                             DLL.</li>
 
                     </ul>
                     <li style="font-weight: bold;">نجيب عنوان LoadLibraryW :</li>
-                    إحنا هنحتاج <code style="background: #16ff00; font-size: 14px;">LoadLibraryW</code> لأنها المسؤولة
+                    إحنا هنحتاج <code style="background: #FFD700; font-size: 14px;">LoadLibraryW</code> لأنها المسؤولة
                     عن تحميل الـ DLL جوه البروسيس ، فبناخد عنوانها باستخدام
-                    <code style="background: #16ff00; font-size: 14px;">GetProcAddress</code> عشان نقدر نشغلها بعدين.
+                    <code style="background: #FFD700; font-size: 14px;">GetProcAddress</code> عشان نقدر نشغلها بعدين.
                     <div class="code-block"><code>&nbsp;&nbsp;pLoadLibraryW = GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryW");<br>
                         &nbsp;&nbsp;if (pLoadLibraryW == NULL) {<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed with Error : %d \n", GetLastError());<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;bSTATE = FALSE; goto _EndOfFunction;<br>
                             &nbsp;&nbsp;}<br>
                         </code></div>
-                    هنا بنستخدم <code style="background: #16ff00; font-size: 14px;">GetModuleHandle</code> عشان نجيب
-                    <code style="background: #16ff00; font-size: 14px;">kernel32.dll</code> ، وبعدها بنستخدم
-                    <code style="background: #16ff00; font-size: 14px;">GetProcAddress</code> عشان نجيب عنوان
-                    <code style="background: #16ff00; font-size: 14px;">LoadLibraryW</code>.
+                    هنا بنستخدم <code style="background: #FFD700; font-size: 14px;">GetModuleHandle</code> عشان نجيب
+                    <code style="background: #FFD700; font-size: 14px;">kernel32.dll</code> ، وبعدها بنستخدم
+                    <code style="background: #FFD700; font-size: 14px;">GetProcAddress</code> عشان نجيب عنوان
+                    <code style="background: #FFD700; font-size: 14px;">LoadLibraryW</code>.
                     لو فشلت العملية ، بتطلع Error وتخرج.
                     <li style="font-weight: bold;">نحجز مكان فـ ميموري البروسيس :</li>
                     عشان نقدر نبعت اسم الـ DLL للبروسيس ، لازم الأول نحجز مكان فـ الميموري باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">VirtualAllocEx</code>.
+                        style="background: #FFD700; font-size: 14px;">VirtualAllocEx</code>.
                     <div class="code-block"><code>&nbsp;&nbsp;pAddress = VirtualAllocEx(hProcess, NULL, dwSizeToWrite, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
                         &nbsp;&nbsp;if (pAddress == NULL) {<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAllocEx Failed with Error : %d \n", GetLastError());<br>
                             &nbsp;&nbsp;&nbsp;&nbsp;bSTATE = FALSE; goto _EndOfFunction;<br>
                             &nbsp;&nbsp;}<br>
                         </code></div>
-                    بنستخدم <code style="background: #16ff00; font-size: 14px;">VirtualAllocEx</code> عشان نحجز مساحة
+                    بنستخدم <code style="background: #FFD700; font-size: 14px;">VirtualAllocEx</code> عشان نحجز مساحة
                     تكفي اسم الـ DLL جوه ميموري البروسيس المستهدفه.
                     ولو فشلت ، بتطلع Error وتخرج.
                     <li style="font-weight: bold;"> نكتب اسم الـ DLL فـ الميموري :</li>
                     بعد مـ حجزنا مكان فـ الميموري ، دلوقتي نكتب مسار الـ DLL فـ المكان ده باستخدام <code
-                        style="background: #16ff00; font-size: 14px;">WriteProcessMemory</code>.
+                        style="background: #FFD700; font-size: 14px;">WriteProcessMemory</code>.
                     <div class="code-block"><code>&nbsp;&nbsp;if (!WriteProcessMemory(hProcess, pAddress, DllName, dwSizeToWrite, &lpNumberOfBytrsWritten) || dwSizeToWrite != lpNumberOfBytrsWritten) {<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] WriteProcessMemory Failed with Error : %d \n", GetLastError());<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;bSTATE = FALSE; goto _EndOfFunction;<br>
                         &nbsp;&nbsp;}<br>
                     </code></div>
-                    بنستخدم <code style="background: #16ff00; font-size: 14px;">WriteProcessMemory</code> عشان نكتب اسم
+                    بنستخدم <code style="background: #FFD700; font-size: 14px;">WriteProcessMemory</code> عشان نكتب اسم
                     الـ DLL فـ الميموري اللـ حجزناها.
                     وبنتأكد إن كل البيانات اتكتبت صح ، ولو فـ مشكلة بتطلع Error وتخرج.
                     <li style="font-weight: bold;">ننشئ Thread جديد فـ البروسيس :</li>
                     دلوقتي بقى عندنا مسار الـ DLL فـ ميموري البروسيس ، فهنستخدم <code
-                        style="background: #16ff00; font-size: 14px;">CreateRemoteThread</code> عشان نشغل
+                        style="background: #FFD700; font-size: 14px;">CreateRemoteThread</code> عشان نشغل
                     LoadLibraryW
                     اللـ هتقوم بتحميل الـ DLL.
                     <div class="code-block"><code>&nbsp;&nbsp;hThread = CreateRemoteThread(hProcess, NULL, NULL, pLoadLibraryW, pAddress, NULL, NULL);<br>
@@ -742,15 +743,15 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;bSTATE = FALSE; goto _EndOfFunction;<br>
                             &nbsp;&nbsp;}<br>
                         </code></div>
-                    <code style="background: #16ff00; font-size: 14px;">CreateRemoteThread</code> هي اللـ بتشغل <code
-                        style="background: #16ff00; font-size: 14px;">LoadLibraryW</code> جوه البروسيس ، وبتاخد كـ
+                    <code style="background: #FFD700; font-size: 14px;">CreateRemoteThread</code> هي اللـ بتشغل <code
+                        style="background: #FFD700; font-size: 14px;">LoadLibraryW</code> جوه البروسيس ، وبتاخد كـ
                     Argument العنوان بتاع
                     الميموري
                     اللـ كتبنا فيه اسم الـ DLL.
                     ولو العملية فشلت ، بتطلع Error وتخرج.
                     <li style="font-weight: bold;">نقفل الـ Thread اللـ فتحناه :</li>
-                    بعد مـ خلصنا كل حاجة ، بنقفل الـ <code style="background: #16ff00; font-size: 14px;">Thread</code>
-                    عشان منسيبش <code style="background: #16ff00; font-size: 14px;">Handle Leak</code>.
+                    بعد مـ خلصنا كل حاجة ، بنقفل الـ <code style="background: #FFD700; font-size: 14px;">Thread</code>
+                    عشان منسيبش <code style="background: #FFD700; font-size: 14px;">Handle Leak</code>.
                     <div class="code-block"><code>_EndOfFunction:<br>
                         &nbsp;&nbsp;if (hThread)<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hThread);<br>
@@ -758,20 +759,20 @@
                         &nbsp;&nbsp;}
                     </code></div>
                     أي Thread أو Handle استخدمناه ، لازم نقفله بعد مـ نخلص شغلنا عشان منسيبش <code
-                        style="background: #16ff00; font-size: 14px;">Handle Leaks</code>.
+                        style="background: #FFD700; font-size: 14px;">Handle Leaks</code>.
                 </ol>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold; font-size: larger; direction: ltr;">Step 4 : Execution and Cleanup</p>
-                <p>[+] هنبدأ نجهز الـ <code style="background: #16ff00; font-size: 14px;">main function</code> ، واللـ
+                <p>[+] هنبدأ نجهز الـ <code style="background: #FFD700; font-size: 14px;">main function</code> ، واللـ
                     فيها هنتأكد من استدعاء الدوال اللـ كتبناها قبل كده ، والتأكد
                     إن كل العمليات ماشية زي الفل.</p>
 
 
                 <ol>
                     <li style="font-weight: bold;">تغيير الـ main والتحقق من الـ Arguments :</li>
-                    فـ البداية عدلت الـ <code style="background: #16ff00; font-size: 14px;">main</code> لـ <code
-                        style="background: #16ff00; font-size: 14px;">wmain</code> عشان تقدر تستوعب الحروف الـ <code
-                        style="background: #16ff00; font-size: 14px;">Unicode
+                    فـ البداية عدلت الـ <code style="background: #FFD700; font-size: 14px;">main</code> لـ <code
+                        style="background: #FFD700; font-size: 14px;">wmain</code> عشان تقدر تستوعب الحروف الـ <code
+                        style="background: #FFD700; font-size: 14px;">Unicode
                             أو UTF-16</code> .. وبعد كدا قبل أي
                     حاجة
                     البرنامج بيتأكد إن اليوزر دخل الـ arguments المطلوبة:
@@ -801,11 +802,11 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
                         &nbsp;&nbsp;}</code></div>
                     <li style="font-weight: bold;">ننهي البرنامج ونقفل الـ Handle :</li>
-                    بنقفل الهاندل عشان نمنع الـ <code style="background: #16ff00; font-size: 14px;">Handle Leak</code>.
+                    بنقفل الهاندل عشان نمنع الـ <code style="background: #FFD700; font-size: 14px;">Handle Leak</code>.
                     <div class="code-block"><code>	CloseHandle(hProcess);</code></div>
                 </ol>
                 <p>[+] كدا خلصنا شرح الكود .. هتـ Build البروجيكت ع الـ Debug.</p>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p style="font-weight: bold;">[+] يلا نـ رن ونجرب :</p>
                 <ol>
                     <li>لو جربت تـ رن البرنامج لوحده ، هيطلعلك الإستخدام :</li>
@@ -821,7 +822,7 @@
                         <img src="../src/Pics/RemoteDLLi-2.png" alt="RemoteDLLInjection-2" class="article-image"
                             loading="lazy">
                     </div>
-                    <li>لما تخليه يشتغل .. هتلاقي فـ <code style="background: #16ff00; font-size: 14px;">Modules</code>
+                    <li>لما تخليه يشتغل .. هتلاقي فـ <code style="background: #FFD700; font-size: 14px;">Modules</code>
                         إن الملف بتاعنا بقي موجود :</li>
                     <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                         <img src="../src/Pics/RemoteDLLi-3.png" alt="RemoteDLLInjection-3" class="article-image"
@@ -848,7 +849,7 @@
                             loading="lazy">
                     </div>
                 </ol>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p>[+] الكود النهائي :</p>
                 <div class="code-block"><code>#include &lt;Windows.h><br>
                     #include &lt;stdio.h><br>
@@ -986,8 +987,8 @@
                     
                         &nbsp;&nbsp;return 0;<br>
                     }</code></div>
-                <p style="border-top: 2px solid #16ff00;"></p>
-                <p style="border-top: 2px solid #16ff00;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
                 <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
                     متترددش وكلمني.</p>
             </div>
@@ -995,28 +996,31 @@
                 <h2>References</h2>
                 <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
 
+                <ul style="direction: ltr;">
+                    <li><a href="https://pentestlab.blog/2017/04/04/dll-injection/" target="_blank"
+                            class="download-link" s>DLL Injection - Pentestlab Blog</a>
+                    </li>
+                    <li><a href="https://www.ired.team/offensive-security/code-injection-process-injection/dll-injection"
+                            target="_blank" class="download-link">DLL Injection - Red Team Notes</a></li>
 
-                <li><a href="https://pentestlab.blog/2017/04/04/dll-injection/" target="_blank" class="download-link"
-                        s>DLL Injection - Pentestlab Blog</a>
-                </li>
-                <li><a href="https://www.ired.team/offensive-security/code-injection-process-injection/dll-injection"
-                        target="_blank" class="download-link">DLL Injection - Red Team Notes</a></li>
+                    <li><a href="https://n10h0ggr.github.io/posts/DLL-Injection/" target="_blank"
+                            class="download-link">DLL
+                            Injection - n10h0ggr</a></li>
+                    <li><a href="https://www.stackzero.net/dll-injection-example/" target="_blank"
+                            class="download-link">How
+                            To Do DLL Injection</a></li>
+                    <li><a href="https://attack.mitre.org/techniques/T1055/001/" target="_blank"
+                            class="download-link">Process Injection: Dynamic-link Library Injection</a></li>
+                    <li><a href="https://medium.com/@0xey/t1055-001-process-injection-dll-injection-64dc14719faa"
+                            target="_blank" class="download-link">T1055:001 - Process Injection: DLL Injection
+                            [Theoretical
+                            and Demonstration]</a></li>
 
-                <li><a href="https://n10h0ggr.github.io/posts/DLL-Injection/" target="_blank" class="download-link">DLL
-                        Injection - n10h0ggr</a></li>
-                <li><a href="https://www.stackzero.net/dll-injection-example/" target="_blank" class="download-link">How
-                        To Do DLL Injection</a></li>
-                <li><a href="https://attack.mitre.org/techniques/T1055/001/" target="_blank"
-                        class="download-link">Process Injection: Dynamic-link Library Injection</a></li>
-                <li><a href="https://medium.com/@0xey/t1055-001-process-injection-dll-injection-64dc14719faa"
-                        target="_blank" class="download-link">T1055:001 - Process Injection: DLL Injection [Theoretical
-                        and Demonstration]</a></li>
-
-                </li>
-
+                    </li>
+                </ul>
             </div>
             <div class="nav-buttons">
-                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./Shellcode-Injection.html" onclick="nextArticle()" style="direction: ltr;">Next →</a>
                 <a href="./Payload-Obfuscation.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
             </div>
     </section>

